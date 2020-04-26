@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/hayden/Desktop/Jario64winportable/BasicAudioPlugin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hayden/Desktop/Jario64winportable/CFBPlugin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hayden/Desktop/Jario64winportable/glN64jPlugin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hayden/Desktop/Jario64winportable/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hayden/Desktop/Jario64winportable/jogl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/hayden/Desktop/Jario64winportable"/>
+		</attributes>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
