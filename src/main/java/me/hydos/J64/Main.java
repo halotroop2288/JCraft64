@@ -1,12 +1,10 @@
 package me.hydos.J64;
 
 import me.hydos.J64.util.EmuManager;
-import net.fabricmc.api.ModInitializer;
 
-public class Main implements ModInitializer {
+public class Main {
 
-	@Override
-	public void onInitialize() {
+	public static void main(String[] args) {
 		EmuManager.setup();
 	}
 }

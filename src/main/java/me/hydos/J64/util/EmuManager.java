@@ -377,14 +377,14 @@ public class EmuManager {
         hMainWindow.setVisible(true);
 
         URL pluginUrl = null;
-        File file = new File("./plugins.properties");
+        File file = new File("plugins.properties");
         if (file.exists()) {
             try {
                 pluginUrl = file.toURI().toURL();
             } catch (Exception ignored) {
             }
         } else {
-            pluginUrl = Main.class.getClassLoader().getResource("resources/plugins.properties");
+            pluginUrl = Main.class.getClassLoader().getResource("plugins.properties");
         }
 
         if (pluginUrl == null) {
