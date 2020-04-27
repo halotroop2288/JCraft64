@@ -1,8 +1,9 @@
 package me.hydos.J64.emu.gln64.rdp.textures;
 
+import org.lwjgl.opengl.GL40;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import javax.media.opengl.GL;
 
 public class ImageFormat {
 
@@ -192,42 +193,40 @@ public class ImageFormat {
         }
     };
 
-    public static final GetTexelFunc GetRGBA8888_RGBA4444 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetRGBA8888_RGBA4444");
-            return 0x0000F0FF;
-        }
+    public static final GetTexelFunc GetRGBA8888_RGBA4444 = (src, x, i, palette) -> {
+        System.out.println("GetRGBA8888_RGBA4444");
+        return 0x0000F0FF;
     };
 
     public static ImageFormat[][] imageFormat =
             { //                            Get16			glType16			glInternalFormat16	Get32			glType32	glInternalFormat32	autoFormat
                     { // 4-bit
-                            new ImageFormat(GetCI4RGBA_RGBA5551, GL.GL_UNSIGNED_SHORT_5_5_5_1, GL.GL_RGB5_A1, GetCI4RGBA_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGB5_A1, 4, 4096), // CI (Banjo-Kazooie uses this, doesn't make sense, but it works...)
-                            new ImageFormat(GetNone, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetNone, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 4, 8192), // YUV
-                            new ImageFormat(GetCI4RGBA_RGBA5551, GL.GL_UNSIGNED_SHORT_5_5_5_1, GL.GL_RGB5_A1, GetCI4RGBA_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGB5_A1, 4, 4096), // CI
-                            new ImageFormat(GetIA31_RGBA4444, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetIA31_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 4, 8192), // IA
-                            new ImageFormat(GetI4_RGBA4444, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetI4_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 4, 8192), // I
+                            new ImageFormat(GetCI4RGBA_RGBA5551, GL40.GL_UNSIGNED_SHORT_5_5_5_1, GL40.GL_RGB5_A1, GetCI4RGBA_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGB5_A1, 4, 4096), // CI (Banjo-Kazooie uses this, doesn't make sense, but it works...)
+                            new ImageFormat(GetNone, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetNone, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 4, 8192), // YUV
+                            new ImageFormat(GetCI4RGBA_RGBA5551, GL40.GL_UNSIGNED_SHORT_5_5_5_1, GL40.GL_RGB5_A1, GetCI4RGBA_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGB5_A1, 4, 4096), // CI
+                            new ImageFormat(GetIA31_RGBA4444, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetIA31_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 4, 8192), // IA
+                            new ImageFormat(GetI4_RGBA4444, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetI4_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 4, 8192), // I
                     },
                     { // 8-bit
-                            new ImageFormat(GetCI8RGBA_RGBA5551, GL.GL_UNSIGNED_SHORT_5_5_5_1, GL.GL_RGB5_A1, GetCI8RGBA_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGB5_A1, 3, 2048), // RGBA
-                            new ImageFormat(GetNone, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetNone, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 0, 4096), // YUV
-                            new ImageFormat(GetCI8RGBA_RGBA5551, GL.GL_UNSIGNED_SHORT_5_5_5_1, GL.GL_RGB5_A1, GetCI8RGBA_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGB5_A1, 3, 2048), // CI
-                            new ImageFormat(GetIA44_RGBA4444, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetIA44_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 3, 4096), // IA
-                            new ImageFormat(GetI8_RGBA4444, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetI8_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA8, 3, 4096), // I
+                            new ImageFormat(GetCI8RGBA_RGBA5551, GL40.GL_UNSIGNED_SHORT_5_5_5_1, GL40.GL_RGB5_A1, GetCI8RGBA_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGB5_A1, 3, 2048), // RGBA
+                            new ImageFormat(GetNone, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetNone, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 0, 4096), // YUV
+                            new ImageFormat(GetCI8RGBA_RGBA5551, GL40.GL_UNSIGNED_SHORT_5_5_5_1, GL40.GL_RGB5_A1, GetCI8RGBA_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGB5_A1, 3, 2048), // CI
+                            new ImageFormat(GetIA44_RGBA4444, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetIA44_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 3, 4096), // IA
+                            new ImageFormat(GetI8_RGBA4444, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetI8_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA8, 3, 4096), // I
                     },
                     { // 16-bit
-                            new ImageFormat(GetRGBA5551_RGBA5551, GL.GL_UNSIGNED_SHORT_5_5_5_1, GL.GL_RGB5_A1, GetRGBA5551_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGB5_A1, 2, 2048), // RGBA
-                            new ImageFormat(GetNone, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetNone, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 2, 2048), // YUV
-                            new ImageFormat(GetNone, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetNone, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 0, 2048), // CI
-                            new ImageFormat(GetIA88_RGBA4444, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetIA88_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA8, 2, 2048), // IA
-                            new ImageFormat(GetNone, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetNone, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 0, 2048), // I
+                            new ImageFormat(GetRGBA5551_RGBA5551, GL40.GL_UNSIGNED_SHORT_5_5_5_1, GL40.GL_RGB5_A1, GetRGBA5551_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGB5_A1, 2, 2048), // RGBA
+                            new ImageFormat(GetNone, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetNone, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 2, 2048), // YUV
+                            new ImageFormat(GetNone, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetNone, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 0, 2048), // CI
+                            new ImageFormat(GetIA88_RGBA4444, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetIA88_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA8, 2, 2048), // IA
+                            new ImageFormat(GetNone, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetNone, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 0, 2048), // I
                     },
                     { // 32-bit
-                            new ImageFormat(GetRGBA8888_RGBA4444, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetRGBA8888_RGBA8888, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA8, 2, 1024), // RGBA
-                            new ImageFormat(GetNone, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetNone, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 0, 1024), // YUV
-                            new ImageFormat(GetNone, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetNone, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 0, 1024), // CI
-                            new ImageFormat(GetNone, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetNone, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 0, 1024), // IA
-                            new ImageFormat(GetNone, GL.GL_UNSIGNED_SHORT_4_4_4_4, GL.GL_RGBA4, GetNone, GL.GL_UNSIGNED_BYTE, GL.GL_RGBA8, GL.GL_RGBA4, 0, 1024), // I
+                            new ImageFormat(GetRGBA8888_RGBA4444, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetRGBA8888_RGBA8888, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA8, 2, 1024), // RGBA
+                            new ImageFormat(GetNone, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetNone, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 0, 1024), // YUV
+                            new ImageFormat(GetNone, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetNone, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 0, 1024), // CI
+                            new ImageFormat(GetNone, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetNone, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 0, 1024), // IA
+                            new ImageFormat(GetNone, GL40.GL_UNSIGNED_SHORT_4_4_4_4, GL40.GL_RGBA4, GetNone, GL40.GL_UNSIGNED_BYTE, GL40.GL_RGBA8, GL40.GL_RGBA4, 0, 1024), // I
                     }
             };
 
