@@ -3,7 +3,7 @@ package gln64j.opcodes;
 import gln64j.rdp.Gdp;
 import gln64j.rsp.Gsp;
 
-import static me.hydos.J64.util.debug.Debug.*;
+import static me.hydos.J64.emu.util.debug.Debug.*;
 
 import gln64j.rsp.GBIFunc;
 

@@ -1,7 +1,7 @@
 package gln64j;
 
 import com.sun.opengl.util.BufferUtil;
-import me.hydos.J64.util.debug.Debug;
+import me.hydos.J64.emu.util.debug.Debug;
 import gln64j.rdp.combiners.Combiners;
 import gln64j.rdp.Gdp;
 import gln64j.rdp.textures.TextureCache;

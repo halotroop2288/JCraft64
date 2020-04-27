@@ -1,6 +1,6 @@
 package gln64j.rsp;
 
-import me.hydos.J64.util.debug.Debug;
+import me.hydos.J64.emu.util.debug.Debug;
 import gln64j.GLN64jPlugin;
 import gln64j.Gbi;
 import gln64j.Rsp;

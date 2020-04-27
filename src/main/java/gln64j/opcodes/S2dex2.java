@@ -4,7 +4,7 @@ import gln64j.rsp.Gsp;
 import gln64j.rdp.Gdp;
 import gln64j.rsp.GBIFunc;
 
-import static me.hydos.J64.util.debug.Debug.*;
+import static me.hydos.J64.emu.util.debug.Debug.*;
 import static gln64j.Gbi.*;
 
 public class S2dex2 extends F3dex2 {
