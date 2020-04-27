@@ -3,7 +3,7 @@
 	"textures": {
 		"0": "jcraft64:block/nintendo_sixty_four",
 		"1": "jcraft64:block/cartridge",
-		"2": "jcraft64:blocks/games/n64/game",
+		"2": "jcraft64:block/games/n64/game",
 		"3": "jcraft64:block/nintendo_sixty_four_bottom",
 		"particle": "jcraft64:block/nintendo_sixty_four"
 	},

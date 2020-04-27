@@ -35,21 +35,15 @@ public class ImageFormat {
         tmem = mem;
     }
 
-    public static interface GetTexelFunc {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette);
+    public interface GetTexelFunc {
+        int GetTexel(ByteBuffer src, int x, int i, int palette);
     }
 
-    public static final GetTexelFunc GetNone = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            return 0x00000000;
-        }
-    };
+    public static final GetTexelFunc GetNone = (src, x, i, palette) -> 0x00000000;
 
-    public static final GetTexelFunc GetCI4IA_RGBA4444 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetCI4IA_RGBA4444");
-            return 0x0000F0FF;
-        }
+    public static final GetTexelFunc GetCI4IA_RGBA4444 = (src, x, i, palette) -> {
+        System.out.println("GetCI4IA_RGBA4444");
+        return 0x0000F0FF;
     };
 
     public static final GetTexelFunc GetCI4IA_RGBA8888 = new GetTexelFunc() {
