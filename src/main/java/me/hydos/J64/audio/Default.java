@@ -76,7 +76,7 @@ public class Default implements AudioPlugin {
 		this.audioInfo = audioInfo;
 		HLEMain.dmem = audioInfo.dmem;
 		HLEMain.rdram = audioInfo.rdram;
-		snd.Initialize(null, audioInfo);
+		snd.Initialize(audioInfo);
 		return true;
 	}
 
@@ -85,10 +85,9 @@ public class Default implements AudioPlugin {
 	}
 
 	public void romClosed() {
-//        ChangeABI (0);
 		snd.StopAudio();
 		dacrate = 0;
-		snd.Initialize(null, audioInfo);
+		snd.Initialize(audioInfo);
 	}
 
 }

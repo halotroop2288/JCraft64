@@ -490,9 +490,8 @@ public class N64Cpu {
 			return targetPC;
 
 		if (cop0.inPermLoop()) {
-//            exit("In a permanent loop that can not be exited\n\nEmulation will now stop");
-			System.err.printf("In a permanent loop that can not be exited\n\nEmulation will now stop\n");
-			System.exit(0);
+			System.err.print("In a permanent loop that can not be exited\n\nEmulation will now stop\n");
+			EmuManager.exit();
 		}
 
 		return targetPC;
@@ -2362,11 +2361,17 @@ public class N64Cpu {
 		}
 	};
 
+	int unknownCount = 0;
+
 	/************************** Other functions **************************/
 	public Runnable R4300i_UnknownOpcode = new Runnable() {
 		@Override
 		public void run() {
-			System.err.printf("PC:%X ,Unhandled r4300i OpCode:%X\n", pc, inst);
+			unknownCount++;
+			if(unknownCount == 20){
+				System.err.println("Warning the rom loaded has lots of Unhandled opcodes. This is not good!");
+				System.out.printf("PC:%X ,Unhandled r4300i OpCode:%X\n", pc, inst);
+			}
 
 		}
 	};

@@ -121,6 +121,7 @@ public class AudioCode {
 
 	// Fills up a buffer and remixes the audio
 	void FillBuffer(ByteBuffer buff, int offset, int len) {
+		if(line == null)return;
 		int write_seg = 0;
 		int last_seg = 0;
 		buffsize = len; // Save it globally
@@ -133,20 +134,16 @@ public class AudioCode {
 		}
 
 		if (last_write == -1) {
-			last_write = (write_pos - (2 * len)); // Back up 2 segments...
+			last_write = (write_pos - (2 * len)); // Back up 2 segments
 			if (last_write < 0) {
 				last_write += (SEGMENTS * len);
 			}
 		}
 
-		if (last_write == write_pos) { // Then we must freeze...
-
-		}
-
 		last_seg = (last_write / len);
 		write_seg = (write_pos / len);
 
-		if (last_seg == ((write_seg - 2) & 0x7)) { // Means first buffer is clear to write to...
+		if (last_seg == ((write_seg - 2) & 0x7)) { // Means first buffer is clear to write to
 			write_pos = (last_write + len);
 			if (write_pos >= len * SEGMENTS) {
 				write_pos -= (len * SEGMENTS);
@@ -161,11 +158,11 @@ public class AudioCode {
 		} else if (last_seg == ((write_seg - 1) & 0x7)) {
 			// Set DMA Busy
 			// Set FIFO Buffer Full
-			last_write = write_pos; // Lets get it back up to speed for audio accuracy...
+			last_write = write_pos; // Lets get it back up to speed for audio accuracy
 			aiRegisters[AudioPlugin.AI_STATUS_REG] |= 0xC0000000;
 			laststatus = 0xC0000000;
-		} else { // We get here if our audio stream from the game is running TOO slow...
-			last_write = write_pos; // Lets get it back up to speed for audio accuracy...
+		} else { // We get here if our audio stream from the game is running TOO slow
+			last_write = write_pos; // Lets get it back up to speed for audio accuracy
 			aiRegisters[AudioPlugin.AI_STATUS_REG] |= 0x00000000;
 			laststatus = 0x00000000;
 		}
@@ -175,10 +172,7 @@ public class AudioCode {
 		threadExecutor.execute(new WriteLineData(buff.array(), offset, dwBytes1));
 	}
 
-	// ------------------------------------------------------------------------
-	// Setup and Teardown Functions
-
-	boolean Initialize(AiCallBack aiCallBack, AudioInfo audioInfo) {
+	void Initialize(AudioInfo audioInfo) {
 		audioIsPlaying = false;
 		aiRegisters = audioInfo.aiRegisters;
 		miRegisters = audioInfo.miRegisters;
@@ -194,11 +188,10 @@ public class AudioCode {
 			line.open(wfm);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return;
 		}
 		line.start();
 
-		return true;
 	}
 
 	void DeInitialize() {
@@ -209,7 +202,7 @@ public class AudioCode {
 		}
 	}
 
-	// Generates nice alignment with N64 samples...
+	// Generates nice alignment with N64 samples
 	void SetSegmentSize(int length) {
 		if (SampleRate == 0) {
 			return;
@@ -231,23 +224,19 @@ public class AudioCode {
 		line.start();
 	}
 
-	// Buffer Functions for the Audio Code
-
 	void SetFrequency(int Frequency) {
 		SampleRate = Frequency;
-		SegmentSize = 0; // Trash it... we need to redo the Frequency anyway...
+		SegmentSize = 0; // Trash it we need to redo the Frequency anyway
 	}
 
-	int AddBuffer(ByteBuffer start, int offset, int length) {
-		int retVal = 0;
-
+	void AddBuffer(ByteBuffer start, int offset, int length) {
 		if (length == 0) {
-			return 0;
+			return;
 		}
-		if (length == 0x8C0) { // TODO: This proves I need more buffering!!!
+		if (length == 0x8C0) {
 			length = 0x840;
 		}
-		if (length == 0x880) { // TODO: This proves I need more buffering!!!
+		if (length == 0x880) {
 			length = 0x840;
 		}
 		if (length != SegmentSize) {
@@ -257,29 +246,15 @@ public class AudioCode {
 		if (!audioIsPlaying) {
 			StartAudio();
 		}
-		if (readLoc == writeLoc) { // Reset our pointer if we can...
+		if (readLoc == writeLoc) {
 			writeLoc = readLoc = 0;
 		}
-
-		if (readLoc != writeLoc) { // Then we have stuff in the buffer already... This is a double buffer
-			retVal |= SND_IS_FULL;
-		}
-
-		retVal |= SND_IS_NOT_EMPTY; // Buffer is not empty...
-
-//        System.arraycopy(start.array(), offset, SoundBuffer, writeLoc, length); // Buffer this audio data...
 		writeLoc += length;
 
 		FillBuffer(start, offset, length);
 		readLoc = writeLoc = 0;
 		UpdateStatus();
-
-		return retVal;
 	}
-
-	// Management functions
-	// TODO: For silent emulation... the Audio should still be "processed"
-	// somehow...
 
 	void StopAudio() {
 		if (!audioIsPlaying) {

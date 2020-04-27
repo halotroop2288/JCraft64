@@ -14,19 +14,11 @@ public class ABI1 {
 	 * Audio flags
 	 */
 	public static final int A_INIT = 0x01;
-	public static final int A_CONTINUE = 0x00;
-	public static final int A_LOOP = 0x02;
-	public static final int A_OUT = 0x02;
-	public static final int A_LEFT = 0x02;
-	public static final int A_RIGHT = 0x00;
-	public static final int A_VOL = 0x04;
-	public static final int A_RATE = 0x00;
-	public static final int A_AUX = 0x08;
-	public static final int A_NOAUX = 0x00;
-	public static final int A_MAIN = 0x00;
-	public static final int A_MIX = 0x10;
+    public static final int A_LEFT = 0x02;
+    public static final int A_VOL = 0x04;
+    public static final int A_AUX = 0x08;
 
-	public static Runnable SPNOOP = new Runnable() {
+    public static Runnable SPNOOP = new Runnable() {
 		public void run() {
 //            System.out.println("SPNOOP");
 		}
@@ -689,13 +681,7 @@ public class ABI1 {
 		}
 	};
 
-	public static Runnable SEGMENT = new Runnable() {
-		public void run() {
-//            System.out.println("SEGMENT");
-		}
-	};
-
-	public static Runnable SETBUFF = new Runnable() {
+    public static Runnable SETBUFF = new Runnable() {
 		public void run() {
 			if (((inst1 >>> 16) & 0x8) != 0) {
 				// A_AUX - Auxillary Sound Buffer Settings

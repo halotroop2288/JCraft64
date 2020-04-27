@@ -148,7 +148,6 @@ public class Video {
 
 		if (frameLimit) {
 			while (lastTime + 17L > System.currentTimeMillis()) {
-				Thread.sleep(1);
 			}
 			lastTime = System.currentTimeMillis();
 		}

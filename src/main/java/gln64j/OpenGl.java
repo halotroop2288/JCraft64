@@ -105,12 +105,8 @@ public class OpenGl {
 
     private static boolean fog;
 
-    /** Creates a new instance of OpenGl */
-    private OpenGl() {
-    }
-    
     public static void config() {
-        fog = false; //TODO: add this if fog is on program?
+        fog = true; //TODO: add this if fog is on program?
         OpenGlGdp.config();
     }
     
