@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 import me.hydos.J64.emu.savechips.Eeprom;
 import me.hydos.J64.emu.savechips.Mempak;
-import plugin.InputPlugin;
+import me.hydos.J64.api.plugin.InputPlugin;
 
 public class Pif {
 

@@ -8,8 +8,8 @@ import me.hydos.J64.emu.Pif;
 import me.hydos.J64.emu.RegisterSP;
 import me.hydos.J64.emu.Registers;
 import me.hydos.J64.emu.savechips.FlashRam;
-import plugin.AudioPlugin;
-import plugin.GfxPlugin;
+import me.hydos.J64.api.plugin.AudioPlugin;
+import me.hydos.J64.api.plugin.GfxPlugin;
 
 public class Memory {
 

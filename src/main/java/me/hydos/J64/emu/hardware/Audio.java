@@ -3,7 +3,7 @@ package me.hydos.J64.emu.hardware;
 import java.nio.ByteBuffer;
 import java.util.Properties;
 import javax.swing.JFrame;
-import plugin.AudioPlugin;
+import me.hydos.J64.api.plugin.AudioPlugin;
 
 public class Audio {
 
