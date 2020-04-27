@@ -365,7 +365,6 @@ public class Cop0 {
 		}
 		if (currentTimerType == -1) {
 			System.err.printf("No active timers ???\nEmulation Stoped\n");
-			System.exit(0);
 		}
 		for (int count = 0; count < MAX_TIMERS; count++) {
 			if (!active[count])

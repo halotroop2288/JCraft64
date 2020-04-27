@@ -1139,8 +1139,8 @@ public class N64Cpu {
 		}
 	};
 
-	private static int[] LWL_MASK = { 0x000000, 0x0000FF, 0x00FFFF, 0xFFFFFF };
-	private static int[] LWL_SHIFT = { 0, 8, 16, 24 };
+	private static final int[] LWL_MASK = { 0x000000, 0x0000FF, 0x00FFFF, 0xFFFFFF };
+	private static final int[] LWL_SHIFT = { 0, 8, 16, 24 };
 
 	public Runnable r4300i_LWL = new Runnable() {
 		@Override

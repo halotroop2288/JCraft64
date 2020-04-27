@@ -5,7 +5,7 @@ import java.util.Properties;
 import javax.swing.JFrame;
 
 import me.hydos.J64.emu.Registers;
-import plugin.GfxPlugin;
+import me.hydos.J64.api.plugin.GfxPlugin;
 
 public class Video {
 

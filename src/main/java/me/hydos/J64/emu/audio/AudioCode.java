@@ -7,8 +7,8 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
-import plugin.AudioPlugin;
-import plugin.AudioPlugin.AudioInfo;
+import me.hydos.J64.api.plugin.AudioPlugin;
+import me.hydos.J64.api.plugin.AudioPlugin.AudioInfo;
 
 public class AudioCode {
 

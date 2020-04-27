@@ -291,8 +291,8 @@ public class EmuManager {
     }
 
     public static void exit() {
-        closeCpu();
         System.out.println("Stopping...");
+        closeCpu();
         Debug.close();
     }
 
@@ -388,7 +388,7 @@ public class EmuManager {
         }
 
         if (pluginUrl == null) {
-            System.out.println("can't find resource: " + "plugins.properties");
+            System.out.println("can't find " + "plugins.properties");
             return;
         }
 

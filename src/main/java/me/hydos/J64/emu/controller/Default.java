@@ -4,7 +4,7 @@ package me.hydos.J64.emu.controller;
 import java.awt.event.KeyEvent;
 import java.nio.ByteBuffer;
 import javax.swing.JFrame;
-import plugin.InputPlugin;
+import me.hydos.J64.api.plugin.InputPlugin;
 
 public class Default implements InputPlugin {
 

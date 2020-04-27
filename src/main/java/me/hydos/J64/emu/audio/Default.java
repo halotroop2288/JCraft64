@@ -1,7 +1,7 @@
 package me.hydos.J64.emu.audio;
 
 import javax.swing.JFrame;
-import plugin.AudioPlugin;
+import me.hydos.J64.api.plugin.AudioPlugin;
 
 public class Default implements AudioPlugin {
 
