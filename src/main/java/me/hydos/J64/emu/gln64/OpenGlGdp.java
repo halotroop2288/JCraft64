@@ -17,14 +17,12 @@ public class OpenGlGdp {
     private static final int SIZEOF_GLVERTEX = 17 * SIZEOF_FLOAT;
 
     private static class GLSimpleVertex {
-        public float x, y, z, w;
+        public float x, y, z;
 
         public float[] color = new float[4]; // r,g,b,a
         public float[] secondaryColor = new float[4]; // r,g,b,a
 
         public float s0, t0, s1, t1;
-
-        public float fog;
     }
 
     private static class GLVertex {
@@ -33,8 +31,6 @@ public class OpenGlGdp {
         public FloatBuffer secondaryColor; // 4
         public FloatBuffer tex0; // 2
         public FloatBuffer tex1; // 2
-        public FloatBuffer fog; // 1
-
         public GLVertex() {
         }
 
@@ -80,7 +76,7 @@ public class OpenGlGdp {
             bigArray.position(i * 17 + 14);
             vertices[i].tex1 = bigArray.slice();
             bigArray.position(i * 17 + 16);
-            vertices[i].fog = bigArray.slice();
+            bigArray.slice();
         }
 
         Combiners.ARB_multitexture = GL40.glGetString(GL40.GL_EXTENSIONS).contains("GL_ARB_multitexture");
@@ -263,7 +259,6 @@ public class OpenGlGdp {
         rect0.x = ulx;
         rect0.y = uly;
         rect0.z = depthSource == Gbi.G_ZS_PRIM ? zDepth : nearZ;
-        rect0.w = 1.0f;
         rect0.color[0] = 1.0f;
         rect0.color[1] = 1.0f;
         rect0.color[2] = 1.0f;
@@ -276,12 +271,9 @@ public class OpenGlGdp {
         rect0.t0 = ult;
         rect0.s1 = uls;
         rect0.t1 = ult;
-        rect0.fog = 0.0f;
-
         rect1.x = lrx;
         rect1.y = lry;
         rect1.z = depthSource == Gbi.G_ZS_PRIM ? zDepth : nearZ;
-        rect1.w = 1.0f;
         rect1.color[0] = 1.0f;
         rect1.color[1] = 1.0f;
         rect1.color[2] = 1.0f;
@@ -294,8 +286,6 @@ public class OpenGlGdp {
         rect1.t0 = lrt;
         rect1.s1 = lrs;
         rect1.t1 = lrt;
-        rect1.fog = 0.0f;
-
         boolean culling = GL40.glIsEnabled(GL40.GL_CULL_FACE);
         GL40.glDisable(GL40.GL_CULL_FACE);
         GL40.glMatrixMode(GL40.GL_PROJECTION);
@@ -626,11 +616,17 @@ public class OpenGlGdp {
                 GL40.glEnable(GL40.GL_BLEND);
 
                 switch (Rsp.gdp.otherMode.w1 >> 16) {
-                    case 0x0448, 0x055A -> GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ONE);
-                    case 0x0C08, 0x0F0A -> GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ZERO);
-                    case 0x0C18, 0x0C19, 0x0050, 0x0055 -> GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
-                    case 0x0FA5, 0x5055 -> GL40.glBlendFunc(GL40.GL_ZERO, GL40.GL_ONE);
-                    default -> GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
+                    case 0x0448:
+                    case 0x055A: GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ONE);
+                    case 0x0C08: 
+                    case 0x0F0A: GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ZERO);
+                    case 0x0C18:
+                    case 0x0C19:
+                    case 0x0050:
+                    case 0x0055: GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
+                    case 0x0FA5:
+                    case 0x5055: GL40.glBlendFunc(GL40.GL_ZERO, GL40.GL_ONE);
+                    default: GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
                 }
             } else {
                 GL40.glDisable(GL40.GL_BLEND);

@@ -251,7 +251,6 @@ public class N64Cpu {
 	private int llBit;
 	private int llAddr;
 	private int[] regMI; // CheckInterrupts
-	private int[] regCop0;
 	private CachedOpcode[] cachedOpcodes;
 	private CachedOpcode cachedOp;
 	private Runnable cachedCode;
@@ -317,10 +316,6 @@ public class N64Cpu {
 		this.cop0 = cop0;
 		this.cop1 = cop1;
 //        this.mem = mem;
-
-		this.regCop0 = cop0.CP0;
-//        LO = 0x0;
-//        HI = 0x0;
 	}
 
 	// Misc ////////////////////////////////////////////////////////////////////
