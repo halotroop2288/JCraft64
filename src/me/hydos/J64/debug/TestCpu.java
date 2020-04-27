@@ -1226,16 +1226,10 @@ public class TestCpu extends N64Cpu {
 
 	/************************** Other functions **************************/
 	public Runnable R4300i_UnknownOpcode_Debug = () -> {
-		String Message = String.format("Unhandled R4300i OpCode at: %08X\n%s\n%X\n", pc,
-				R4300iCmd.R4300iOpcodeName(currentInstr, pc), currentInstr);
-		Message += "Stoping Emulation !";
-		System.out.printf("-%X:Unhandled R4300i OpCode:%X\n", pc, currentInstr);
-		System.err.printf("%s\n", Message);
-		Main.exit();
+//		String Message = String.format("Unhandled R4300i OpCode at: %08X\n%s\n%X\n", pc,
+//				R4300iCmd.R4300iOpcodeName(currentInstr, pc), currentInstr);
+//		Message += "Stoping Emulation !";
+//		System.out.printf("-%X:Unhandled R4300i OpCode DEBUG:%X\n", pc, currentInstr);
+//		System.err.printf("%s\n", Message);
 	};
-
-	public static Runnable[][] buildDebugCpuOps(TestCpu cpu) {
-		return new OpcodeBuilder().buildInterpreterOps(cpu);
-	}
-
 }

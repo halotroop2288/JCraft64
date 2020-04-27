@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 import me.hydos.J64.savechips.Eeprom;
 import me.hydos.J64.savechips.Mempak;
-import plugin.ControllerPlugin;
+import plugin.InputPlugin;
 
 public class Pif {
 
@@ -25,7 +25,7 @@ public class Pif {
 	public static final int SI_STATUS_INTERRUPT = 0x1000;
 
 	// used by Main
-	public ControllerPlugin controllerPlugin;
+	public InputPlugin inputPlugin;
 
 	// used by Memory
 	public byte[] pifRom = new byte[0x7C0];
@@ -37,7 +37,7 @@ public class Pif {
 	// used by Memory, Dma
 	public int[] regSI = new int[4];
 
-	private ControllerPlugin.Control[] controllers = new ControllerPlugin.Control[4];
+	private InputPlugin.Control[] controllers = new InputPlugin.Control[4];
 	private Runnable checkInterrupts;
 	private int[] regMI;
 	private Registers regs;
@@ -136,34 +136,34 @@ public class Pif {
 		String controller_plugin = cfg.getProperty(CONTROLLER_PLUGIN, "DEFAULT_CONTROLLER_PLUGIN");
 		try {
 			Class c = Class.forName(controller_plugin);
-			controllerPlugin = (ControllerPlugin) c.newInstance();
+			inputPlugin = (InputPlugin) c.newInstance();
 		} catch (Exception ex) {
 			System.err.println("No controller plugin loaded.");
 			ex.printStackTrace();
 			return false;
 		}
 
-		controllers[0] = new ControllerPlugin.Control();
+		controllers[0] = new InputPlugin.Control();
 		controllers[0].present = false;
 		controllers[0].rawData = false;
-		controllers[0].plugin = ControllerPlugin.PLUGIN_NONE;
+		controllers[0].plugin = InputPlugin.PLUGIN_NONE;
 
-		controllers[1] = new ControllerPlugin.Control();
+		controllers[1] = new InputPlugin.Control();
 		controllers[1].present = false;
 		controllers[1].rawData = false;
-		controllers[1].plugin = ControllerPlugin.PLUGIN_NONE;
+		controllers[1].plugin = InputPlugin.PLUGIN_NONE;
 
-		controllers[2] = new ControllerPlugin.Control();
+		controllers[2] = new InputPlugin.Control();
 		controllers[2].present = false;
 		controllers[2].rawData = false;
-		controllers[2].plugin = ControllerPlugin.PLUGIN_NONE;
+		controllers[2].plugin = InputPlugin.PLUGIN_NONE;
 
-		controllers[3] = new ControllerPlugin.Control();
+		controllers[3] = new InputPlugin.Control();
 		controllers[3].present = false;
 		controllers[3].rawData = false;
-		controllers[3].plugin = ControllerPlugin.PLUGIN_NONE;
+		controllers[3].plugin = InputPlugin.PLUGIN_NONE;
 
-		controllerPlugin.initiateControllers(hWnd, controllers);
+		inputPlugin.initiateControllers(hWnd, controllers);
 		return true;
 	}
 
@@ -217,8 +217,8 @@ public class Pif {
 					if (channel < 4) {
 						pifRam.position(curPos);
 						if (controllers[channel].present && controllers[channel].rawData) {
-							if (controllerPlugin != null)
-								controllerPlugin.readController(channel, pifRam.slice());
+							if (inputPlugin != null)
+								inputPlugin.readController(channel, pifRam.slice());
 						} else {
 							readControllerCommand(channel, pifRam.slice());
 						}
@@ -236,8 +236,8 @@ public class Pif {
 			curPos += 1;
 		} while (curPos < 0x40);
 
-		if (controllerPlugin != null)
-			controllerPlugin.readController(-1, null);
+		if (inputPlugin != null)
+			inputPlugin.readController(-1, null);
 	}
 
 	// called by Dma, Memory
@@ -290,8 +290,8 @@ public class Pif {
 					if (channel < 4) {
 						pifRam.position(curPos);
 						if (controllers[channel].present && controllers[channel].rawData) {
-							if (controllerPlugin != null)
-								controllerPlugin.controllerCommand(channel, pifRam.slice());
+							if (inputPlugin != null)
+								inputPlugin.controllerCommand(channel, pifRam.slice());
 						} else {
 							processControllerCommand(channel, pifRam.slice());
 						}
@@ -317,8 +317,8 @@ public class Pif {
 		}
 		pifRam.put(0x3F, (byte) 0);
 
-		if (controllerPlugin != null)
-			controllerPlugin.controllerCommand(-1, null);
+		if (inputPlugin != null)
+			inputPlugin.controllerCommand(-1, null);
 	}
 
 	private void processControllerCommand(int control, ByteBuffer command) {
@@ -332,10 +332,10 @@ public class Pif {
 				command.put(3, (byte) 0x05);
 				command.put(4, (byte) 0x00);
 				switch (controllers[control].plugin) {
-				case ControllerPlugin.PLUGIN_MEMPAK:
+				case InputPlugin.PLUGIN_MEMPAK:
 					command.put(5, (byte) 1);
 					break;
-				case ControllerPlugin.PLUGIN_RAW:
+				case InputPlugin.PLUGIN_RAW:
 					command.put(5, (byte) 1);
 					break;
 				default:
@@ -355,14 +355,14 @@ public class Pif {
 			if (controllers[control].present) {
 				int address = (((command.get(3) & 0xFF) << 8) | (command.get(4) & 0xFF));
 				switch (controllers[control].plugin) {
-				case ControllerPlugin.PLUGIN_MEMPAK: {
+				case InputPlugin.PLUGIN_MEMPAK: {
 					command.position(5);
 					mempak.readFromMempak(control, address, command.slice());
 					break;
 				}
-				case ControllerPlugin.PLUGIN_RAW: {
-					if (controllerPlugin != null)
-						controllerPlugin.controllerCommand(control, command);
+				case InputPlugin.PLUGIN_RAW: {
+					if (inputPlugin != null)
+						inputPlugin.controllerCommand(control, command);
 					break;
 				}
 				default:
@@ -377,14 +377,14 @@ public class Pif {
 			if (controllers[control].present) {
 				int address = (((command.get(3) & 0xFF) << 8) | (command.get(4) & 0xFF));
 				switch (controllers[control].plugin) {
-				case ControllerPlugin.PLUGIN_MEMPAK: {
+				case InputPlugin.PLUGIN_MEMPAK: {
 					command.position(5);
 					mempak.writeToMempak(control, address, command.slice());
 					break;
 				}
-				case ControllerPlugin.PLUGIN_RAW: {
-					if (controllerPlugin != null)
-						controllerPlugin.controllerCommand(control, command);
+				case InputPlugin.PLUGIN_RAW: {
+					if (inputPlugin != null)
+						inputPlugin.controllerCommand(control, command);
 					break;
 				}
 				default:
@@ -405,9 +405,9 @@ public class Pif {
 		switch (command.get(2) & 0xFF) {
 		case 0x01: // read controller
 			if (controllers[control].present) {
-				if (controllerPlugin != null) {
-					ControllerPlugin.Buttons Keys = new ControllerPlugin.Buttons();
-					controllerPlugin.getKeys(control, Keys);
+				if (inputPlugin != null) {
+					InputPlugin.Buttons Keys = new InputPlugin.Buttons();
+					inputPlugin.getKeys(control, Keys);
 					command.putInt(3, Keys.value);
 				} else {
 					command.putInt(3, 0);
@@ -417,9 +417,9 @@ public class Pif {
 		case 0x02: // read from controller pack
 			if (controllers[control].present) {
 				switch (controllers[control].plugin) {
-				case ControllerPlugin.PLUGIN_RAW: {
-					if (controllerPlugin != null)
-						controllerPlugin.readController(control, command);
+				case InputPlugin.PLUGIN_RAW: {
+					if (inputPlugin != null)
+						inputPlugin.readController(control, command);
 					break;
 				}
 				}
@@ -428,9 +428,9 @@ public class Pif {
 		case 0x03: // write controller pak
 			if (controllers[control].present) {
 				switch (controllers[control].plugin) {
-				case ControllerPlugin.PLUGIN_RAW: {
-					if (controllerPlugin != null)
-						controllerPlugin.readController(control, command);
+				case InputPlugin.PLUGIN_RAW: {
+					if (inputPlugin != null)
+						inputPlugin.readController(control, command);
 					break;
 				}
 				}

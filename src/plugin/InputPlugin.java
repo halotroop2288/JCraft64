@@ -3,7 +3,7 @@ package plugin;
 import java.nio.ByteBuffer;
 import javax.swing.JFrame;
 
-public interface ControllerPlugin {
+public interface InputPlugin {
 
 	public static final int PLUGIN_TYPE_CONTROLLER = 4;
 

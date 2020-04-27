@@ -2370,7 +2370,7 @@ public class N64Cpu {
 		@Override
 		public void run() {
 			System.err.printf("PC:%X ,Unhandled r4300i OpCode:%X\n", pc, inst);
-			System.exit(0);
+
 		}
 	};
 
