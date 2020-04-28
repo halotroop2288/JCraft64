@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=north": { "model": "jcraft64:block/tv" },
+        "facing=up":  	{ "model": "jcraft64:block/tv" },
+        "facing=down":	{ "model": "jcraft64:block/tv" },
+        "facing=south": { "model": "jcraft64:block/tv", "y": 180 },
+        "facing=west":  { "model": "jcraft64:block/tv", "y": 270 },
+        "facing=east":  { "model": "jcraft64:block/tv", "y": 90 }
+    }
+}
