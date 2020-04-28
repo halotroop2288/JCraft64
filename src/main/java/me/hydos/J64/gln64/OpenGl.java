@@ -1,6 +1,7 @@
 package me.hydos.J64.gln64;
 
 import me.hydos.J64.gln64.rsp.Gsp;
+import net.minecraft.client.MinecraftClient;
 import org.lwjgl.opengl.GL40;
 
 import java.nio.FloatBuffer;
@@ -129,9 +130,13 @@ public class OpenGl {
     }
 
     private static void OGL_UpdateCullFace() {
+        MinecraftClient.getInstance().execute(() -> {
+
+        });
+
         if ((Rsp.gsp.geometryMode & Gbi.G_CULL_BOTH)!=0) {
             GL40.glEnable(GL40.GL_CULL_FACE);
-            
+
             if ((Rsp.gsp.geometryMode & Gbi.G_CULL_BACK)!=0)
                 GL40.glCullFace(GL40.GL_BACK);
             else
@@ -146,12 +151,12 @@ public class OpenGl {
             GL40.glDisable(GL40.GL_FOG);
             Rsp.gsp.changed &= ~Gsp.CHANGED_GEOMETRYMODE;
         }
-        
+
         if ((Rsp.gsp.geometryMode & Gbi.G_ZBUFFER) != 0)
             GL40.glEnable(GL40.GL_DEPTH_TEST);
         else
             GL40.glDisable(GL40.GL_DEPTH_TEST);
-        
+
         Rsp.gsp.changed &= Gsp.CHANGED_MATRIX;
     }
     

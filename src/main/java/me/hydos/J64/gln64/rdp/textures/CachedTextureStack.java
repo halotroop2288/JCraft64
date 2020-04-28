@@ -1,22 +1,19 @@
 package me.hydos.J64.gln64.rdp.textures;
 
-import javax.media.opengl.GL;
+import org.lwjgl.opengl.GL40;
 
 public class CachedTextureStack {
-
-    private GL gl;
 
     public CachedTexture top;
     public CachedTexture bottom;
 
-    public void init(GL gl) {
-        this.gl = gl;
+    public void init() {
         top = null;
         bottom = null;
     }
 
     public void removeBottom() {
-        gl.glDeleteTextures(1, bottom.glName, 0);
+        GL40.glDeleteTextures(bottom.glName);
         if (bottom == top)
             top = null;
 
@@ -46,11 +43,11 @@ public class CachedTextureStack {
             texture.lower.higher = texture.higher;
         }
 
-        gl.glDeleteTextures(1, texture.glName, 0);
+        GL40.glDeleteTextures(texture.glName);
     }
 
     public void addTop(CachedTexture newtop) {
-        gl.glGenTextures(1, newtop.glName, 0);
+        GL40.glGenTextures(newtop.glName);
 
         newtop.lower = top;
         newtop.higher = null;

@@ -1,6 +1,8 @@
 package me.hydos.J64.gln64.rdp.textures;
 
 import com.sun.opengl.util.BufferUtil;
+import org.lwjgl.opengl.GL40;
+
 import java.nio.ByteBuffer;
 import javax.media.opengl.GL;
 
@@ -68,7 +70,7 @@ public class CachedTexture {
         return i;
     }
     
-    public void load(boolean IA16, int textureBitDepth, ByteBuffer tmem, GL gl) {
+    public void load(boolean IA16, int textureBitDepth, ByteBuffer tmem) {
         int glInternalFormat;
         int glType;
         ImageFormat.GetTexelFunc GetTexel;
@@ -166,11 +168,11 @@ public class CachedTexture {
                 }
             }
         }
-        
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, glInternalFormat, realWidth, realHeight, 0, GL.GL_RGBA, glType, dest);
+
+        GL40.glTexImage2D(GL.GL_TEXTURE_2D, 0, glInternalFormat, realWidth, realHeight, 0, GL.GL_RGBA, glType, dest);
     }
     
-    public void loadBackground(boolean IA16, int textureBitDepth, ByteBuffer rdram, GL gl, int imgwidth, int imgheight, int imgsize, int address) {
+    public void loadBackground(boolean IA16, int textureBitDepth, ByteBuffer rdram, int imgwidth, int imgheight, int imgsize, int address) {
         int glInternalFormat;
         int glType;
         ImageFormat.GetTexelFunc GetTexel;
@@ -237,8 +239,8 @@ public class CachedTexture {
                     dest.putShort((short)GetTexel.GetTexel(src, tx, 0, palette));
             }
         }
-        
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, glInternalFormat, realWidth, realHeight, 0, GL.GL_RGBA, glType, dest);
+
+        GL40.glTexImage2D(GL.GL_TEXTURE_2D, 0, glInternalFormat, realWidth, realHeight, 0, GL.GL_RGBA, glType, dest);
     }
     
     public void activate(float uls, float ult, int shifts, int shiftt, float scaleX, float scaleY) {

@@ -28,8 +28,6 @@ public class OpenGlGdp {
         public float fog;
     }
 
-    ;
-
     private static class GLVertex {
         public FloatBuffer vtx; // 4
         public FloatBuffer color; // 4
