@@ -57,7 +57,7 @@ public class Debug {
 		systemOut = System.out;
 		System.setOut(new PrintStream(System.out) {
 			public PrintStream printf(String format, Object... args) {
-				log(format, args);
+				Log(format, args);
 				return this;
 			}
 		});
@@ -75,7 +75,7 @@ public class Debug {
 		}
 	}
 
-	private static void log(String Message, Object... args) {
+	private static void Log(String Message, Object... args) {
 		logMsg += String.format(Message, args);
 		if (logMsg.endsWith("\n")) {
 			systemOut.printf(logMsg, args);

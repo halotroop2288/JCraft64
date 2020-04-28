@@ -1,6 +1,6 @@
 package me.hydos.J64.emu.gln64.rdp.textures;
 
-import org.lwjgl.BufferUtils;
+import com.sun.opengl.util.BufferUtil;
 import org.lwjgl.opengl.GL40;
 
 import java.nio.ByteBuffer;
@@ -107,7 +107,7 @@ public class CachedTexture {
             }
         }
         
-        ByteBuffer dest = BufferUtils.createByteBuffer(textureBytes);
+        ByteBuffer dest = BufferUtil.newByteBuffer(textureBytes);
         int newline = line;
         int mirrorSBit;
         int maskSMask;
