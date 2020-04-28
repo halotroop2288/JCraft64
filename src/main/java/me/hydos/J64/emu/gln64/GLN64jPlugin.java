@@ -12,8 +12,6 @@ import me.hydos.J64.api.plugin.GfxPlugin;
 public class GLN64jPlugin implements GfxPlugin {
     public static final boolean DEBUG = Debug.DEBUG_GLN64;
 
-    private static final int NUM_FRAMES = 7;
-
     public static JFrame hWnd;
 
     public static Runnable CheckInterrupts;

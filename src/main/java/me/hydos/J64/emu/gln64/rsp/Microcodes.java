@@ -32,8 +32,6 @@ public class Microcodes {
     private Microcode top;
     private Microcode bottom;
     private final Checksum crc32 = new Adler32();
-    private int uc_dcrc;
-
     private final Microcode[] specialMicrocodes = {
             new Microcode(Microcode.F3DWRUS, false, 0xd17906e2, "RSP SW Version: 2.0D, 04-01-96"),
             new Microcode(Microcode.F3DWRUS, false, 0x94c4c833, "RSP SW Version: 2.0D, 04-01-96"),
@@ -84,18 +82,18 @@ public class Microcodes {
 
             Rdpfuncs2.RDP_Init(Rsp.gsp, Rsp.gdp);
             switch (microcode.type) {
-                case Microcode.F3D -> F3d.F3D_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.F3DEX -> F3dex.F3DEX_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.F3DEX2 -> F3dex2.F3DEX2_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.L3D -> L3d.L3D_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.L3DEX -> L3dex.L3DEX_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.L3DEX2 -> L3dex2.L3DEX2_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.S2DEX -> S2dex.S2DEX_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.S2DEX2 -> S2dex2.S2DEX2_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.F3DDKR -> F3ddkr.F3DDKR_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.F3DWRUS -> F3dwrus.F3DWRUS_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.F3DPD -> F3dpd.F3DPD_Init(Rsp.gsp, Rsp.gdp);
-                case Microcode.F3DEXBG -> F3dexbg.F3DEXBG_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.F3D: F3d.F3D_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.F3DEX: F3dex.F3DEX_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.F3DEX2: F3dex2.F3DEX2_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.L3D: L3d.L3D_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.L3DEX: L3dex.L3DEX_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.L3DEX2: L3dex2.L3DEX2_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.S2DEX: S2dex.S2DEX_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.S2DEX2: S2dex2.S2DEX2_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.F3DDKR: F3ddkr.F3DDKR_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.F3DWRUS: F3dwrus.F3DWRUS_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.F3DPD: F3dpd.F3DPD_Init(Rsp.gsp, Rsp.gdp);
+                case Microcode.F3DEXBG: F3dexbg.F3DEXBG_Init(Rsp.gsp, Rsp.gdp);
             }
         }
 

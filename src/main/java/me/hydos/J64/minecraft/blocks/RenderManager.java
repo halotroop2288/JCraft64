@@ -2,10 +2,6 @@ package me.hydos.J64.minecraft.blocks;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderPhase;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class RenderManager {

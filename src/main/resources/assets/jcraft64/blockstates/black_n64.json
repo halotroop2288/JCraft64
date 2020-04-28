@@ -1,5 +1,10 @@
 {
-  "variants": {
-    "": { "model": "jcraft64:block/n64" }
-  }
+    "variants": {
+        "facing=north": { "model": "jcraft64:block/n64" },
+        "facing=south": { "model": "jcraft64:block/n64", "y": 180 },
+        "facing=west":  { "model": "jcraft64:block/n64", "y": 270 },
+        "facing=east":  { "model": "jcraft64:block/n64", "y": 90 },
+        "facing=up":  	{ "model": "jcraft64:block/n64" },
+        "facing=down":	{ "model": "jcraft64:block/n64" }
+    }
 }

@@ -42,7 +42,6 @@ public class TextureCache {
     }
 
     private static class TextureImage {
-        public int format;
         public int size;
         public int width;
         public int bpl;
@@ -57,8 +56,6 @@ public class TextureCache {
     private static class Texture {
         public float scales;
         public float scalet;
-        public int level;
-        public int on;
         public int tile;
     }
 
@@ -162,8 +159,6 @@ public class TextureCache {
     private int maxBytes;
     private int textureBitDepth;
     private final byte[] tmp = new byte[4];
-    private int hits;
-    private int misses;
     private int[] glNoiseNames = new int[32];
     private CachedTexture dummy;
     private BgImage bgImage = new BgImage();
@@ -173,8 +168,6 @@ public class TextureCache {
     private int rdramSize;
     private boolean enable2xSaI;
     private int[] crcTable = new int[256];
-    private int maxTextureUnits; // TNT = 2, GeForce = 2-4, Rage 128 = 2, Radeon = 3-6
-
     public void construct() {
         for (int i = 0; i < tiles.length; i++)
             tiles[i] = new gDPTile();
@@ -194,7 +187,6 @@ public class TextureCache {
     public void init(ByteBuffer rdram, ByteBuffer tmem, int maxTextureUnits, boolean ARB_multitexture) {
         this.rdram = rdram;
         this.tmem = tmem;
-        this.maxTextureUnits = maxTextureUnits;
         this.ARB_multitexture = ARB_multitexture;
         ImageFormat.settMem(tmem);
         this.rdramSize = rdram.capacity();
@@ -265,15 +257,12 @@ public class TextureCache {
             texture.scales = 1.0f;
         if (texture.scalet == 0.0f)
             texture.scalet = 1.0f;
-        texture.level = level;
-        texture.on = on;
         texture.tile = tile;
         textureTile[0] = tiles[tile];
         textureTile[1] = tiles[(tile < 7) ? (tile + 1) : tile];
     }
 
     public void setTextureImage(int format, int size, int width, int address) {
-        textureImage.format = format;
         textureImage.size = size;
         textureImage.width = width;
         textureImage.address = address;
@@ -624,14 +613,11 @@ public class TextureCache {
                     (tex.format == textureTile[t].format) &&
                     (tex.size == textureTile[t].size)) {
                 activateTexture(t, tex, linear);
-                hits++;
                 return;
             }
 
             tex = tex.lower;
         }
-
-        misses++;
 
         // If multitexturing, set the appropriate texture
         if (ARB_multitexture)
@@ -715,14 +701,11 @@ public class TextureCache {
                     (tex.format == bgImage.format) &&
                     (tex.size == bgImage.size)) {
                 activateTexture(0, tex, linear);
-                hits++;
                 return;
             }
 
             tex = tex.lower;
         }
-
-        misses++;
 
         // If multitexturing, set the appropriate texture
         if (ARB_multitexture)

@@ -42,8 +42,6 @@ public class F3dexbg extends F3dex2 {
                 case 0x0E: //G_MW_PERSPNORM:
                     break;
                 case 0x10: { // moveword coord mod
-                    int n = offset >> 2;
-
                     if ((w0 & 8) != 0)
                         return;
                     gsp.gSPCoordMod(w1, (w0 >> 1) & 3, w0 & 0x30);
