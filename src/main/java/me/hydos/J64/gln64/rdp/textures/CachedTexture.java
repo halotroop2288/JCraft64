@@ -1,8 +1,9 @@
 package me.hydos.J64.gln64.rdp.textures;
 
-import com.sun.opengl.util.BufferUtil;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL40;
+
 import java.nio.ByteBuffer;
-import javax.media.opengl.GL;
 
 public class CachedTexture {
 
@@ -68,12 +69,12 @@ public class CachedTexture {
         return i;
     }
     
-    public void load(boolean IA16, int textureBitDepth, ByteBuffer tmem, GL gl) {
+    public void load(boolean IA16, int textureBitDepth, ByteBuffer tmem) {
         int glInternalFormat;
         int glType;
         ImageFormat.GetTexelFunc GetTexel;
         
-        if (((ImageFormat.imageFormat[size][format].autoFormat == GL.GL_RGBA8) ||
+        if (((ImageFormat.imageFormat[size][format].autoFormat == GL40.GL_RGBA8) ||
                 ((format == TextureCache.G_IM_FMT_CI) && (IA16)) || (textureBitDepth == 2)) && (textureBitDepth != 0)) {
             textureBytes = (realWidth * realHeight) << 2;
             if ((format == TextureCache.G_IM_FMT_CI) && (IA16)) {
@@ -82,8 +83,8 @@ public class CachedTexture {
                 else
                     GetTexel = ImageFormat.GetCI8IA_RGBA8888;
                 
-                glInternalFormat = GL.GL_RGBA8;
-                glType = GL.GL_UNSIGNED_BYTE;
+                glInternalFormat = GL40.GL_RGBA8;
+                glType = GL40.GL_UNSIGNED_BYTE;
             } else {
                 GetTexel = ImageFormat.imageFormat[size][format].Get32;
                 glInternalFormat = ImageFormat.imageFormat[size][format].glInternalFormat32;
@@ -97,8 +98,8 @@ public class CachedTexture {
                 else
                     GetTexel = ImageFormat.GetCI8IA_RGBA4444;
                 
-                glInternalFormat = GL.GL_RGBA4;
-                glType = GL.GL_UNSIGNED_SHORT_4_4_4_4;
+                glInternalFormat = GL40.GL_RGBA4;
+                glType = GL40.GL_UNSIGNED_SHORT_4_4_4_4;
             } else {
                 GetTexel = ImageFormat.imageFormat[size][format].Get16;
                 glInternalFormat = ImageFormat.imageFormat[size][format].glInternalFormat16;
@@ -106,7 +107,7 @@ public class CachedTexture {
             }
         }
         
-        ByteBuffer dest = BufferUtil.newByteBuffer(textureBytes);
+        ByteBuffer dest = BufferUtils.createByteBuffer(textureBytes);
         int newline = line;
         int mirrorSBit;
         int maskSMask;
@@ -159,23 +160,23 @@ public class CachedTexture {
                 if ((x & mirrorSBit)!=0)
                     tx ^= maskSMask;
                 
-                if (glInternalFormat == GL.GL_RGBA8) {
+                if (glInternalFormat == GL40.GL_RGBA8) {
                     dest.asIntBuffer().put(j++, GetTexel.GetTexel(src, tx, i, palette));
                 } else {
                     dest.asShortBuffer().put(j++, (short)GetTexel.GetTexel(src, tx, i, palette));
                 }
             }
         }
-        
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, glInternalFormat, realWidth, realHeight, 0, GL.GL_RGBA, glType, dest);
+
+        GL40.glTexImage2D(GL40.GL_TEXTURE_2D, 0, glInternalFormat, realWidth, realHeight, 0, GL40.GL_RGBA, glType, dest);
     }
     
-    public void loadBackground(boolean IA16, int textureBitDepth, ByteBuffer rdram, GL gl, int imgwidth, int imgheight, int imgsize, int address) {
+    public void loadBackground(boolean IA16, int textureBitDepth, ByteBuffer rdram, int imgwidth, int imgheight, int imgsize, int address) {
         int glInternalFormat;
         int glType;
         ImageFormat.GetTexelFunc GetTexel;
         
-        if (((ImageFormat.imageFormat[size][format].autoFormat == GL.GL_RGBA8) ||
+        if (((ImageFormat.imageFormat[size][format].autoFormat == GL40.GL_RGBA8) ||
                 ((format == TextureCache.G_IM_FMT_CI) && (IA16)) || (textureBitDepth == 2)) && (textureBitDepth != 0)) {
             textureBytes = (realWidth * realHeight) << 2;
             if ((format == TextureCache.G_IM_FMT_CI) && (IA16)) {
@@ -184,8 +185,8 @@ public class CachedTexture {
                 else
                     GetTexel = ImageFormat.GetCI8IA_RGBA8888;
                 
-                glInternalFormat = GL.GL_RGBA8;
-                glType = GL.GL_UNSIGNED_BYTE;
+                glInternalFormat = GL40.GL_RGBA8;
+                glType = GL40.GL_UNSIGNED_BYTE;
             } else {
                 GetTexel = ImageFormat.imageFormat[size][format].Get32;
                 glInternalFormat = ImageFormat.imageFormat[size][format].glInternalFormat32;
@@ -199,8 +200,8 @@ public class CachedTexture {
                 else
                     GetTexel = ImageFormat.GetCI8IA_RGBA4444;
                 
-                glInternalFormat = GL.GL_RGBA4;
-                glType = GL.GL_UNSIGNED_SHORT_4_4_4_4;
+                glInternalFormat = GL40.GL_RGBA4;
+                glType = GL40.GL_UNSIGNED_SHORT_4_4_4_4;
             } else {
                 GetTexel = ImageFormat.imageFormat[size][format].Get16;
                 glInternalFormat = ImageFormat.imageFormat[size][format].glInternalFormat16;
@@ -231,14 +232,14 @@ public class CachedTexture {
             for (int x = 0; x < realWidth; x++) {
                 tx = StrictMath.min(x, clampSClamp);
                 
-                if (glInternalFormat == GL.GL_RGBA8)
+                if (glInternalFormat == GL40.GL_RGBA8)
                     dest.putInt(GetTexel.GetTexel(src, tx, 0, palette));
                 else
                     dest.putShort((short)GetTexel.GetTexel(src, tx, 0, palette));
             }
         }
-        
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, glInternalFormat, realWidth, realHeight, 0, GL.GL_RGBA, glType, dest);
+
+        GL40.glTexImage2D(GL40.GL_TEXTURE_2D, 0, glInternalFormat, realWidth, realHeight, 0, GL40.GL_RGBA, glType, dest);
     }
     
     public void activate(float uls, float ult, int shifts, int shiftt, float scaleX, float scaleY) {

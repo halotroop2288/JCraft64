@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import javax.swing.JFrame;
 
 import me.hydos.J64.api.plugin.GfxPlugin;
+import net.minecraft.client.MinecraftClient;
 
 public class GLN64jPlugin implements GfxPlugin {
     public static final boolean DEBUG = Debug.DEBUG_GLN64;
@@ -110,13 +111,14 @@ public class GLN64jPlugin implements GfxPlugin {
     }
 
     public void moveScreen(int xpos, int ypos) {
-        if (DEBUG) System.out.println("GFX Plugin (" + name + ") moveScreen.");
     }
 
     public void processDList() {
-        if (DEBUG) System.out.println("GFX Plugin (" + name + ") processDList.");
+        MinecraftClient.getInstance().execute(() -> {
+            if (DEBUG) System.out.println("GFX Plugin (" + name + ") processDList.");
 //        OpenGlGdp.hDC.display(); TODO: i think this is the OpenGl display method so ill just run that here
-        OpenGl.OGL_EventListener.display();
+            OpenGl.OGL_EventListener.display();
+        });
     }
 
     public void processRDPList() {
@@ -124,21 +126,25 @@ public class GLN64jPlugin implements GfxPlugin {
     }
 
     public void romClosed() {
-        if (DEBUG) System.out.println("GFX Plugin (" + name + ") romClosed.");
-        OpenGl.OGL_Stop();
-        if (DEBUG) Debug.CloseDebugDlg();
+        MinecraftClient.getInstance().execute(() -> {
+            if (DEBUG) System.out.println("GFX Plugin (" + name + ") romClosed.");
+            OpenGl.OGL_Stop();
+            if (DEBUG) Debug.CloseDebugDlg();
+        });
     }
 
     public void romOpen() {
-        if (DEBUG) System.out.println("GFX Plugin (" + name + ") romOpen.");
-        OpenGl.uc_start = OpenGl.uc_dstart = 0;
-        RDRAMSize = RDRAM.capacity();
-        Rsp.gsp = new Gsp(RDRAM, DMEM);
-        Rsp.gdp = new Gdp(CheckInterrupts, REG);
-        OpenGl.OGL_Start();
-
-        OpenGlGdp.OGL_ResizeWindow();
-        if (DEBUG) Debug.OpenDebugDlg();
+        MinecraftClient.getInstance().execute(() -> {
+            if (DEBUG) System.out.println("GFX Plugin (" + name + ") romOpen.");
+            OpenGl.uc_start = OpenGl.uc_dstart = 0;
+            RDRAMSize = RDRAM.capacity();
+            Rsp.gsp = new Gsp(RDRAM, DMEM);
+            Rsp.gdp = new Gdp(CheckInterrupts, REG);
+            OpenGl.OGL_Start();
+            OpenGlGdp.init();
+            OpenGlGdp.OGL_ResizeWindow();
+            if (DEBUG) Debug.OpenDebugDlg();
+        });
     }
 
     public void showCFB() {
@@ -146,8 +152,10 @@ public class GLN64jPlugin implements GfxPlugin {
     }
 
     public void updateScreen() {
-        if (DEBUG) System.out.println("GFX Plugin (" + name + ") updateScreen.");
-        OpenGlGdp.viUpdateScreen();
+        MinecraftClient.getInstance().execute(() -> {
+            if (DEBUG) System.out.println("GFX Plugin (" + name + ") updateScreen.");
+            OpenGlGdp.viUpdateScreen();
+        });
     }
 
     public void viStatusChanged() {
