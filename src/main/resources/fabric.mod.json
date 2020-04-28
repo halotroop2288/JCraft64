@@ -21,6 +21,9 @@
   "entrypoints": {
     "main": [
       "me.hydos.J64.Main"
+    ],
+    "client": [
+      "me.hydos.J64.ClientMain"
     ]
   },
   "mixins": [

@@ -36,7 +36,6 @@ public class OpenGl {
             GL30.glDisable(GL30.GL_FOG);
             Rsp.gsp.changed &= ~Gsp.CHANGED_GEOMETRYMODE;
         }
-        
         if ((Rsp.gsp.geometryMode & Gbi.G_ZBUFFER) != 0)
             GL30.glEnable(GL30.GL_DEPTH_TEST);
         else

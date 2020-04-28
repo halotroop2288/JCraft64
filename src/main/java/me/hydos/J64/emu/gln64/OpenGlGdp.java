@@ -419,7 +419,7 @@ public class OpenGlGdp {
 
     public static void OGL_DrawLine(float[] vtx1, float[] c1, float[] vtx2, float[] c2, float width) {
         if (Rsp.gsp.changed != 0 || Rsp.gdp.changed != 0) {
-//            OpenGL40.OGL_GspUpdateStates();
+            OpenGl.OGL_GspUpdateStates();
             OGL_GdpUpdateStates();
         }
 
@@ -457,7 +457,7 @@ public class OpenGlGdp {
 
     public static void OGL_AddTriangle(float[] vtx1, float[] c1, float[] tex1, float[] vtx2, float[] c2, float[] tex2, float[] vtx3, float[] c3, float[] tex3) {
         if (Rsp.gsp.changed != 0 || Rsp.gdp.changed != 0) {
-//            OpenGL40.OGL_GspUpdateStates();
+            OpenGl.OGL_GspUpdateStates();
             OGL_GdpUpdateStates();
         }
 
