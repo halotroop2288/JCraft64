@@ -1,7 +1,6 @@
 package me.hydos.J64.gln64.rdp.combiners;
 
 import java.nio.FloatBuffer;
-import javax.media.opengl.GL;
 
 public class Combiners {
 
@@ -117,9 +116,9 @@ public class Combiners {
     public static int maxTextureUnits;                  // TNT = 2, GeForce = 2-4, Rage 128 = 2, Radeon = 3-6
 
     public interface CompiledCombiner {
-        void set(GL gl, Combiners combiner);
+        void set(Combiners combiner);
 
-        void updateColors(GL gl);
+        void updateColors();
     }
 
     public static class CombinerOp {
@@ -458,22 +457,22 @@ public class Combiners {
         root = null;
     }
 
-    public void updateCombineColors(GL gl) {
-        current.compiled.updateColors(gl);
+    public void updateCombineColors() {
+        current.compiled.updateColors();
     }
 
-    public void endTextureUpdate(GL gl) {
-        current.compiled.set(gl, this);
+    public void endTextureUpdate() {
+        current.compiled.set(this);
     }
 
-    public void setCombine(GL gl, boolean twocycle, long mux) {
+    public void setCombine(boolean twocycle, long mux) {
         selectCombine(twocycle, mux);
-        setCombineStates(gl);
+        setCombineStates();
     }
 
-    public void beginTextureUpdate(GL gl) {
+    public void beginTextureUpdate() {
         if (compiler == TEXTURE_ENV_COMBINE) {
-            TextureEnvCombiner.BeginTextureUpdate_texture_env_combine(gl);
+            TextureEnvCombiner.BeginTextureUpdate_texture_env_combine();
         }
     }
 
@@ -506,8 +505,8 @@ public class Combiners {
         current = comb;
     }
 
-    private void setCombineStates(GL gl) {
-        current.compiled.set(gl, this);
+    private void setCombineStates() {
+        current.compiled.set(this);
     }
 
     private CachedCombiner compile(boolean twocycle, long mux) {

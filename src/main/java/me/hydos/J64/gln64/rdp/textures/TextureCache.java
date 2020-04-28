@@ -191,8 +191,7 @@ public class TextureCache {
         enable2xSaI = false;
     }
 
-    public void init(GL gl, ByteBuffer rdram, ByteBuffer tmem, int maxTextureUnits, boolean ARB_multitexture) {
-        this.gl = gl;
+    public void init(ByteBuffer rdram, ByteBuffer tmem, int maxTextureUnits, boolean ARB_multitexture) {
         this.rdram = rdram;
         this.tmem = tmem;
         this.maxTextureUnits = maxTextureUnits;

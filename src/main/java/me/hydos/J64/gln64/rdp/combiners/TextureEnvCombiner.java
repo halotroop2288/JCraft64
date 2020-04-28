@@ -1,13 +1,15 @@
 package me.hydos.J64.gln64.rdp.combiners;
 
+import org.lwjgl.opengl.GL40;
+
 import java.nio.FloatBuffer;
-import javax.media.opengl.GL;
 
 public class TextureEnvCombiner implements Combiners.CompiledCombiner {
 
     public static final int GL_SECONDARY_COLOR_ATIX = 0x8747;
     public static final int GL_TEXTURE_OUTPUT_RGB_ATIX = 0x8748;
     public static final int GL_TEXTURE_OUTPUT_ALPHA_ATIX = 0x8749;
+    private static final int GL_MODULATE_ADD_ATI = 34628;
 
     private static class TexEnvCombinerArg {
         int source, operand;
@@ -33,47 +35,47 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
 
     private static TexEnvCombinerArg[] TexEnvArgs = {
             // CMB
-            new TexEnvCombinerArg(GL.GL_PREVIOUS, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_PREVIOUS, GL40.GL_SRC_COLOR),
             // T0
-            new TexEnvCombinerArg(GL.GL_TEXTURE, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_TEXTURE, GL40.GL_SRC_COLOR),
             // T1
-            new TexEnvCombinerArg(GL.GL_TEXTURE, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_TEXTURE, GL40.GL_SRC_COLOR),
             // PRIM
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR),
             // SHADE
-            new TexEnvCombinerArg(GL.GL_PRIMARY_COLOR, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_PRIMARY_COLOR, GL40.GL_SRC_COLOR),
             // ENV
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR),
             // CENTER
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR),
             // SCALE
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR),
             // CMBALPHA
-            new TexEnvCombinerArg(GL.GL_PREVIOUS, GL.GL_SRC_ALPHA),
+            new TexEnvCombinerArg(GL40.GL_PREVIOUS, GL40.GL_SRC_ALPHA),
             // T0ALPHA
-            new TexEnvCombinerArg(GL.GL_TEXTURE, GL.GL_SRC_ALPHA),
+            new TexEnvCombinerArg(GL40.GL_TEXTURE, GL40.GL_SRC_ALPHA),
             // T1ALPHA
-            new TexEnvCombinerArg(GL.GL_TEXTURE, GL.GL_SRC_ALPHA),
+            new TexEnvCombinerArg(GL40.GL_TEXTURE, GL40.GL_SRC_ALPHA),
             // PRIMALPHA
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_ALPHA),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_ALPHA),
             // SHADEALPHA
-            new TexEnvCombinerArg(GL.GL_PRIMARY_COLOR, GL.GL_SRC_ALPHA),
+            new TexEnvCombinerArg(GL40.GL_PRIMARY_COLOR, GL40.GL_SRC_ALPHA),
             // ENVALPHA
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR),
             // LODFRAC
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR),
             // PRIMLODFRAC
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR),
             // NOISE
-            new TexEnvCombinerArg(GL.GL_TEXTURE, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_TEXTURE, GL40.GL_SRC_COLOR),
             // K4
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR),
             // K5
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR),
             // ONE
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR),
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR),
             // ZERO
-            new TexEnvCombinerArg(GL.GL_CONSTANT, GL.GL_SRC_COLOR)
+            new TexEnvCombinerArg(GL40.GL_CONSTANT, GL40.GL_SRC_COLOR)
     };
 
     private boolean usesT0, usesT1, usesNoise;
@@ -83,6 +85,8 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
     private static class Vertex {
         int color, secondaryColor, alpha;
     }
+
+    public static final int GL_MODULATE_SUBTRACT_ATI = 34630;
 
     private Vertex vertex = new Vertex();
 
@@ -100,20 +104,20 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
         int curUnit, combinedUnit;
 
         for (int i = 0; i < Combiners.maxTextureUnits; i++) {
-            color[i].combine = GL.GL_REPLACE;
-            alpha[i].combine = GL.GL_REPLACE;
+            color[i].combine = GL40.GL_REPLACE;
+            alpha[i].combine = GL40.GL_REPLACE;
 
-            SetColorCombinerValues(i, 0, GL.GL_PREVIOUS, GL.GL_SRC_COLOR);
-            SetColorCombinerValues(i, 1, GL.GL_PREVIOUS, GL.GL_SRC_COLOR);
-            SetColorCombinerValues(i, 2, GL.GL_PREVIOUS, GL.GL_SRC_COLOR);
+            SetColorCombinerValues(i, 0, GL40.GL_PREVIOUS, GL40.GL_SRC_COLOR);
+            SetColorCombinerValues(i, 1, GL40.GL_PREVIOUS, GL40.GL_SRC_COLOR);
+            SetColorCombinerValues(i, 2, GL40.GL_PREVIOUS, GL40.GL_SRC_COLOR);
             color[i].constant = Combiners.COMBINED;
-            color[i].outputTexture = GL.GL_TEXTURE0 + i;
+            color[i].outputTexture = GL40.GL_TEXTURE0 + i;
 
-            SetAlphaCombinerValues(i, 0, GL.GL_PREVIOUS, GL.GL_SRC_ALPHA);
-            SetAlphaCombinerValues(i, 1, GL.GL_PREVIOUS, GL.GL_SRC_ALPHA);
-            SetAlphaCombinerValues(i, 2, GL.GL_PREVIOUS, GL.GL_SRC_ALPHA);
+            SetAlphaCombinerValues(i, 0, GL40.GL_PREVIOUS, GL40.GL_SRC_ALPHA);
+            SetAlphaCombinerValues(i, 1, GL40.GL_PREVIOUS, GL40.GL_SRC_ALPHA);
+            SetAlphaCombinerValues(i, 2, GL40.GL_PREVIOUS, GL40.GL_SRC_ALPHA);
             alpha[i].constant = Combiners.COMBINED;
-            alpha[i].outputTexture = GL.GL_TEXTURE0 + i;
+            alpha[i].outputTexture = GL40.GL_TEXTURE0 + i;
         }
 
         usesT0 = false;
@@ -146,10 +150,10 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                     usesT1 |= a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA;
 
                     if (a.stage[i].op[j].param1 == Combiners.ONE) {
-                        SetAlphaCombinerValues(curUnit, 0, alpha[curUnit].arg[0].source, GL.GL_ONE_MINUS_SRC_ALPHA);
+                        SetAlphaCombinerValues(curUnit, 0, alpha[curUnit].arg[0].source, GL40.GL_ONE_MINUS_SRC_ALPHA);
                     } else {
-                        alpha[curUnit].combine = GL.GL_SUBTRACT;
-                        SetAlphaCombinerValues(curUnit, 1, alpha[curUnit].arg[0].source, GL.GL_SRC_ALPHA);
+                        alpha[curUnit].combine = GL40.GL_SUBTRACT;
+                        SetAlphaCombinerValues(curUnit, 1, alpha[curUnit].arg[0].source, GL40.GL_SRC_ALPHA);
                         SetAlphaCombinerArg(curUnit, 0, a.stage[i].op[j].param1);
 
                         curUnit++;
@@ -160,7 +164,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                     usesT0 |= a.stage[i].op[j].param1 == Combiners.TEXEL0_ALPHA;
                     usesT1 |= a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA;
 
-                    alpha[curUnit].combine = GL.GL_MODULATE;
+                    alpha[curUnit].combine = GL40.GL_MODULATE;
                     SetAlphaCombinerArg(curUnit, 1, a.stage[i].op[j].param1);
 
                     curUnit++;
@@ -169,7 +173,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                     usesT0 |= a.stage[i].op[j].param1 == Combiners.TEXEL0_ALPHA;
                     usesT1 |= a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA;
 
-                    alpha[curUnit].combine = GL.GL_SUBTRACT;
+                    alpha[curUnit].combine = GL40.GL_SUBTRACT;
                     SetAlphaCombinerArg(curUnit, 0, a.stage[i].op[j].param1);
 
                     curUnit++;
@@ -182,7 +186,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     (a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA) && (curUnit == 0))
                                 curUnit++;
-                            alpha[curUnit].combine = GL.GL_REPLACE;
+                            alpha[curUnit].combine = GL40.GL_REPLACE;
                             SetAlphaCombinerArg(curUnit, 0, a.stage[i].op[j].param1);
                         }
                         case Combiners.SUB -> {
@@ -193,15 +197,15 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                                 curUnit++;
                             if ((j > 0) && (a.stage[i].op[j - 1].op == Combiners.LOAD) && (a.stage[i].op[j - 1].param1 == Combiners.ONE)) {
                                 SetAlphaCombinerArg(curUnit, 0, a.stage[i].op[j].param1);
-                                alpha[curUnit].arg[0].operand = GL.GL_ONE_MINUS_SRC_ALPHA;
-                            } else if ((Combiners.ATI_texture_env_combine3) && (curUnit > 0) && (alpha[curUnit - 1].combine == GL.GL_MODULATE)) {
+                                alpha[curUnit].arg[0].operand = GL40.GL_ONE_MINUS_SRC_ALPHA;
+                            } else if ((Combiners.ATI_texture_env_combine3) && (curUnit > 0) && (alpha[curUnit - 1].combine == GL40.GL_MODULATE)) {
                                 curUnit--;
                                 SetAlphaCombinerValues(curUnit, 2, alpha[curUnit].arg[1].source, alpha[curUnit].arg[1].operand);
-                                alpha[curUnit].combine = GL.GL_MODULATE_SUBTRACT_ATI;
+                                alpha[curUnit].combine = GL_MODULATE_SUBTRACT_ATI;//GL.GL_MODULATE_SUBTRACT_ATI; //TODO: find substitute
                                 SetAlphaCombinerArg(curUnit, 1, a.stage[i].op[j].param1);
                                 curUnit++;
                             } else {
-                                alpha[curUnit].combine = GL.GL_SUBTRACT;
+                                alpha[curUnit].combine = GL40.GL_SUBTRACT;
                                 SetAlphaCombinerArg(curUnit, 1, a.stage[i].op[j].param1);
                                 curUnit++;
                             }
@@ -210,7 +214,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     (a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA) && (curUnit == 0))
                                 curUnit++;
-                            alpha[curUnit].combine = GL.GL_MODULATE;
+                            alpha[curUnit].combine = GL40.GL_MODULATE;
                             SetAlphaCombinerArg(curUnit, 1, a.stage[i].op[j].param1);
                             curUnit++;
                         }
@@ -218,13 +222,13 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     (a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA) && (curUnit == 0))
                                 curUnit++;
-                            if ((Combiners.ATI_texture_env_combine3) && (curUnit > 0) && (alpha[curUnit - 1].combine == GL.GL_MODULATE)) {
+                            if ((Combiners.ATI_texture_env_combine3) && (curUnit > 0) && (alpha[curUnit - 1].combine == GL40.GL_MODULATE)) {
                                 curUnit--;
                                 SetAlphaCombinerValues(curUnit, 2, alpha[curUnit].arg[1].source, alpha[curUnit].arg[1].operand);
-                                alpha[curUnit].combine = GL.GL_MODULATE_ADD_ATI;
+                                alpha[curUnit].combine = GL_MODULATE_ADD_ATI;
                                 SetAlphaCombinerArg(curUnit, 1, a.stage[i].op[j].param1);
                             } else {
-                                alpha[curUnit].combine = GL.GL_ADD;
+                                alpha[curUnit].combine = GL40.GL_ADD;
                                 SetAlphaCombinerArg(curUnit, 1, a.stage[i].op[j].param1);
                             }
                             curUnit++;
@@ -232,7 +236,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                         case Combiners.INTER -> {
                             usesT0 |= (a.stage[i].op[j].param2 == Combiners.TEXEL0_ALPHA) || (a.stage[i].op[j].param3 == Combiners.TEXEL0_ALPHA);
                             usesT1 |= (a.stage[i].op[j].param2 == Combiners.TEXEL1_ALPHA) || (a.stage[i].op[j].param3 == Combiners.TEXEL1_ALPHA);
-                            alpha[curUnit].combine = GL.GL_INTERPOLATE;
+                            alpha[curUnit].combine = GL40.GL_INTERPOLATE;
                             SetAlphaCombinerArg(curUnit, 0, a.stage[i].op[j].param1);
                             SetAlphaCombinerArg(curUnit, 1, a.stage[i].op[j].param2);
                             SetAlphaCombinerArg(curUnit, 2, a.stage[i].op[j].param3);
@@ -264,7 +268,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                     usesT0 |= ((c.stage[i].op[j].param1 == Combiners.TEXEL0) || (c.stage[i].op[j].param1 == Combiners.TEXEL0_ALPHA));
                     usesT1 |= ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA));
 
-                    color[curUnit].combine = GL.GL_SUBTRACT;
+                    color[curUnit].combine = GL40.GL_SUBTRACT;
                     SetColorCombinerValues(curUnit, 1, color[curUnit].arg[0].source, color[curUnit].arg[0].operand);
                     SetColorCombinerArg(curUnit, 0, c.stage[i].op[j].param1);
 
@@ -274,7 +278,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                     usesT0 |= ((c.stage[i].op[j].param1 == Combiners.TEXEL0) || (c.stage[i].op[j].param1 == Combiners.TEXEL0_ALPHA));
                     usesT1 |= ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA));
 
-                    color[curUnit].combine = GL.GL_MODULATE;
+                    color[curUnit].combine = GL40.GL_MODULATE;
                     SetColorCombinerArg(curUnit, 1, c.stage[i].op[j].param1);
 
                     curUnit++;
@@ -283,7 +287,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                     usesT0 |= ((c.stage[i].op[j].param1 == Combiners.TEXEL0) || (c.stage[i].op[j].param1 == Combiners.TEXEL0_ALPHA));
                     usesT1 |= ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA));
 
-                    color[curUnit].combine = GL.GL_SUBTRACT;
+                    color[curUnit].combine = GL40.GL_SUBTRACT;
                     SetColorCombinerArg(curUnit, 0, c.stage[i].op[j].param1);
 
                     curUnit++;
@@ -296,7 +300,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA)) && (curUnit == 0))
                                 curUnit++;
-                            color[curUnit].combine = GL.GL_REPLACE;
+                            color[curUnit].combine = GL40.GL_REPLACE;
                             SetColorCombinerArg(curUnit, 0, c.stage[i].op[j].param1);
                         }
                         case Combiners.SUB -> {
@@ -307,15 +311,15 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                                 curUnit++;
                             if ((j > 0) && (c.stage[i].op[j - 1].op == Combiners.LOAD) && (c.stage[i].op[j - 1].param1 == Combiners.ONE)) {
                                 SetColorCombinerArg(curUnit, 0, c.stage[i].op[j].param1);
-                                color[curUnit].arg[0].operand = GL.GL_ONE_MINUS_SRC_COLOR;
-                            } else if ((Combiners.ATI_texture_env_combine3) && (curUnit > 0) && (color[curUnit - 1].combine == GL.GL_MODULATE)) {
+                                color[curUnit].arg[0].operand = GL40.GL_ONE_MINUS_SRC_COLOR;
+                            } else if ((Combiners.ATI_texture_env_combine3) && (curUnit > 0) && (color[curUnit - 1].combine == GL40.GL_MODULATE)) {
                                 curUnit--;
                                 SetColorCombinerValues(curUnit, 2, color[curUnit].arg[1].source, color[curUnit].arg[1].operand);
-                                color[curUnit].combine = GL.GL_MODULATE_SUBTRACT_ATI;
+                                color[curUnit].combine = GL_MODULATE_SUBTRACT_ATI;
                                 SetColorCombinerArg(curUnit, 1, c.stage[i].op[j].param1);
                                 curUnit++;
                             } else {
-                                color[curUnit].combine = GL.GL_SUBTRACT;
+                                color[curUnit].combine = GL40.GL_SUBTRACT;
                                 SetColorCombinerArg(curUnit, 1, c.stage[i].op[j].param1);
                                 curUnit++;
                             }
@@ -324,7 +328,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA)) && (curUnit == 0))
                                 curUnit++;
-                            color[curUnit].combine = GL.GL_MODULATE;
+                            color[curUnit].combine = GL40.GL_MODULATE;
                             SetColorCombinerArg(curUnit, 1, c.stage[i].op[j].param1);
                             curUnit++;
                         }
@@ -332,13 +336,13 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA)) && (curUnit == 0))
                                 curUnit++;
-                            if ((Combiners.ATI_texture_env_combine3) && (curUnit > 0) && (color[curUnit - 1].combine == GL.GL_MODULATE)) {
+                            if ((Combiners.ATI_texture_env_combine3) && (curUnit > 0) && (color[curUnit - 1].combine == GL40.GL_MODULATE)) {
                                 curUnit--;
                                 SetColorCombinerValues(curUnit, 2, color[curUnit].arg[1].source, color[curUnit].arg[1].operand);
-                                color[curUnit].combine = GL.GL_MODULATE_ADD_ATI;
+                                color[curUnit].combine = GL_MODULATE_ADD_ATI;
                                 SetColorCombinerArg(curUnit, 1, c.stage[i].op[j].param1);
                             } else {
-                                color[curUnit].combine = GL.GL_ADD;
+                                color[curUnit].combine = GL40.GL_ADD;
                                 SetColorCombinerArg(curUnit, 1, c.stage[i].op[j].param1);
                             }
                             curUnit++;
@@ -349,30 +353,30 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param2 == Combiners.TEXEL1) || (c.stage[i].op[j].param3 == Combiners.TEXEL1) || (c.stage[i].op[j].param3 == Combiners.TEXEL1_ALPHA)) && (curUnit == 0)) {
                                 if (c.stage[i].op[j].param1 == Combiners.TEXEL0) {
-                                    color[curUnit].combine = GL.GL_REPLACE;
+                                    color[curUnit].combine = GL40.GL_REPLACE;
                                     SetColorCombinerArg(curUnit, 0, c.stage[i].op[j].param1);
                                     c.stage[i].op[j].param1 = Combiners.COMBINED;
                                 }
                                 if (c.stage[i].op[j].param2 == Combiners.TEXEL0) {
-                                    color[curUnit].combine = GL.GL_REPLACE;
+                                    color[curUnit].combine = GL40.GL_REPLACE;
                                     SetColorCombinerArg(curUnit, 0, c.stage[i].op[j].param2);
 
                                     c.stage[i].op[j].param2 = Combiners.COMBINED;
                                 }
                                 if (c.stage[i].op[j].param3 == Combiners.TEXEL0) {
-                                    color[curUnit].combine = GL.GL_REPLACE;
+                                    color[curUnit].combine = GL40.GL_REPLACE;
                                     SetColorCombinerArg(curUnit, 0, c.stage[i].op[j].param3);
                                     c.stage[i].op[j].param3 = Combiners.COMBINED;
                                 }
                                 if (c.stage[i].op[j].param3 == Combiners.TEXEL0_ALPHA) {
-                                    color[curUnit].combine = GL.GL_REPLACE;
+                                    color[curUnit].combine = GL40.GL_REPLACE;
                                     SetColorCombinerArg(curUnit, 0, c.stage[i].op[j].param3);
                                     c.stage[i].op[j].param3 = Combiners.COMBINED_ALPHA;
                                 }
 
                                 curUnit++;
                             }
-                            color[curUnit].combine = GL.GL_INTERPOLATE;
+                            color[curUnit].combine = GL40.GL_INTERPOLATE;
                             SetColorCombinerArg(curUnit, 0, c.stage[i].op[j].param1);
                             SetColorCombinerArg(curUnit, 1, c.stage[i].op[j].param2);
                             SetColorCombinerArg(curUnit, 2, c.stage[i].op[j].param3);
@@ -389,27 +393,27 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
     public static void init() {
 
         if ((Combiners.ARB_texture_env_crossbar) || (Combiners.NV_texture_env_combine4) || (Combiners.ATIX_texture_env_route)) {
-            TexEnvArgs[Combiners.TEXEL0].source = GL.GL_TEXTURE0;
-            TexEnvArgs[Combiners.TEXEL0_ALPHA].source = GL.GL_TEXTURE0;
+            TexEnvArgs[Combiners.TEXEL0].source = GL40.GL_TEXTURE0;
+            TexEnvArgs[Combiners.TEXEL0_ALPHA].source = GL40.GL_TEXTURE0;
 
-            TexEnvArgs[Combiners.TEXEL1].source = GL.GL_TEXTURE1;
-            TexEnvArgs[Combiners.TEXEL1_ALPHA].source = GL.GL_TEXTURE1;
+            TexEnvArgs[Combiners.TEXEL1].source = GL40.GL_TEXTURE1;
+            TexEnvArgs[Combiners.TEXEL1_ALPHA].source = GL40.GL_TEXTURE1;
         }
 
         if (Combiners.ATI_texture_env_combine3) {
-            TexEnvArgs[Combiners.ONE].source = GL.GL_ONE;
-            TexEnvArgs[Combiners.ZERO].source = GL.GL_ZERO;
+            TexEnvArgs[Combiners.ONE].source = GL40.GL_ONE;
+            TexEnvArgs[Combiners.ZERO].source = GL40.GL_ZERO;
         }
     }
 
-    public static void BeginTextureUpdate_texture_env_combine(GL gl) {
+    public static void BeginTextureUpdate_texture_env_combine() {
         for (int i = 0; i < Combiners.maxTextureUnits; i++) {
-            gl.glActiveTexture(GL.GL_TEXTURE0 + i);
-            gl.glDisable(GL.GL_TEXTURE_2D);
+            GL40.glActiveTexture(GL40.GL_TEXTURE0 + i);
+            GL40.glDisable(GL40.GL_TEXTURE_2D);
         }
     }
 
-    public void set(GL gl, Combiners combiner) {
+    public void set(Combiners combiner) {
         combiner.usesT0 = usesT0;
         combiner.usesT1 = usesT1;
         combiner.usesNoise = false;
@@ -419,72 +423,72 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
         this.combiner = combiner;
 
         for (int i = 0; i < Combiners.maxTextureUnits; i++) {
-            gl.glActiveTexture(GL.GL_TEXTURE0 + i);
+            GL40.glActiveTexture(GL40.GL_TEXTURE0 + i);
 
             if ((i < usedUnits) || ((i < 2) && usesT1)) {
-                gl.glEnable(GL.GL_TEXTURE_2D);
+                GL40.glEnable(GL40.GL_TEXTURE_2D);
 
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_COMBINE);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_TEXTURE_ENV_MODE, GL40.GL_COMBINE);
 
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_COMBINE_RGB, color[i].combine);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_COMBINE_RGB, color[i].combine);
 
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_SOURCE0_RGB, color[i].arg[0].source);
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_OPERAND0_RGB, color[i].arg[0].operand);
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_SOURCE1_RGB, color[i].arg[1].source);
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_OPERAND1_RGB, color[i].arg[1].operand);
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_SOURCE2_RGB, color[i].arg[2].source);
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_OPERAND2_RGB, color[i].arg[2].operand);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_SOURCE0_RGB, color[i].arg[0].source);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_OPERAND0_RGB, color[i].arg[0].operand);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_SOURCE1_RGB, color[i].arg[1].source);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_OPERAND1_RGB, color[i].arg[1].operand);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_SOURCE2_RGB, color[i].arg[2].source);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_OPERAND2_RGB, color[i].arg[2].operand);
                 if (Combiners.ATIX_texture_env_route)
-                    gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL_TEXTURE_OUTPUT_RGB_ATIX, color[i].outputTexture);
+                    GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL_TEXTURE_OUTPUT_RGB_ATIX, color[i].outputTexture);
 
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_COMBINE_ALPHA, alpha[i].combine);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_COMBINE_ALPHA, alpha[i].combine);
 
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_SOURCE0_ALPHA, alpha[i].arg[0].source);
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_OPERAND0_ALPHA, alpha[i].arg[0].operand);
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_SOURCE1_ALPHA, alpha[i].arg[1].source);
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_OPERAND1_ALPHA, alpha[i].arg[1].operand);
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_SOURCE2_ALPHA, alpha[i].arg[2].source);
-                gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_OPERAND2_ALPHA, alpha[i].arg[2].operand);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_SOURCE0_ALPHA, alpha[i].arg[0].source);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_OPERAND0_ALPHA, alpha[i].arg[0].operand);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_SOURCE1_ALPHA, alpha[i].arg[1].source);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_OPERAND1_ALPHA, alpha[i].arg[1].operand);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_SOURCE2_ALPHA, alpha[i].arg[2].source);
+                GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_OPERAND2_ALPHA, alpha[i].arg[2].operand);
                 if (Combiners.ATIX_texture_env_route)
-                    gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL_TEXTURE_OUTPUT_ALPHA_ATIX, alpha[i].outputTexture);
+                    GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL_TEXTURE_OUTPUT_ALPHA_ATIX, alpha[i].outputTexture);
             } else {
-                gl.glDisable(GL.GL_TEXTURE_2D);
+                GL40.glDisable(GL40.GL_TEXTURE_2D);
             }
         }
     }
 
-    public void updateColors(GL gl) {
+    public void updateColors() {
         FloatBuffer c = FloatBuffer.allocate(4);
 
         for (int i = 0; i < Combiners.maxTextureUnits; i++) {
             combiner.setConstant(c, color[i].constant, alpha[i].constant);
-            gl.glActiveTexture(GL.GL_TEXTURE0 + i);
-            gl.glTexEnvfv(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_COLOR, c.array(), 0);
+            GL40.glActiveTexture(GL40.GL_TEXTURE0 + i);
+            GL40.glTexEnvfv(GL40.GL_TEXTURE_ENV, GL40.GL_TEXTURE_ENV_COLOR, c.array());
         }
     }
 
     private void SetColorCombinerArg(int n, int a, int i) {
-        if (TexEnvArgs[i].source == GL.GL_CONSTANT) {
+        if (TexEnvArgs[i].source == GL40.GL_CONSTANT) {
             if ((i > 5) && ((alpha[n].constant == Combiners.COMBINED) || (alpha[n].constant == i))) {
                 alpha[n].constant = i;
-                color[n].arg[a].source = GL.GL_CONSTANT;
-                color[n].arg[a].operand = GL.GL_SRC_ALPHA;
+                color[n].arg[a].source = GL40.GL_CONSTANT;
+                color[n].arg[a].operand = GL40.GL_SRC_ALPHA;
             } else if ((i > 5) && ((vertex.alpha == Combiners.COMBINED) || (vertex.alpha == i))) {
                 vertex.alpha = i;
-                color[n].arg[a].source = GL.GL_PRIMARY_COLOR;
-                color[n].arg[a].operand = GL.GL_SRC_ALPHA;
+                color[n].arg[a].source = GL40.GL_PRIMARY_COLOR;
+                color[n].arg[a].operand = GL40.GL_SRC_ALPHA;
             } else if ((color[n].constant == Combiners.COMBINED) || (color[n].constant == i)) {
                 color[n].constant = i;
-                color[n].arg[a].source = GL.GL_CONSTANT;
-                color[n].arg[a].operand = GL.GL_SRC_COLOR;
+                color[n].arg[a].source = GL40.GL_CONSTANT;
+                color[n].arg[a].operand = GL40.GL_SRC_COLOR;
             } else if (Combiners.ATIX_texture_env_route && ((vertex.secondaryColor == Combiners.COMBINED) || (vertex.secondaryColor == i))) {
                 vertex.secondaryColor = i;
                 color[n].arg[a].source = GL_SECONDARY_COLOR_ATIX;
-                color[n].arg[a].operand = GL.GL_SRC_COLOR;
+                color[n].arg[a].operand = GL40.GL_SRC_COLOR;
             } else if ((vertex.color == Combiners.COMBINED) || (vertex.color == i)) {
                 vertex.color = i;
-                color[n].arg[a].source = GL.GL_PRIMARY_COLOR;
-                color[n].arg[a].operand = GL.GL_SRC_COLOR;
+                color[n].arg[a].source = GL40.GL_PRIMARY_COLOR;
+                color[n].arg[a].operand = GL40.GL_SRC_COLOR;
             }
         } else {
             color[n].arg[a].source = TexEnvArgs[i].source;
@@ -498,19 +502,19 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
     }
 
     private void SetAlphaCombinerArg(int n, int a, int i) {
-        if (TexEnvArgs[i].source == GL.GL_CONSTANT) {
+        if (TexEnvArgs[i].source == GL40.GL_CONSTANT) {
             if ((alpha[n].constant == Combiners.COMBINED) || (alpha[n].constant == i)) {
                 alpha[n].constant = i;
-                alpha[n].arg[a].source = GL.GL_CONSTANT;
-                alpha[n].arg[a].operand = GL.GL_SRC_ALPHA;
+                alpha[n].arg[a].source = GL40.GL_CONSTANT;
+                alpha[n].arg[a].operand = GL40.GL_SRC_ALPHA;
             } else if ((vertex.alpha == Combiners.COMBINED) || (vertex.alpha == i)) {
                 vertex.alpha = i;
-                alpha[n].arg[a].source = GL.GL_PRIMARY_COLOR;
-                alpha[n].arg[a].operand = GL.GL_SRC_ALPHA;
+                alpha[n].arg[a].source = GL40.GL_PRIMARY_COLOR;
+                alpha[n].arg[a].operand = GL40.GL_SRC_ALPHA;
             }
         } else {
             alpha[n].arg[a].source = TexEnvArgs[i].source;
-            alpha[n].arg[a].operand = GL.GL_SRC_ALPHA;
+            alpha[n].arg[a].operand = GL40.GL_SRC_ALPHA;
         }
     }
 

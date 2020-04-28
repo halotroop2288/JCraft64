@@ -5,6 +5,7 @@ import me.hydos.J64.gln64.OpenGl;
 import me.hydos.J64.gln64.OpenGlGdp;
 import me.hydos.J64.gln64.Rsp;
 import me.hydos.J64.gln64.rdp.Gdp;
+import org.lwjgl.opengl.GL40;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -1065,7 +1066,7 @@ public class Gsp {
                             clippedVertices[2].vtx, clippedVertices[2].color, clippedVertices[2].tex,
                             clippedVertices[3].vtx, clippedVertices[3].color, clippedVertices[3].tex);
 
-                OpenGl.gl.glDisable(GL.GL_POLYGON_OFFSET_FILL);
+                GL40.glDisable(GL.GL_POLYGON_OFFSET_FILL);
                 OpenGlGdp.OGL_AddTriangle(nearVertices[0].vtx, nearVertices[0].color, nearVertices[0].tex,
                         nearVertices[1].vtx, nearVertices[1].color, nearVertices[1].tex,
                         nearVertices[2].vtx, nearVertices[2].color, nearVertices[2].tex);
@@ -1074,7 +1075,7 @@ public class Gsp {
                             nearVertices[2].vtx, nearVertices[2].color, nearVertices[2].tex,
                             nearVertices[3].vtx, nearVertices[3].color, nearVertices[3].tex);
                 if (Gdp.RDP_GETOM_Z_MODE(Rsp.gdp.otherMode) == Gbi.ZMODE_DEC)
-                    OpenGl.gl.glEnable(GL.GL_POLYGON_OFFSET_FILL);
+                    GL40.glEnable(GL.GL_POLYGON_OFFSET_FILL);
 
             } else {
                 OpenGlGdp.OGL_AddTriangle(vertices[v0].vtx, vertices[v0].color, vertices[v0].tex,

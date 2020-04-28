@@ -1,15 +1,16 @@
 package me.hydos.J64.gln64;
 
-import com.sun.opengl.util.BufferUtil;
 import me.hydos.J64.emu.util.debug.Debug;
 import me.hydos.J64.gln64.rdp.combiners.Combiners;
 import me.hydos.J64.gln64.rdp.Gdp;
 import me.hydos.J64.gln64.rdp.textures.TextureCache;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL40;
 
+import javax.media.opengl.GL;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.Random;
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
 public class OpenGlGdp {
 
@@ -70,14 +71,12 @@ public class OpenGlGdp {
         }
     }
 
-    public static GL gl;
-
     public static TextureCache cache = new TextureCache();
     public static Combiners combiners = new Combiners();
     public static int screenWidth;
     public static int screenHeight;
 
-    public static GLAutoDrawable hDC;
+//    public static GLAutoDrawable hDC;
 
     private static int numTriangles;
     private static GLVertex[] vertices = new GLVertex[256];
@@ -100,12 +99,10 @@ public class OpenGlGdp {
     private static int windowedWidth;
     private static int windowedHeight;
 
-    public static void init(GL agl) {
-        gl = agl;
-
+    public static void init() {
         for (int i = 0; i < 256; i++)
             vertices[i] = new GLVertex();
-        bigArray = BufferUtil.newFloatBuffer(256 * 17);
+        bigArray = BufferUtils.createFloatBuffer(256 * 17);
         for (int i = 0; i < 256; i++) {
             bigArray.position(i * 17);
             vertices[i].vtx = bigArray.slice();
@@ -122,69 +119,70 @@ public class OpenGlGdp {
         }
 
         if (Debug.DEBUG_OGL) System.out.println("GL_NV_register_combiners: " + Combiners.NV_register_combiners);
-        Combiners.ARB_multitexture = gl.glGetString(GL.GL_EXTENSIONS).contains("GL_ARB_multitexture");
+        Combiners.ARB_multitexture = GL40.glGetString(GL40.GL_EXTENSIONS).contains("GL_ARB_multitexture");
         if (Debug.DEBUG_OGL) System.out.println("GL_ARB_multitexture: " + Combiners.ARB_multitexture);
         if (Combiners.ARB_multitexture) {
             int[] maxTextureUnits_t = new int[1];
-            gl.glGetIntegerv(GL.GL_MAX_TEXTURE_UNITS, maxTextureUnits_t, 0);
+            GL40.glGetIntegerv(GL.GL_MAX_TEXTURE_UNITS, maxTextureUnits_t);//GL40.glGetIntegerv(GL.GL_MAX_TEXTURE_UNITS, maxTextureUnits_t, 0);
+
             Combiners.maxTextureUnits = StrictMath.min(8, maxTextureUnits_t[0]); // The plugin only supports 8, and 4 is really enough
         }
-        Combiners.EXT_fog_coord = gl.glGetString(GL.GL_EXTENSIONS).contains("GL_EXT_fog_coord");
+        Combiners.EXT_fog_coord = GL40.glGetString(GL40.GL_EXTENSIONS).contains("GL_EXT_fog_coord");
         if (Debug.DEBUG_OGL) System.out.println("GL_EXT_fog_coord: " + Combiners.EXT_fog_coord);
-        Combiners.EXT_secondary_color = gl.glGetString(GL.GL_EXTENSIONS).contains("GL_EXT_secondary_color");
+        Combiners.EXT_secondary_color = GL40.glGetString(GL40.GL_EXTENSIONS).contains("GL_EXT_secondary_color");
         if (Debug.DEBUG_OGL) System.out.println("GL_EXT_secondary_color: " + Combiners.EXT_secondary_color);
-        Combiners.ARB_texture_env_combine = gl.glGetString(GL.GL_EXTENSIONS).contains("GL_ARB_texture_env_combine");
+        Combiners.ARB_texture_env_combine = GL40.glGetString(GL40.GL_EXTENSIONS).contains("GL_ARB_texture_env_combine");
         if (Debug.DEBUG_OGL) System.out.println("GL_ARB_texture_env_combine: " + Combiners.ARB_texture_env_combine);
-        Combiners.ARB_texture_env_crossbar = gl.glGetString(GL.GL_EXTENSIONS).contains("GL_ARB_texture_env_crossbar");
+        Combiners.ARB_texture_env_crossbar = GL40.glGetString(GL40.GL_EXTENSIONS).contains("GL_ARB_texture_env_crossbar");
         if (Debug.DEBUG_OGL) System.out.println("GL_ARB_texture_env_crossbar: " + Combiners.ARB_texture_env_crossbar);
-        Combiners.EXT_texture_env_combine = gl.glGetString(GL.GL_EXTENSIONS).contains("GL_EXT_texture_env_combine");
+        Combiners.EXT_texture_env_combine = GL40.glGetString(GL40.GL_EXTENSIONS).contains("GL_EXT_texture_env_combine");
         if (Debug.DEBUG_OGL) System.out.println("GL_EXT_texture_env_combine: " + Combiners.EXT_texture_env_combine);
-        Combiners.ATI_texture_env_combine3 = gl.glGetString(GL.GL_EXTENSIONS).contains("GL_ATI_texture_env_combine3");
+        Combiners.ATI_texture_env_combine3 = GL40.glGetString(GL40.GL_EXTENSIONS).contains("GL_ATI_texture_env_combine3");
         if (Debug.DEBUG_OGL) System.out.println("GL_ATI_texture_env_combine3: " + Combiners.ATI_texture_env_combine3);
         if (Debug.DEBUG_OGL) System.out.println("GL_ATIX_texture_env_route: " + Combiners.ATIX_texture_env_route);
         if (Debug.DEBUG_OGL) System.out.println("GL_NV_texture_env_combine4: " + Combiners.NV_texture_env_combine4);
 
-        gl.glMatrixMode(GL.GL_PROJECTION);
-        gl.glLoadIdentity();
-        gl.glMatrixMode(GL.GL_MODELVIEW);
-        gl.glLoadIdentity();
+        GL40.glMatrixMode(GL40.GL_PROJECTION);
+        GL40.glLoadIdentity();
+        GL40.glMatrixMode(GL40.GL_MODELVIEW);
+        GL40.glLoadIdentity();
         bigArray.position(0);
-        gl.glVertexPointer(4, GL.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
-        gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
+        GL40.glVertexPointer(4, GL40.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
+        GL40.glEnableClientState(GL40.GL_VERTEX_ARRAY);
         bigArray.position(4);
-        gl.glColorPointer(4, GL.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
-        gl.glEnableClientState(GL.GL_COLOR_ARRAY);
+        GL40.glColorPointer(4, GL40.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
+        GL40.glEnableClientState(GL40.GL_COLOR_ARRAY);
         if (Combiners.EXT_secondary_color) {
             bigArray.position(8);
-            gl.glSecondaryColorPointerEXT(3, GL.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
-            gl.glEnableClientState(GL.GL_SECONDARY_COLOR_ARRAY_EXT);
+            GL40.glSecondaryColorPointer(3, GL40.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
+            GL40.glEnableClientState(GL40.GL_SECONDARY_COLOR_ARRAY);
         }
         if (Combiners.ARB_multitexture) {
-            gl.glClientActiveTexture(GL.GL_TEXTURE0);
+            GL40.glClientActiveTexture(GL40.GL_TEXTURE0);
             bigArray.position(12);
-            gl.glTexCoordPointer(2, GL.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
-            gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
-            gl.glClientActiveTexture(GL.GL_TEXTURE1);
+            GL40.glTexCoordPointer(2, GL40.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
+            GL40.glEnableClientState(GL40.GL_TEXTURE_COORD_ARRAY);
+            GL40.glClientActiveTexture(GL40.GL_TEXTURE1);
             bigArray.position(14);
-            gl.glTexCoordPointer(2, GL.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
-            gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+            GL40.glTexCoordPointer(2, GL40.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
+            GL40.glEnableClientState(GL40.GL_TEXTURE_COORD_ARRAY);
         } else {
             bigArray.position(12);
-            gl.glTexCoordPointer(2, GL.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
-            gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+            GL40.glTexCoordPointer(2, GL40.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
+            GL40.glEnableClientState(GL40.GL_TEXTURE_COORD_ARRAY);
         }
         if (Combiners.EXT_fog_coord) {
-            gl.glFogi(GL.GL_FOG_COORDINATE_SOURCE_EXT, GL.GL_FOG_COORDINATE_EXT);
-            gl.glFogi(GL.GL_FOG_MODE, GL.GL_LINEAR);
-            gl.glFogf(GL.GL_FOG_START, 0.0f);
-            gl.glFogf(GL.GL_FOG_END, 255.0f);
+            GL40.glFogi(GL40.GL_FOG_COORDINATE_SOURCE, GL40.GL_FOG_COORDINATE);
+            GL40.glFogi(GL40.GL_FOG_MODE, GL40.GL_LINEAR);
+            GL40.glFogf(GL40.GL_FOG_START, 0.0f);
+            GL40.glFogf(GL40.GL_FOG_END, 255.0f);
             bigArray.position(16);
-            gl.glFogCoordPointerEXT(GL.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
-            gl.glEnableClientState(GL.GL_FOG_COORDINATE_ARRAY_EXT);
+            GL40.glFogCoordPointer(GL40.GL_FLOAT, SIZEOF_GLVERTEX, bigArray.slice());
+            GL40.glEnableClientState(GL40.GL_FOG_COORDINATE_ARRAY);
         }
-        gl.glPolygonOffset(-3.0f, -3.0f);
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+        GL40.glPolygonOffset(-3.0f, -3.0f);
+        GL40.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GL40.glClear(GL40.GL_COLOR_BUFFER_BIT);
 
         Random rand = new Random();
         for (int i = 0; i < 32; i++) {
@@ -202,7 +200,7 @@ public class OpenGlGdp {
             }
         }
         usePolygonStipple = false;
-        cache.init(gl, GLN64jPlugin.RDRAM, GLN64jPlugin.TMEM, Combiners.maxTextureUnits, Combiners.ARB_multitexture);
+        cache.init(GLN64jPlugin.RDRAM, GLN64jPlugin.TMEM, Combiners.maxTextureUnits, Combiners.ARB_multitexture);
         combiners.init();
         OGL_UpdateScale();
     }
@@ -245,7 +243,7 @@ public class OpenGlGdp {
 
     public static void viUpdateScreen() {
         if ((Rsp.gdp.changed & Gdp.CHANGED_COLORBUFFER) != 0) {
-            hDC.swapBuffers();
+//            hDC.swapBuffers();
             Rsp.gdp.changed &= ~Gdp.CHANGED_COLORBUFFER;
         }
     }
@@ -265,14 +263,14 @@ public class OpenGlGdp {
         OpenGl.OGL_GspUpdateStates();
 
         OGL_GdpUpdateStates();
-        gl.glDepthMask(true);
-        gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
-        gl.glDepthMask(depthUpdate);
+        GL40.glDepthMask(true);
+        GL40.glClear(GL40.GL_DEPTH_BUFFER_BIT);
+        GL40.glDepthMask(depthUpdate);
     }
 
     public static void OGL_ClearColorBuffer(float[] color) {
-        gl.glClearColor(color[0], color[1], color[2], color[3]);
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+        GL40.glClearColor(color[0], color[1], color[2], color[3]);
+        GL40.glClear(GL40.GL_COLOR_BUFFER_BIT);
     }
 
     public static void OGL_DrawRect(int ulx, int uly, int lrx, int lry, float[] color, int depthSource) {
@@ -280,31 +278,31 @@ public class OpenGlGdp {
 
         OGL_GdpUpdateStates();
 
-        boolean culling = gl.glIsEnabled(GL.GL_CULL_FACE);
-        gl.glDisable(GL.GL_SCISSOR_TEST);
-        gl.glDisable(GL.GL_CULL_FACE);
-        gl.glMatrixMode(GL.GL_PROJECTION);
-        gl.glLoadIdentity();
-        gl.glOrtho(0, screenWidth, screenHeight, 0, 1.0f, -1.0f);
-        gl.glViewport(0, heightOffset, width, height);
+        boolean culling = GL40.glIsEnabled(GL40.GL_CULL_FACE);
+        GL40.glDisable(GL40.GL_SCISSOR_TEST);
+        GL40.glDisable(GL40.GL_CULL_FACE);
+        GL40.glMatrixMode(GL40.GL_PROJECTION);
+        GL40.glLoadIdentity();
+        GL40.glOrtho(0, screenWidth, screenHeight, 0, 1.0f, -1.0f);
+        GL40.glViewport(0, heightOffset, width, height);
         if (Debug.WIREFRAME)
-            gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE); //TMP
-        gl.glDepthRange(0.0f, 1.0f);
-        gl.glColor4f(color[0], color[1], color[2], color[3]);
+            GL40.glPolygonMode(GL40.GL_FRONT_AND_BACK, GL40.GL_LINE); //TMP
+        GL40.glDepthRange(0.0f, 1.0f);
+        GL40.glColor4f(color[0], color[1], color[2], color[3]);
 
-        gl.glBegin(GL.GL_QUADS);
-        gl.glVertex4f(ulx, uly, (depthSource == Gbi.G_ZS_PRIM) ? zDepth : nearZ, 1.0f);
-        gl.glVertex4f(lrx, uly, (depthSource == Gbi.G_ZS_PRIM) ? zDepth : nearZ, 1.0f);
-        gl.glVertex4f(lrx, lry, (depthSource == Gbi.G_ZS_PRIM) ? zDepth : nearZ, 1.0f);
-        gl.glVertex4f(ulx, lry, (depthSource == Gbi.G_ZS_PRIM) ? zDepth : nearZ, 1.0f);
-        gl.glEnd();
+        GL40.glBegin(GL40.GL_QUADS);
+        GL40.glVertex4f(ulx, uly, (depthSource == Gbi.G_ZS_PRIM) ? zDepth : nearZ, 1.0f);
+        GL40.glVertex4f(lrx, uly, (depthSource == Gbi.G_ZS_PRIM) ? zDepth : nearZ, 1.0f);
+        GL40.glVertex4f(lrx, lry, (depthSource == Gbi.G_ZS_PRIM) ? zDepth : nearZ, 1.0f);
+        GL40.glVertex4f(ulx, lry, (depthSource == Gbi.G_ZS_PRIM) ? zDepth : nearZ, 1.0f);
+        GL40.glEnd();
 
-        gl.glLoadIdentity();
+        GL40.glLoadIdentity();
 
         if (culling)
-            gl.glEnable(GL.GL_CULL_FACE);
+            GL40.glEnable(GL40.GL_CULL_FACE);
 
-        gl.glEnable(GL.GL_SCISSOR_TEST);
+        GL40.glEnable(GL40.GL_SCISSOR_TEST);
     }
 
     public static void OGL_DrawTexturedRect(float ulx, float uly, float lrx, float lry, float uls, float ult, float lrs, float lrt, boolean flip, int depthSource, int cycleType) {
@@ -348,14 +346,14 @@ public class OpenGlGdp {
         rect1.t1 = lrt;
         rect1.fog = 0.0f;
 
-        boolean culling = gl.glIsEnabled(GL.GL_CULL_FACE);
-        gl.glDisable(GL.GL_CULL_FACE);
-        gl.glMatrixMode(GL.GL_PROJECTION);
-        gl.glLoadIdentity();
-        gl.glOrtho(0, screenWidth, screenHeight, 0, 1.0f, -1.0f); // left, right, bottom, top, near, far
-        gl.glViewport(0, heightOffset, width, height); // x, y, width, height
+        boolean culling = GL40.glIsEnabled(GL40.GL_CULL_FACE);
+        GL40.glDisable(GL40.GL_CULL_FACE);
+        GL40.glMatrixMode(GL40.GL_PROJECTION);
+        GL40.glLoadIdentity();
+        GL40.glOrtho(0, screenWidth, screenHeight, 0, 1.0f, -1.0f); // left, right, bottom, top, near, far
+        GL40.glViewport(0, heightOffset, width, height); // x, y, width, height
         if (Debug.WIREFRAME)
-            gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE); //TMP
+            GL40.glPolygonMode(GL40.GL_FRONT_AND_BACK, GL40.GL_LINE); //TMP
 
         if (combiners.usesT0) {
             rect0.s0 = rect0.s0 * cache.current[0].shiftScaleS - cache.textureTile[0].fuls;
@@ -373,13 +371,13 @@ public class OpenGlGdp {
             }
 
             if (Combiners.ARB_multitexture)
-                gl.glActiveTexture(GL.GL_TEXTURE0);
+                GL40.glActiveTexture(GL40.GL_TEXTURE0);
 
             if ((rect0.s0 >= 0.0f) && (rect1.s0 <= cache.current[0].width)) {
-                gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_EDGE);
+                GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_WRAP_S, GL40.GL_CLAMP_TO_EDGE);
             }
             if ((rect0.t0 >= 0.0f) && (rect1.t0 <= cache.current[0].height)) {
-                gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_EDGE);
+                GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_WRAP_T, GL40.GL_CLAMP_TO_EDGE);
             }
 
             rect0.s0 *= cache.current[0].scaleS;
@@ -403,13 +401,13 @@ public class OpenGlGdp {
                 rect0.t1 = 0.0f;
             }
 
-            gl.glActiveTexture(GL.GL_TEXTURE1);
+            GL40.glActiveTexture(GL40.GL_TEXTURE1);
 
             if ((rect0.s1 == 0.0f) && (rect1.s1 <= cache.current[1].width)) {
-                gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_EDGE);
+                GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_WRAP_S, GL40.GL_CLAMP_TO_EDGE);
             }
             if ((rect0.t1 == 0.0f) && (rect1.t1 <= cache.current[1].height)) {
-                gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_EDGE);
+                GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_WRAP_T, GL40.GL_CLAMP_TO_EDGE);
             }
 
             rect0.s1 *= cache.current[1].scaleS;
@@ -420,10 +418,10 @@ public class OpenGlGdp {
 
         if (cycleType == Gbi.G_CYC_COPY) {
             if (Combiners.ARB_multitexture)
-                gl.glActiveTexture(GL.GL_TEXTURE0);
+                GL40.glActiveTexture(GL40.GL_TEXTURE0);
 
-            gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
-            gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+            GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_MIN_FILTER, GL40.GL_NEAREST);
+            GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_MAG_FILTER, GL40.GL_NEAREST);
         }
 
         combiners.setConstant(rect0.color, combiners.vertex.color, combiners.vertex.alpha);
@@ -431,52 +429,52 @@ public class OpenGlGdp {
         if (Combiners.EXT_secondary_color)
             combiners.setConstant(rect0.secondaryColor, combiners.vertex.secondaryColor, combiners.vertex.alpha);
 
-        gl.glBegin(GL.GL_QUADS);
-        gl.glColor4f(rect0.color[0], rect0.color[1], rect0.color[2], rect0.color[3]);
+        GL40.glBegin(GL40.GL_QUADS);
+        GL40.glColor4f(rect0.color[0], rect0.color[1], rect0.color[2], rect0.color[3]);
         if (Combiners.EXT_secondary_color)
-            gl.glSecondaryColor3fEXT(rect0.secondaryColor[0], rect0.secondaryColor[1], rect0.secondaryColor[2]);
+            GL40.glSecondaryColor3f(rect0.secondaryColor[0], rect0.secondaryColor[1], rect0.secondaryColor[2]);
 
         if (Combiners.ARB_multitexture) {
-            gl.glMultiTexCoord2f(GL.GL_TEXTURE0, rect0.s0, rect0.t0);
-            gl.glMultiTexCoord2f(GL.GL_TEXTURE1, rect0.s1, rect0.t1);
-            gl.glVertex4f(rect0.x, rect0.y, rect0.z, 1.0f);
+            GL40.glMultiTexCoord2f(GL40.GL_TEXTURE0, rect0.s0, rect0.t0);
+            GL40.glMultiTexCoord2f(GL40.GL_TEXTURE1, rect0.s1, rect0.t1);
+            GL40.glVertex4f(rect0.x, rect0.y, rect0.z, 1.0f);
 
-            gl.glMultiTexCoord2f(GL.GL_TEXTURE0, rect1.s0, rect0.t0);
-            gl.glMultiTexCoord2f(GL.GL_TEXTURE1, rect1.s1, rect0.t1);
-            gl.glVertex4f(rect1.x, rect0.y, rect0.z, 1.0f);
+            GL40.glMultiTexCoord2f(GL40.GL_TEXTURE0, rect1.s0, rect0.t0);
+            GL40.glMultiTexCoord2f(GL40.GL_TEXTURE1, rect1.s1, rect0.t1);
+            GL40.glVertex4f(rect1.x, rect0.y, rect0.z, 1.0f);
 
-            gl.glMultiTexCoord2f(GL.GL_TEXTURE0, rect1.s0, rect1.t0);
-            gl.glMultiTexCoord2f(GL.GL_TEXTURE1, rect1.s1, rect1.t1);
-            gl.glVertex4f(rect1.x, rect1.y, rect0.z, 1.0f);
+            GL40.glMultiTexCoord2f(GL40.GL_TEXTURE0, rect1.s0, rect1.t0);
+            GL40.glMultiTexCoord2f(GL40.GL_TEXTURE1, rect1.s1, rect1.t1);
+            GL40.glVertex4f(rect1.x, rect1.y, rect0.z, 1.0f);
 
-            gl.glMultiTexCoord2f(GL.GL_TEXTURE0, rect0.s0, rect1.t0);
-            gl.glMultiTexCoord2f(GL.GL_TEXTURE1, rect0.s1, rect1.t1);
-            gl.glVertex4f(rect0.x, rect1.y, rect0.z, 1.0f);
+            GL40.glMultiTexCoord2f(GL40.GL_TEXTURE0, rect0.s0, rect1.t0);
+            GL40.glMultiTexCoord2f(GL40.GL_TEXTURE1, rect0.s1, rect1.t1);
+            GL40.glVertex4f(rect0.x, rect1.y, rect0.z, 1.0f);
         } else {
-            gl.glTexCoord2f(rect0.s0, rect0.t0);
-            gl.glVertex4f(rect0.x, rect0.y, rect0.z, 1.0f);
+            GL40.glTexCoord2f(rect0.s0, rect0.t0);
+            GL40.glVertex4f(rect0.x, rect0.y, rect0.z, 1.0f);
 
             if (flip)
-                gl.glTexCoord2f(rect0.s0, rect1.t0);
+                GL40.glTexCoord2f(rect0.s0, rect1.t0);
             else
-                gl.glTexCoord2f(rect1.s0, rect0.t0);
-            gl.glVertex4f(rect1.x, rect0.y, rect0.z, 1.0f);
+                GL40.glTexCoord2f(rect1.s0, rect0.t0);
+            GL40.glVertex4f(rect1.x, rect0.y, rect0.z, 1.0f);
 
-            gl.glTexCoord2f(rect1.s0, rect1.t0);
-            gl.glVertex4f(rect1.x, rect1.y, rect0.z, 1.0f);
+            GL40.glTexCoord2f(rect1.s0, rect1.t0);
+            GL40.glVertex4f(rect1.x, rect1.y, rect0.z, 1.0f);
 
             if (flip)
-                gl.glTexCoord2f(rect1.s0, rect0.t0);
+                GL40.glTexCoord2f(rect1.s0, rect0.t0);
             else
-                gl.glTexCoord2f(rect0.s0, rect1.t0);
-            gl.glVertex4f(rect0.x, rect1.y, rect0.z, 1.0f);
+                GL40.glTexCoord2f(rect0.s0, rect1.t0);
+            GL40.glVertex4f(rect0.x, rect1.y, rect0.z, 1.0f);
         }
-        gl.glEnd();
+        GL40.glEnd();
 
-        gl.glLoadIdentity();
+        GL40.glLoadIdentity();
 
         if (culling)
-            gl.glEnable(GL.GL_CULL_FACE);
+            GL40.glEnable(GL40.GL_CULL_FACE);
     }
 
     public static void OGL_DrawLine(float[] vtx1, float[] c1, float[] vtx2, float[] c2, float width) {
@@ -491,9 +489,9 @@ public class OpenGlGdp {
 
         float[] color = new float[4];
 
-        gl.glLineWidth(width * scaleX);
+        GL40.glLineWidth(width * scaleX);
 
-        gl.glBegin(GL.GL_LINES);
+        GL40.glBegin(GL40.GL_LINES);
         for (int i = 0; i < 2; i++) {
             float[][] spvert = v[i];
             color[0] = spvert[CLR][0];
@@ -501,7 +499,7 @@ public class OpenGlGdp {
             color[2] = spvert[CLR][2];
             color[3] = spvert[CLR][3];
             combiners.setConstant(color, combiners.vertex.color, combiners.vertex.alpha);
-            gl.glColor4fv(color, 0);
+            GL40.glColor4fv(color);
 
             if (Combiners.EXT_secondary_color) {
                 color[0] = spvert[CLR][0];
@@ -509,12 +507,12 @@ public class OpenGlGdp {
                 color[2] = spvert[CLR][2];
                 color[3] = spvert[CLR][3];
                 combiners.setConstant(color, combiners.vertex.secondaryColor, combiners.vertex.alpha);
-                gl.glSecondaryColor3fvEXT(color, 0);
+                GL40.glSecondaryColor3fv(color);
             }
 
-            gl.glVertex4f(spvert[VTX][0], spvert[VTX][1], spvert[VTX][2], spvert[VTX][3]);
+            GL40.glVertex4f(spvert[VTX][0], spvert[VTX][1], spvert[VTX][2], spvert[VTX][3]);
         }
-        gl.glEnd();
+        GL40.glEnd();
     }
 
     public static void OGL_AddTriangle(float[] vtx1, float[] c1, float[] tex1, float[] vtx2, float[] c2, float[] tex2, float[] vtx3, float[] c3, float[] tex3) {
@@ -571,82 +569,82 @@ public class OpenGlGdp {
         if (numTriangles < 1)
             return;
         stipple();
-        gl.glDrawArrays(GL.GL_TRIANGLES, 0, numVertices);
+        GL40.glDrawArrays(GL40.GL_TRIANGLES, 0, numVertices);
         numTriangles = numVertices = 0;
     }
 
     private static void stipple() {
         if (usePolygonStipple && (Gdp.RDP_GETOM_ALPHA_COMPARE_EN(Rsp.gdp.otherMode) == Gbi.G_AC_DITHER) && (Gdp.RDP_GETOM_ALPHA_CVG_SELECT(Rsp.gdp.otherMode) == 0)) {
             lastStipple = (lastStipple + 1) & 0x7;
-            gl.glPolygonStipple(stipplePattern[(int) (Combiners.envColor[3] * 255.0f) >> 3][lastStipple], 0);
+            GL40.glPolygonStipple(ByteBuffer.wrap(stipplePattern[(int) (Combiners.envColor[3] * 255.0f) >> 3][lastStipple]));//GL40.glPolygonStipple(stipplePattern[(int) (Combiners.envColor[3] * 255.0f) >> 3][lastStipple], 0);
         }
     }
 
     private static void OGL_GdpUpdateStates() {
         if ((Rsp.gdp.changed & Gdp.CHANGED_RENDERMODE) != 0) {
             if (Gdp.RDP_GETOM_Z_COMPARE_EN(Rsp.gdp.otherMode) != 0)
-                gl.glDepthFunc(GL.GL_LEQUAL);
+                GL40.glDepthFunc(GL40.GL_LEQUAL);
             else
-                gl.glDepthFunc(GL.GL_ALWAYS);
-            gl.glDepthMask(Gdp.RDP_GETOM_Z_UPDATE_EN(Rsp.gdp.otherMode) != 0);
+                GL40.glDepthFunc(GL40.GL_ALWAYS);
+            GL40.glDepthMask(Gdp.RDP_GETOM_Z_UPDATE_EN(Rsp.gdp.otherMode) != 0);
             if (Gdp.RDP_GETOM_Z_MODE(Rsp.gdp.otherMode) == Gbi.ZMODE_DEC)
-                gl.glEnable(GL.GL_POLYGON_OFFSET_FILL);
+                GL40.glEnable(GL40.GL_POLYGON_OFFSET_FILL);
             else {
-                gl.glDisable(GL.GL_POLYGON_OFFSET_FILL);
+                GL40.glDisable(GL40.GL_POLYGON_OFFSET_FILL);
             }
         }
 
         if ((Rsp.gdp.changed & Gdp.CHANGED_ALPHACOMPARE) != 0 || (Rsp.gdp.changed & Gdp.CHANGED_RENDERMODE) != 0) {
             if ((Gdp.RDP_GETOM_ALPHA_COMPARE_EN(Rsp.gdp.otherMode) == Gbi.G_AC_THRESHOLD) && (Gdp.RDP_GETOM_ALPHA_CVG_SELECT(Rsp.gdp.otherMode) == 0)) {
-                gl.glEnable(GL.GL_ALPHA_TEST);
+                GL40.glEnable(GL40.GL_ALPHA_TEST);
 
-                gl.glAlphaFunc((Rsp.gdp.blendColor[3] > 0.0f) ? GL.GL_GEQUAL : GL.GL_GREATER, Rsp.gdp.blendColor[3]);
+                GL40.glAlphaFunc((Rsp.gdp.blendColor[3] > 0.0f) ? GL40.GL_GEQUAL : GL40.GL_GREATER, Rsp.gdp.blendColor[3]);
             }
             else if (Gdp.RDP_GETOM_CVG_TIMES_ALPHA(Rsp.gdp.otherMode) != 0) {
-                gl.glEnable(GL.GL_ALPHA_TEST);
+                GL40.glEnable(GL40.GL_ALPHA_TEST);
 
-                gl.glAlphaFunc(GL.GL_GEQUAL, 0.5f);
+                GL40.glAlphaFunc(GL40.GL_GEQUAL, 0.5f);
             } else {
-                gl.glDisable(GL.GL_ALPHA_TEST);
+                GL40.glDisable(GL40.GL_ALPHA_TEST);
             }
 
             if (usePolygonStipple && (Gdp.RDP_GETOM_ALPHA_COMPARE_EN(Rsp.gdp.otherMode) == Gbi.G_AC_DITHER) && (Gdp.RDP_GETOM_ALPHA_CVG_SELECT(Rsp.gdp.otherMode) == 0))
-                gl.glEnable(GL.GL_POLYGON_STIPPLE);
+                GL40.glEnable(GL40.GL_POLYGON_STIPPLE);
             else
-                gl.glDisable(GL.GL_POLYGON_STIPPLE);
+                GL40.glDisable(GL40.GL_POLYGON_STIPPLE);
         }
 
         if ((Rsp.gdp.changed & Gdp.CHANGED_SCISSOR) != 0) {
-            gl.glScissor((int) (Rsp.gdp.scissor.ulx * scaleX), (int) ((screenHeight - Rsp.gdp.scissor.lry) * scaleY + heightOffset),
+            GL40.glScissor((int) (Rsp.gdp.scissor.ulx * scaleX), (int) ((screenHeight - Rsp.gdp.scissor.lry) * scaleY + heightOffset),
                     (int) ((Rsp.gdp.scissor.lrx - Rsp.gdp.scissor.ulx) * scaleX), (int) ((Rsp.gdp.scissor.lry - Rsp.gdp.scissor.uly) * scaleY));
         }
 
         if ((Rsp.gdp.changed & Gdp.CHANGED_COMBINE) != 0 || (Rsp.gdp.changed & Gdp.CHANGED_CYCLETYPE) != 0) {
             if (Gdp.RDP_GETOM_CYCLE_TYPE(Rsp.gdp.otherMode) == Gbi.G_CYC_COPY) {
-                combiners.setCombine(gl, false, combiners.encodeCombineMode(
+                combiners.setCombine(false, combiners.encodeCombineMode(
                         Combiners.G_CCMUX_0, Combiners.G_CCMUX_0, Combiners.G_CCMUX_0, Combiners.G_CCMUX_TEXEL0,
                         Combiners.G_ACMUX_0, Combiners.G_ACMUX_0, Combiners.G_ACMUX_0, Combiners.G_ACMUX_TEXEL0,
                         Combiners.G_CCMUX_0, Combiners.G_CCMUX_0, Combiners.G_CCMUX_0, Combiners.G_CCMUX_TEXEL0,
                         Combiners.G_ACMUX_0, Combiners.G_ACMUX_0, Combiners.G_ACMUX_0, Combiners.G_ACMUX_TEXEL0));
             } else if (Gdp.RDP_GETOM_CYCLE_TYPE(Rsp.gdp.otherMode) == Gbi.G_CYC_FILL) {
-                combiners.setCombine(gl, false, combiners.encodeCombineMode(
+                combiners.setCombine(false, combiners.encodeCombineMode(
                         Combiners.G_CCMUX_0, Combiners.G_CCMUX_0, Combiners.G_CCMUX_0, Combiners.G_CCMUX_SHADE,
                         Combiners.G_ACMUX_0, Combiners.G_ACMUX_0, Combiners.G_ACMUX_0, Combiners.G_ACMUX_1,
                         Combiners.G_CCMUX_0, Combiners.G_CCMUX_0, Combiners.G_CCMUX_0, Combiners.G_CCMUX_SHADE,
                         Combiners.G_ACMUX_0, Combiners.G_ACMUX_0, Combiners.G_ACMUX_0, Combiners.G_ACMUX_1));
             } else {
-                combiners.setCombine(gl, Gdp.RDP_GETOM_CYCLE_TYPE(Rsp.gdp.otherMode) == Gbi.G_CYC_2CYCLE, combiners.combine.getMux());
+                combiners.setCombine(Gdp.RDP_GETOM_CYCLE_TYPE(Rsp.gdp.otherMode) == Gbi.G_CYC_2CYCLE, combiners.combine.getMux());
             }
             Rsp.gdp.changed |= Gdp.CHANGED_COMBINE_COLORS;
         }
 
         if ((Rsp.gdp.changed & Gdp.CHANGED_COMBINE_COLORS) != 0) {
-            combiners.updateCombineColors(gl);
+            combiners.updateCombineColors();
             Rsp.gdp.changed &= ~Gdp.CHANGED_COMBINE_COLORS;
         }
 
         if ((Rsp.gdp.changed & Gdp.CHANGED_TEXTURE) != 0 || (Rsp.gdp.changed & Gdp.CHANGED_TILE) != 0 || (cache.changed & TextureCache.CHANGED_TMEM) != 0) {
-            combiners.beginTextureUpdate(gl);
+            combiners.beginTextureUpdate();
 
             if (combiners.usesT0) {
                 cache.update(Gdp.RDP_GETOM_TLUT_TYPE(Rsp.gdp.otherMode) == Gbi.G_TT_IA16, 0, scaleX, scaleY, (Gdp.RDP_GETOM_SAMPLE_TYPE(Rsp.gdp.otherMode) == Gbi.G_TF_BILERP) || (Gdp.RDP_GETOM_SAMPLE_TYPE(Rsp.gdp.otherMode) == Gbi.G_TF_AVERAGE));
@@ -668,7 +666,7 @@ public class OpenGlGdp {
                 cache.activateDummy(1);
             }
 
-            combiners.endTextureUpdate(gl);
+            combiners.endTextureUpdate();
         }
 
         if ((Rsp.gdp.changed & Gdp.CHANGED_RENDERMODE) != 0 || (Rsp.gdp.changed & Gdp.CHANGED_CYCLETYPE) != 0) {
@@ -676,22 +674,22 @@ public class OpenGlGdp {
                     (Gdp.RDP_GETOM_CYCLE_TYPE(Rsp.gdp.otherMode) != Gbi.G_CYC_COPY) &&
                     (Gdp.RDP_GETOM_CYCLE_TYPE(Rsp.gdp.otherMode) != Gbi.G_CYC_FILL) &&
                     (Gdp.RDP_GETOM_ALPHA_CVG_SELECT(Rsp.gdp.otherMode) == 0)) {
-                gl.glEnable(GL.GL_BLEND);
+                GL40.glEnable(GL40.GL_BLEND);
 
                 switch (Rsp.gdp.otherMode.w1 >> 16) {
-                    case 0x0448, 0x055A -> gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE);
-                    case 0x0C08, 0x0F0A -> gl.glBlendFunc(GL.GL_ONE, GL.GL_ZERO);
-                    case 0x0C18, 0x0C19, 0x0050, 0x0055 -> gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-                    case 0x0FA5, 0x5055 -> gl.glBlendFunc(GL.GL_ZERO, GL.GL_ONE);
-                    default -> gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+                    case 0x0448, 0x055A -> GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ONE);
+                    case 0x0C08, 0x0F0A -> GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ZERO);
+                    case 0x0C18, 0x0C19, 0x0050, 0x0055 -> GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
+                    case 0x0FA5, 0x5055 -> GL40.glBlendFunc(GL40.GL_ZERO, GL40.GL_ONE);
+                    default -> GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
                 }
             } else {
-                gl.glDisable(GL.GL_BLEND);
+                GL40.glDisable(GL40.GL_BLEND);
             }
 
             if (Gdp.RDP_GETOM_CYCLE_TYPE(Rsp.gdp.otherMode) == Gbi.G_CYC_FILL) {
-                gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-                gl.glEnable(GL.GL_BLEND);
+                GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
+                GL40.glEnable(GL40.GL_BLEND);
             }
         }
 

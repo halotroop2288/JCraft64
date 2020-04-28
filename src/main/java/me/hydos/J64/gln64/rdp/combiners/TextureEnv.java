@@ -1,6 +1,6 @@
 package me.hydos.J64.gln64.rdp.combiners;
 
-import javax.media.opengl.GL;
+import org.lwjgl.opengl.GL40;
 
 public class TextureEnv implements Combiners.CompiledCombiner {
     
@@ -9,7 +9,7 @@ public class TextureEnv implements Combiners.CompiledCombiner {
         int alpha;
     };
     
-    private int mode = GL.GL_DECAL;
+    private int mode = GL40.GL_DECAL;
     private final Fragment fragment = new Fragment();
     private boolean usesT0, usesT1;
     
@@ -28,7 +28,7 @@ public class TextureEnv implements Combiners.CompiledCombiner {
                             usesT0 = false;
                             usesT1 = false;
                         } else {
-                            mode = GL.GL_REPLACE;
+                            mode = GL40.GL_REPLACE;
                             usesT0 = a.stage[i].op[j].param1 == Combiners.TEXEL0_ALPHA;
                             usesT1 = a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA;
                         }
@@ -38,11 +38,11 @@ public class TextureEnv implements Combiners.CompiledCombiner {
                     case Combiners.MUL:
                         if (((a.stage[i].op[j].param1 == Combiners.TEXEL0_ALPHA) || (a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA)) &&
                                 ((a.stage[i].op[j - 1].param1 != Combiners.TEXEL0_ALPHA) || (a.stage[i].op[j - 1].param1 != Combiners.TEXEL1_ALPHA))) {
-                            mode = GL.GL_MODULATE;
+                            mode = GL40.GL_MODULATE;
                         } else if (((a.stage[i].op[j].param1 != Combiners.TEXEL0_ALPHA) || (a.stage[i].op[j].param1 != Combiners.TEXEL1_ALPHA)) &&
                                 ((a.stage[i].op[j - 1].param1 == Combiners.TEXEL0_ALPHA) || (a.stage[i].op[j - 1].param1 == Combiners.TEXEL1_ALPHA))) {
                             fragment.alpha = a.stage[i].op[j].param1;
-                            mode = GL.GL_MODULATE;
+                            mode = GL40.GL_MODULATE;
                         }
                         break;
                     case Combiners.ADD:
@@ -58,13 +58,13 @@ public class TextureEnv implements Combiners.CompiledCombiner {
                 switch (c.stage[i].op[j].op) {
                     case Combiners.LOAD:
                         if ((c.stage[i].op[j].param1 == Combiners.TEXEL0) || (c.stage[i].op[j].param1 == Combiners.TEXEL0_ALPHA)) {
-                            if (mode == GL.GL_MODULATE)
+                            if (mode == GL40.GL_MODULATE)
                                 fragment.color = Combiners.ONE;
                             
                             usesT0 = true;
                             usesT1 = false;
                         } else if ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA)) {
-                            if (mode == GL.GL_MODULATE)
+                            if (mode == GL40.GL_MODULATE)
                                 fragment.color = Combiners.ONE;
                             
                             usesT0 = false;
@@ -79,18 +79,18 @@ public class TextureEnv implements Combiners.CompiledCombiner {
                     case Combiners.MUL:
                         if ((c.stage[i].op[j].param1 == Combiners.TEXEL0) || (c.stage[i].op[j].param1 == Combiners.TEXEL0_ALPHA)) {
                             if (!usesT0 && !usesT1) {
-                                mode = GL.GL_MODULATE;
+                                mode = GL40.GL_MODULATE;
                                 usesT0 = true;
                                 usesT1 = false;
                             }
                         } else if ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA)) {
                             if (!usesT0 && !usesT1) {
-                                mode = GL.GL_MODULATE;
+                                mode = GL40.GL_MODULATE;
                                 usesT0 = false;
                                 usesT1 = true;
                             }
                         } else if (usesT0 || usesT1) {
-                            mode = GL.GL_MODULATE;
+                            mode = GL40.GL_MODULATE;
                             fragment.color = c.stage[i].op[j].param1;
                         }
                         break;
@@ -101,7 +101,7 @@ public class TextureEnv implements Combiners.CompiledCombiner {
                                 ((c.stage[i].op[j].param2 != Combiners.TEXEL0) && (c.stage[i].op[j].param2 != Combiners.TEXEL0_ALPHA) &&
                                 (c.stage[i].op[j].param2 != Combiners.TEXEL1) && (c.stage[i].op[j].param2 != Combiners.TEXEL1_ALPHA)) &&
                                 (c.stage[i].op[j].param3 == Combiners.TEXEL0_ALPHA)) {
-                            mode = GL.GL_DECAL;
+                            mode = GL40.GL_DECAL;
                             fragment.color = c.stage[i].op[j].param2;
                             usesT0 = true;
                             usesT1 = false;
@@ -109,7 +109,7 @@ public class TextureEnv implements Combiners.CompiledCombiner {
                                 ((c.stage[i].op[j].param2 != Combiners.TEXEL0) && (c.stage[i].op[j].param2 != Combiners.TEXEL0_ALPHA) &&
                                 (c.stage[i].op[j].param2 != Combiners.TEXEL1) && (c.stage[i].op[j].param2 != Combiners.TEXEL1_ALPHA)) &&
                                 (c.stage[i].op[j].param3 == Combiners.TEXEL0_ALPHA)) {
-                            mode = GL.GL_DECAL;
+                            mode = GL40.GL_DECAL;
                             fragment.color = c.stage[i].op[j].param2;
                             usesT0 = false;
                             usesT1 = true;
@@ -128,7 +128,7 @@ public class TextureEnv implements Combiners.CompiledCombiner {
 //    }
     
     // called by Combiners
-    public void set(GL gl, Combiners combiner) {
+    public void set(Combiners combiner) {
 //        GL gl = OpenGlGdp.gl;
         combiner.usesT0 = usesT0;
         combiner.usesT1 = usesT1;
@@ -139,19 +139,19 @@ public class TextureEnv implements Combiners.CompiledCombiner {
         
         // Shouldn't ever happen, but who knows?
         if (Combiners.ARB_multitexture)
-            gl.glActiveTexture(GL.GL_TEXTURE0);
+            GL40.glActiveTexture(GL40.GL_TEXTURE0);
         
         if (usesT0 || usesT1) {
-            gl.glEnable(GL.GL_TEXTURE_2D);
+            GL40.glEnable(GL40.GL_TEXTURE_2D);
         } else {
-            gl.glDisable(GL.GL_TEXTURE_2D);
+            GL40.glDisable(GL40.GL_TEXTURE_2D);
         }
-        
-        gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, mode);
+
+        GL40.glTexEnvi(GL40.GL_TEXTURE_ENV, GL40.GL_TEXTURE_ENV_MODE, mode);
     }
     
     // called by Combiners
-    public void updateColors(GL gl) {
+    public void updateColors() {
     }
     
 }

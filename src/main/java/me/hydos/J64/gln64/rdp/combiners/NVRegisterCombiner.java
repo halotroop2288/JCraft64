@@ -1,7 +1,5 @@
 package me.hydos.J64.gln64.rdp.combiners;
 
-import javax.media.opengl.GL;
-
 public class NVRegisterCombiner implements Combiners.CompiledCombiner {
 
     public NVRegisterCombiner(Combiners.Combiner c, Combiners.Combiner a) {
@@ -12,11 +10,11 @@ public class NVRegisterCombiner implements Combiners.CompiledCombiner {
         System.err.println("Trying to initialize: NV_register_combiners");
     }
     
-    public void set(GL gl, Combiners combiner) {
+    public void set(Combiners combiner) {
         System.err.println("Trying to set combine state: NV_register_combiners");
     }
     
-    public void updateColors(GL gl) {
+    public void updateColors() {
         System.err.println("Trying to update combine colors: NV_register_combiners");
     }
 

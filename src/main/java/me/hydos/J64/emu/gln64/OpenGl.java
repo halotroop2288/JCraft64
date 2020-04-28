@@ -1,9 +1,10 @@
 package me.hydos.J64.emu.gln64;
 
-import me.hydos.J64.emu.gln64.rsp.Gsp;
+import me.hydos.J64.gln64.Gbi;
+import me.hydos.J64.gln64.OpenGlGdp;
+import me.hydos.J64.gln64.Rsp;
+import me.hydos.J64.gln64.rsp.Gsp;
 import org.lwjgl.opengl.GL30;
-
-import javax.swing.JFrame;
 
 public class OpenGl {
     

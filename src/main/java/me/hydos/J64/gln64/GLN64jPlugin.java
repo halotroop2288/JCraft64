@@ -115,7 +115,8 @@ public class GLN64jPlugin implements GfxPlugin {
 
     public void processDList() {
         if (DEBUG) System.out.println("GFX Plugin (" + name + ") processDList.");
-        OpenGlGdp.hDC.display();
+//        OpenGlGdp.hDC.display(); TODO: i think this is the OpenGl display method so ill just run that here
+        OpenGl.OGL_EventListener.display();
     }
 
     public void processRDPList() {
