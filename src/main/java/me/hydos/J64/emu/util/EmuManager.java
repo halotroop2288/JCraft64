@@ -76,7 +76,7 @@ public class EmuManager {
 
         Rom rom = new Rom(romFile);
         if (DEBUG)
-            System.out.printf("Opened rom: %s\n", romFile);
+            System.out.println("Opened rom: " + romFile);
 
         File Directory = new File(AUTO_SAVE_DIR);
         if (!Directory.exists())
@@ -144,7 +144,7 @@ public class EmuManager {
         int country = rom.data.get(0x3E);
         int cicChip = pif.getCicChipID(rom.data);
         if (cicChip < 0) {
-            System.err.printf("Unknown Cic Chip: %d", cicChip);
+            System.err.println("Unknown Cic Chip: " + cicChip);
             cicChip = 2;
         }
 
