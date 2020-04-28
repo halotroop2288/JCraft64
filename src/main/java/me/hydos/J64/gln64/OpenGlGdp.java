@@ -1,9 +1,13 @@
 package me.hydos.J64.gln64;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.hydos.J64.emu.util.debug.Debug;
 import me.hydos.J64.gln64.rdp.combiners.Combiners;
 import me.hydos.J64.gln64.rdp.Gdp;
 import me.hydos.J64.gln64.rdp.textures.TextureCache;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40;
 
@@ -270,6 +274,7 @@ public class OpenGlGdp {
         GL40.glClear(GL40.GL_COLOR_BUFFER_BIT);
     }
 
+    @Environment(EnvType.CLIENT)
     public static void OGL_DrawRect(int ulx, int uly, int lrx, int lry, float[] color, int depthSource) {
         OpenGl.OGL_GspUpdateStates();
 
@@ -278,12 +283,12 @@ public class OpenGlGdp {
         boolean culling = GL40.glIsEnabled(GL40.GL_CULL_FACE);
         GL40.glDisable(GL40.GL_SCISSOR_TEST);
         GL40.glDisable(GL40.GL_CULL_FACE);
-        GL40.glMatrixMode(GL40.GL_PROJECTION);
-        GL40.glLoadIdentity();
-        GL40.glOrtho(0, screenWidth, screenHeight, 0, 1.0f, -1.0f);
-        GL40.glViewport(0, heightOffset, width, height);
+        RenderSystem.matrixMode(GL40.GL_PROJECTION);
+        RenderSystem.loadIdentity();
+        RenderSystem.ortho(0, screenWidth, screenHeight, 0, 1.0f, -1.0f);
+        RenderSystem.viewport(0, 0, MinecraftClient.getInstance().getWindow().getFramebufferWidth(), MinecraftClient.getInstance().getWindow().getFramebufferHeight());
         GL40.glDepthRange(0.0f, 1.0f);
-        GL40.glColor4f(color[0], color[1], color[2], color[3]);
+        RenderSystem.color4f(color[0], color[1], color[2], color[3]);
 
         GL40.glBegin(GL40.GL_QUADS);
         GL40.glVertex4f(ulx, uly, (depthSource == Gbi.G_ZS_PRIM) ? zDepth : nearZ, 1.0f);
@@ -303,6 +308,7 @@ public class OpenGlGdp {
         GL40.glEnable(GL40.GL_SCISSOR_TEST);
     }
 
+    @Environment(EnvType.CLIENT)
     public static void OGL_DrawTexturedRect(float ulx, float uly, float lrx, float lry, float uls, float ult, float lrs, float lrt, boolean flip, int depthSource, int cycleType) {
         OpenGl.OGL_GspUpdateStates();
 
@@ -346,10 +352,10 @@ public class OpenGlGdp {
 
         boolean culling = GL40.glIsEnabled(GL40.GL_CULL_FACE);
         GL40.glDisable(GL40.GL_CULL_FACE);
-        GL40.glMatrixMode(GL40.GL_PROJECTION);
-        GL40.glLoadIdentity();
-        GL40.glOrtho(0, screenWidth, screenHeight, 0, 1.0f, -1.0f); // left, right, bottom, top, near, far
-        GL40.glViewport(0, heightOffset, width, height); // x, y, width, height
+        RenderSystem.matrixMode(GL40.GL_PROJECTION);
+        RenderSystem.loadIdentity();
+        RenderSystem.ortho(0, screenWidth, screenHeight, 0, 1.0f, -1.0f); // left, right, bottom, top, near, far
+        RenderSystem.viewport(0, 0, MinecraftClient.getInstance().getWindow().getFramebufferWidth(), MinecraftClient.getInstance().getWindow().getFramebufferHeight());
         if (Debug.WIREFRAME)
             GL40.glPolygonMode(GL40.GL_FRONT_AND_BACK, GL40.GL_LINE); //TMP
 
