@@ -14,7 +14,7 @@ import net.minecraft.util.registry.Registry;
 
 public class BlockRegistry {
 	public static BlockEntityType<N64BlockEntity> N64_BE_TYPE;
-	public static final Block TV = new TVBlock(FabricBlockSettings.copy(Blocks.IRON_BLOCK).build());
+	public static final Block TV = new TVBlock(FabricBlockSettings.copy(Blocks.IRON_BLOCK).nonOpaque().build());
 	
 	private static String[] n64_colours = // https://consolevariations.com/blog/every-nintendo-64-console-variation-ever-complete-color-list
 		{
@@ -29,7 +29,7 @@ public class BlockRegistry {
 	    for (String colour : n64_colours)
 	    {
 	    	Identifier id = Main.makeID("n64_" + colour);
-			Block block = Registry.register(Registry.BLOCK, id, new N64Block(FabricBlockSettings.of(Material.CLAY).build()));
+			Block block = Registry.register(Registry.BLOCK, id, new N64Block(FabricBlockSettings.of(Material.CLAY).nonOpaque().build()));
 			n64_blocks[n64_blocks.length - 1] = block;
 			ItemRegistry.registerBlockItem(id, block); // If you can find a good way to move this to ItemRegistry, BE MY GUEST!
 	    }
