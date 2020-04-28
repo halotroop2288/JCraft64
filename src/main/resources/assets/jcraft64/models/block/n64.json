@@ -1,32 +1,18 @@
 {
-	"credit": "Made by halotroop2288 using Blockbench",
+	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "jcraft64:block/nintendo_sixty_four",
 		"1": "jcraft64:block/cartridge",
-		"2": "jcraft64:block/games/n64/game",
+		"2": "jcraft64:Emotes/Happy",
 		"3": "jcraft64:block/nintendo_sixty_four_bottom",
 		"particle": "jcraft64:block/nintendo_sixty_four"
 	},
 	"elements": [
 		{
-			"name": "Front Right Foot",
-			"from": [0, 0, 0],
-			"to": [3, 3, 3],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8.3, 2.4, 5.775]},
-			"faces": {
-				"north": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
-				"east": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
-				"south": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
-				"west": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
-				"up": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
-				"down": {"uv": [0, 13, 3, 16], "texture": "#3"}
-			}
-		},
-		{
 			"name": "Front Left Foot",
-			"from": [14, 0, 0],
-			"to": [17, 3, 3],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8.3, 2.4, 5.775]},
+			"from": [13.5, 0, 0],
+			"to": [16, 3, 2.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14.875, 1.5, 1.75]},
 			"faces": {
 				"north": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
 				"east": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
@@ -37,10 +23,24 @@
 			}
 		},
 		{
+			"name": "Front Left Foot",
+			"from": [0, 0, 0],
+			"to": [2.5, 3, 2.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [1.375, 1.5, 1.75]},
+			"faces": {
+				"north": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
+				"east": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
+				"south": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
+				"west": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
+				"up": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"},
+				"down": {"uv": [0, 2.5, 3, 5.5], "texture": "#0"}
+			}
+		},
+		{
 			"name": "Back Right Foot",
-			"from": [2, 0, 13.25],
-			"to": [2.75, 0.25, 14],
-			"rotation": {"angle": 0, "axis": "y", "origin": [10, 8, 21]},
+			"from": [1.5, 0, 13.25],
+			"to": [2.25, 0.25, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9.5, 8, 21]},
 			"faces": {
 				"north": {"uv": [0, 2.5, 2, 4.5], "texture": "#0"},
 				"east": {"uv": [0, 2.5, 2, 4.5], "texture": "#0"},
@@ -51,9 +51,9 @@
 		},
 		{
 			"name": "Back Left Foot",
-			"from": [14.25, 0, 13.25],
-			"to": [15, 0.25, 14],
-			"rotation": {"angle": 0, "axis": "y", "origin": [21, 8, 21]},
+			"from": [13.75, 0, 13.25],
+			"to": [14.5, 0.25, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [20.5, 8, 21]},
 			"faces": {
 				"north": {"uv": [0, 2.5, 2, 4.5], "texture": "#0"},
 				"east": {"uv": [0, 2.5, 2, 4.5], "texture": "#0"},
@@ -64,9 +64,9 @@
 		},
 		{
 			"name": "Controller Port 1",
-			"from": [12, 1, 0.75],
-			"to": [13.5, 2.5, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8.55, 1.4, 6.025]},
+			"from": [11.5, 1, 0.75],
+			"to": [13, 2.5, 1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.05, 1.4, 6.025]},
 			"faces": {
 				"north": {"uv": [0, 0, 2, 2], "texture": "#0"},
 				"east": {"uv": [14.5, 0, 16, 0.5], "texture": "#0"},
@@ -77,9 +77,9 @@
 		},
 		{
 			"name": "Controller Port 2",
-			"from": [10, 1, 0.75],
-			"to": [11.5, 2.5, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [9.05, 1.4, 6.025]},
+			"from": [9.5, 1, 0.75],
+			"to": [11, 2.5, 1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.55, 1.4, 6.025]},
 			"faces": {
 				"north": {"uv": [2, 0, 4, 2], "texture": "#0"},
 				"east": {"uv": [14.5, 0, 16, 0.5], "texture": "#0"},
@@ -90,9 +90,9 @@
 		},
 		{
 			"name": "Controller Port 3",
-			"from": [5.5, 1, 0.75],
-			"to": [7, 2.5, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7.55, 1.4, 6.025]},
+			"from": [5, 1, 0.75],
+			"to": [6.5, 2.5, 1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.05, 1.4, 6.025]},
 			"faces": {
 				"north": {"uv": [4, 0, 6, 2], "texture": "#0"},
 				"east": {"uv": [14.5, 0, 16, 0.5], "texture": "#0"},
@@ -103,9 +103,9 @@
 		},
 		{
 			"name": "Controller Port 4",
-			"from": [3.5, 1, 0.75],
-			"to": [5, 2.5, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8.05, 1.4, 6.025]},
+			"from": [3, 1, 0.75],
+			"to": [4.5, 2.5, 1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.55, 1.4, 6.025]},
 			"faces": {
 				"north": {"uv": [6, 0, 8, 2], "texture": "#0"},
 				"east": {"uv": [14.5, 0, 16, 0.5], "texture": "#0"},
@@ -116,9 +116,9 @@
 		},
 		{
 			"name": "Body",
-			"from": [1, 0.25, 1],
-			"to": [16, 3.75, 15],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8.3, 1.65, 5.775]},
+			"from": [0.5, 0.25, 1],
+			"to": [15.5, 3.75, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2, 8]},
 			"faces": {
 				"north": {"uv": [0, 2.25, 1, 6.25], "rotation": 90, "texture": "#0"},
 				"east": {"uv": [0, 2.25, 1, 6.25], "rotation": 90, "texture": "#0"},
@@ -130,9 +130,9 @@
 		},
 		{
 			"name": "Power Supply",
-			"from": [7.25, 0.75, 14],
-			"to": [15, 3.25, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [14.3, 1.65, 6.025]},
+			"from": [6.75, 0.75, 14],
+			"to": [14.5, 3.25, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [10.625, 2, 15]},
 			"faces": {
 				"east": {"uv": [0, 2.25, 2, 4.25], "texture": "#0"},
 				"south": {"uv": [0, 2.25, 2, 8.25], "rotation": 90, "texture": "#0"},
@@ -142,9 +142,9 @@
 			}
 		},
 		{
-			"from": [7.25, 1.75, 0.99],
-			"to": [9.75, 3.5, 0.99],
-			"rotation": {"angle": 0, "axis": "y", "origin": [15.75, 10.5, 9.25]},
+			"from": [6.75, 1.75, 0.99],
+			"to": [9.25, 3.5, 0.99],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2.625, 0.99]},
 			"faces": {
 				"north": {"uv": [8, 0, 10.5, 1.75], "texture": "#0"},
 				"east": {"uv": [0, 0, 0, 1.75], "texture": "#missing"},
@@ -156,9 +156,9 @@
 		},
 		{
 			"name": "Art",
-			"from": [6.5, 2.75, 7.9],
-			"to": [10.5, 6.75, 8.15],
-			"rotation": {"angle": 0, "axis": "y", "origin": [11.75, 7.5, 12.5]},
+			"from": [6, 2.75, 7.9],
+			"to": [10, 6.75, 8.15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4.75, 8.025]},
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#2"},
 				"east": {"uv": [1, 0, 1.25, 4], "texture": "#1"},
@@ -169,9 +169,9 @@
 		},
 		{
 			"name": "Cartridge",
-			"from": [4, 2.25, 8],
-			"to": [13, 7.25, 10],
-			"rotation": {"angle": 0, "axis": "y", "origin": [4.5, 1.75, 4.75]},
+			"from": [3.5, 2.25, 8],
+			"to": [12.5, 7.25, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4.75, 9]},
 			"faces": {
 				"north": {"uv": [0, 0, 9, 5], "texture": "#1"},
 				"east": {"uv": [14, 0, 16, 5], "texture": "#1"},
