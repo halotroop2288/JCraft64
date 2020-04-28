@@ -289,15 +289,15 @@ public class Cop0 {
 		case 12: // Status
 			CP0[STATUS_REGISTER] = value;
 			if ((CP0[STATUS_REGISTER] & 0x18) != 0)
-				System.err.printf("Left kernel mode ??\n");
+				System.err.println("Left kernel mode ??");
 			break;
 		case 13: // cause
 			CP0[CAUSE_REGISTER] &= 0xFFFFCFF;
 			if ((value & 0x300) != 0)
-				System.err.printf("Set IP0 or IP1\n");
+				System.err.println("Set IP0 or IP1");
 			break;
 		default:
-			System.err.printf("COP0_MT: Unknown RD: %d\n", rd);
+			System.err.println("COP0_MT: Unknown RD: " + rd);
 		}
 	}
 
@@ -364,7 +364,8 @@ public class Cop0 {
 			currentTimerType = count;
 		}
 		if (currentTimerType == -1) {
-			System.err.printf("No active timers ???\nEmulation Stoped\n");
+			System.err.println("No active timers ???\n"
+				+ "Emulation Stoped");
 		}
 		for (int count = 0; count < MAX_TIMERS; count++) {
 			if (!active[count])
@@ -432,9 +433,9 @@ public class Cop0 {
 	// called by Cpu
 	public int doAddressError(boolean delaySlot, int badVaddr, boolean fromRead, int pc) {
 		if ((CP0[STATUS_REGISTER] & STATUS_EXL) != 0)
-			System.err.printf("EXL set in AddressError Exception\n");
+			System.err.println("EXL set in AddressError Exception");
 		if ((CP0[STATUS_REGISTER] & STATUS_ERL) != 0)
-			System.err.printf("ERL set in AddressError Exception\n");
+			System.err.println("ERL set in AddressError Exception");
 
 		if (fromRead)
 			CP0[CAUSE_REGISTER] = EXC_RADE;
@@ -449,17 +450,16 @@ public class Cop0 {
 		}
 		CP0[STATUS_REGISTER] |= STATUS_EXL;
 		if (DEBUG_EXCEPTIONS)
-			System.out.printf("-:DoAddressError:%X:%X:%X:%X\n", CP0[STATUS_REGISTER], CP0[CAUSE_REGISTER],
-					CP0[EPC_REGISTER], CP0[BAD_VADDR_REGISTER]);
+			System.out.println("-:DoAddressError:" + CP0[STATUS_REGISTER] + ":" + CP0[CAUSE_REGISTER] + ":" + CP0[EPC_REGISTER] +":" + CP0[BAD_VADDR_REGISTER]);
 		return delaySlot ? 0x80000180 - 4 : 0x80000180;
 	}
 
 	// called by Cpu
 	public int doBreakException(boolean delaySlot, int pc) {
 		if ((CP0[STATUS_REGISTER] & STATUS_EXL) != 0)
-			System.err.printf("EXL set in Break Exception\n");
+			System.err.println("EXL set in Break Exception");
 		if ((CP0[STATUS_REGISTER] & STATUS_ERL) != 0)
-			System.err.printf("ERL set in Break Exception\n");
+			System.err.println("ERL set in Break Exception");
 
 		CP0[CAUSE_REGISTER] = EXC_BREAK;
 		if (delaySlot) {
@@ -470,17 +470,16 @@ public class Cop0 {
 		}
 		CP0[STATUS_REGISTER] |= STATUS_EXL;
 		if (DEBUG_EXCEPTIONS)
-			System.out.printf("-:DoBreakException:%X:%X:%X\n", CP0[STATUS_REGISTER], CP0[CAUSE_REGISTER],
-					CP0[EPC_REGISTER]);
+			System.out.println("-:DoBreakException:" + CP0[STATUS_REGISTER] + ":" + CP0[CAUSE_REGISTER] + ":" + CP0[EPC_REGISTER]);
 		return delaySlot ? 0x80000180 - 4 : 0x80000180;
 	}
 
 	// called by Cpu
 	public int doCopUnusableException(boolean delaySlot, int coprocessor, int pc) {
 		if ((CP0[STATUS_REGISTER] & STATUS_EXL) != 0)
-			System.err.printf("EXL set in Break Exception\n");
+			System.err.println("EXL set in Break Exception");
 		if ((CP0[STATUS_REGISTER] & STATUS_ERL) != 0)
-			System.err.printf("ERL set in Break Exception\n");
+			System.err.println("ERL set in Break Exception");
 
 		CP0[CAUSE_REGISTER] = EXC_CPU;
 		if (coprocessor == 1)
@@ -493,17 +492,16 @@ public class Cop0 {
 		}
 		CP0[STATUS_REGISTER] |= STATUS_EXL;
 		if (DEBUG_EXCEPTIONS)
-			System.out.printf("-:DoCopUnusableException:%X:%X:%X\n", CP0[STATUS_REGISTER], CP0[CAUSE_REGISTER],
-					CP0[EPC_REGISTER]);
+			System.out.println("-:DoCopUnusableException:" + CP0[STATUS_REGISTER] + ":" + CP0[CAUSE_REGISTER]);
 		return delaySlot ? 0x80000180 - 4 : 0x80000180;
 	}
 
 	// called by Cpu
 	public int doSysCallException(boolean delaySlot, int pc) {
 		if ((CP0[STATUS_REGISTER] & STATUS_EXL) != 0)
-			System.err.printf("EXL set in SysCall Exception\n");
+			System.err.println("EXL set in SysCall Exception");
 		if ((CP0[STATUS_REGISTER] & STATUS_ERL) != 0)
-			System.err.printf("ERL set in SysCall Exception\n");
+			System.err.println("ERL set in SysCall Exception");
 
 		CP0[CAUSE_REGISTER] = EXC_SYSCALL;
 		if (delaySlot) {
@@ -514,8 +512,7 @@ public class Cop0 {
 		}
 		CP0[STATUS_REGISTER] |= STATUS_EXL;
 		if (DEBUG_EXCEPTIONS)
-			System.out.printf("-:DoSysCallException:%X:%X:%X\n", CP0[STATUS_REGISTER], CP0[CAUSE_REGISTER],
-					CP0[EPC_REGISTER]);
+			System.out.println("-:DoSysCallException:" + CP0[STATUS_REGISTER] + ":" + CP0[CAUSE_REGISTER] + ":" + CP0[EPC_REGISTER]);
 		return delaySlot ? 0x80000180 - 4 : 0x80000180;
 	}
 
@@ -539,8 +536,8 @@ public class Cop0 {
 			else
 				return delaySlot ? 0x80000000 - 4 : 0x80000000;
 		} else {
-			System.err.printf("EXL Set\nAddress (%X) Defined: %s\n", badVaddr,
-					addressDefined(badVaddr) ? "TRUE" : "FALSE");
+			System.err.println("EXL Set\n"
+				+ "Address (%X" + badVaddr + ") Defined: " + (addressDefined(badVaddr) ? "TRUE" : "FALSE"));
 			return delaySlot ? 0x80000180 - 4 : 0x80000180;
 		}
 	}
@@ -563,8 +560,7 @@ public class Cop0 {
 		}
 		CP0[STATUS_REGISTER] |= STATUS_EXL;
 		if (DEBUG_EXCEPTIONS)
-			System.out.printf("-:DoIntrException:%X:%X:%X\n", CP0[STATUS_REGISTER], CP0[CAUSE_REGISTER],
-					CP0[EPC_REGISTER]);
+			System.out.println("-:DoIntrException:" + CP0[STATUS_REGISTER] + ":" + CP0[CAUSE_REGISTER] + ":" + CP0[EPC_REGISTER]);
 		return delaySlot ? 0x80000180 - 4 : 0x80000180;
 	}
 
@@ -594,7 +590,7 @@ public class Cop0 {
 
 	private void tlbProbe() {
 		if (DEBUG_TLB)
-			System.out.printf("TLBP:%X\n", CP0[ENTRYHI_REGISTER]);
+			System.out.println("TLBP:" + CP0[ENTRYHI_REGISTER]);
 		CP0[INDEX_REGISTER] |= 0x80000000;
 		for (int count = 0; count < 32; count++) {
 			int tlbValue = tlb[count].getEntryHi() & (~tlb[count].pageMaskMask << 13);
@@ -612,12 +608,12 @@ public class Cop0 {
 		}
 
 		if (DEBUG_TLB)
-			System.out.printf("0=%X\n", CP0[INDEX_REGISTER]);
+			System.out.println("0=" + CP0[INDEX_REGISTER]);
 	}
 
 	private void tlbRead() {
 		if (DEBUG_TLB)
-			System.out.printf("TLBR:%X\n", CP0[INDEX_REGISTER]);
+			System.out.println("TLBR:" + CP0[INDEX_REGISTER]);
 		int index = CP0[INDEX_REGISTER] & 0x1F;
 
 		CP0[PAGE_MASK_REGISTER] = tlb[index].getPageMask();
@@ -626,8 +622,7 @@ public class Cop0 {
 		CP0[ENTRYLO1_REGISTER] = tlb[index].getEntryLo1();
 
 		if (DEBUG_TLB)
-			System.out.printf("5=%X 10=%X 2=%X 3=%X\n", CP0[PAGE_MASK_REGISTER], CP0[ENTRYHI_REGISTER],
-					CP0[ENTRYLO0_REGISTER], CP0[ENTRYLO1_REGISTER]);
+			System.out.println("5=" + CP0[PAGE_MASK_REGISTER] + " 10=" + CP0[ENTRYHI_REGISTER] + " 2=" + CP0[ENTRYLO0_REGISTER] + " 3=" + CP0[ENTRYLO1_REGISTER]);
 	}
 
 	private void writeTlbEntry(int index) {
@@ -694,7 +689,7 @@ public class Cop0 {
 				continue;
 			}
 			if (fastTlb[fastIndx].vEnd <= fastTlb[fastIndx].vStart) {
-				System.err.printf("Vstart = Vend for tlb mapping\n");
+				System.err.println("Vstart = Vend for tlb mapping");
 				continue;
 			}
 			if (fastTlb[fastIndx].vStart >= 0x80000000L && fastTlb[fastIndx].vEnd <= 0xBFFFFFFFL) {
@@ -730,9 +725,6 @@ public class Cop0 {
 		public void run() {
 			if (!useTlb)
 				return;
-//            if (PROGRAM_COUNTER == 0x00136260 && CP0[INDEX_REGISTER] == 0x1F)
-//                System.err.printf("TLBWI\n");
-//            else
 			writeTlbEntry(CP0[INDEX_REGISTER] & 0x1F);
 		}
 	};
@@ -753,48 +745,4 @@ public class Cop0 {
 			tlbProbe();
 		}
 	};
-
-//    public static void main(String[] args) {
-//        long num = 0;
-//        long N64MEM = 0x00500000L;
-//        long count = 0x80000000L;
-//        for (; count < 0xC0000000L; count += 0x1000L) {
-//            num++;
-//        }
-//        System.out.println("Count: " + ((count-0x1000L)>>12));
-//        System.out.println("Num: " + num);
-//        count = 0x80000000L;
-//
-//        System.out.println("count: " + Long.toHexString(count));
-//        System.out.println("count >> 12: " + Long.toHexString(count >> 12));
-//        System.out.println("count & 0x1FFFFFFFL: " + Long.toHexString(count & 0x1FFFFFFFL));
-//        System.out.println(Long.toHexString(((N64MEM + (count & 0x1FFFFFFFL)) - count)&0xFFFFFFFFL));
-//        count += 0x1000L;
-//
-//        System.out.println("count: " + Long.toHexString(count));
-//        System.out.println("count >> 12: " + Long.toHexString(count >> 12));
-//        System.out.println("count & 0x1FFFFFFFL: " + Long.toHexString(count & 0x1FFFFFFFL));
-//        // (0x00500000L + 0x00001000) - 0x80001000 = 0x00501000 - 0x80001000 = 0x80500000
-//        System.out.println(Long.toHexString(((N64MEM + (count & 0x1FFFFFFFL)) - count)&0xFFFFFFFFL));
-//        count += 0x1000L;
-//
-//        System.out.println("count: " + Long.toHexString(count));
-//        System.out.println("count >> 12: " + Long.toHexString(count >> 12));
-//        System.out.println("count & 0x1FFFFFFFL: " + Long.toHexString(count & 0x1FFFFFFFL));
-//        System.out.println(Long.toHexString(((N64MEM + (count & 0x1FFFFFFFL)) - count)&0xFFFFFFFFL));
-//        count += 0x1000L;
-//
-//        System.out.println("count: " + Long.toHexString(count));
-//        System.out.println("count >> 12: " + Long.toHexString(count >> 12));
-//        System.out.println("count & 0x1FFFFFFFL: " + Long.toHexString(count & 0x1FFFFFFFL));
-//        System.out.println(Long.toHexString(((N64MEM + (count & 0x1FFFFFFFL)) - count)&0xFFFFFFFFL));
-//        count += 0x1000L;
-//
-//        System.out.println(count>>12);
-//        count += 0x1000L;
-//
-//        System.out.println(count>>12);
-//        count += 0x1000L;
-//    }
-
 }
