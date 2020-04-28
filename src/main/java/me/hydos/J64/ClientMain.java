@@ -12,7 +12,7 @@ public class ClientMain implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 		BlockEntityRendererRegistry.INSTANCE.register(BlockRegistry.N64_BE_TYPE, N64Renderer::new);
-		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(), BlockRegistry.n64_blocks);
-		BlockRenderLayerMap.INSTANCE.putBlock(BlockRegistry.TV, RenderLayer.getCutoutMipped());
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), BlockRegistry.n64_blocks);
+		BlockRenderLayerMap.INSTANCE.putBlock(BlockRegistry.TV, RenderLayer.getCutout());
     }
 }
