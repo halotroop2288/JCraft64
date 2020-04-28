@@ -6,8 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.registry.Registry;
 
-public class ItemRegistry
-{
+public class ItemRegistry {
+	
 	public static final Item BLACK_N64_ITEM = new BlockItem(BlockRegistry.BLACK_N64, new Item.Settings().group(ItemGroup.DECORATIONS));
 	public static final Item TV_ITEM = new BlockItem(BlockRegistry.TV, new Item.Settings().group(ItemGroup.DECORATIONS));
 	
@@ -16,6 +16,4 @@ public class ItemRegistry
 		Registry.register(Registry.ITEM, Main.makeID("n64_black"), BLACK_N64_ITEM);
 		Registry.register(Registry.ITEM, Main.makeID("tv"), TV_ITEM);
 	}
-	
-	
 }

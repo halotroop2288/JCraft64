@@ -6,6 +6,6 @@ import net.minecraft.block.entity.BlockEntity;
 public class N64BlockEntity extends BlockEntity {
 
     public N64BlockEntity() {
-        super(BlockRegistry.BLACK_N64_BLOCK_ENTITY);
+	super(BlockRegistry.BLACK_N64_BLOCK_ENTITY);
     }
 }
