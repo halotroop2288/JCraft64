@@ -13,7 +13,7 @@ public class ItemRegistry {
 	
 	public static void registerAll()
 	{
-		Registry.register(Registry.ITEM, Main.getID("n64_black"), BLACK_N64_ITEM);
-		Registry.register(Registry.ITEM, Main.getID("tv"), TV_ITEM);
+		Registry.register(Registry.ITEM, Main.makeID("n64_black"), BLACK_N64_ITEM);
+		Registry.register(Registry.ITEM, Main.makeID("tv"), TV_ITEM);
 	}
 }

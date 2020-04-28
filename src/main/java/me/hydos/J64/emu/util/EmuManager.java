@@ -405,7 +405,7 @@ public class EmuManager {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        video.setupPlugin(cfg);
+        video.setupPlugin(hMainWindow, cfg);
         audio.setupPlugin(hMainWindow, cfg);
         rsp.setupPlugin(video.gfxPlugin, audio.audioPlugin);
         pif.setupPlugin(hMainWindow, cfg);

@@ -152,7 +152,7 @@ public class OpenGlGdp {
         usePolygonStipple = false;
         cache.init(GLN64jPlugin.RDRAM, GLN64jPlugin.TMEM, Combiners.maxTextureUnits, Combiners.ARB_multitexture);
         combiners.init();
-        oGL_UpdateScale();
+        OGL_UpdateScale();
     }
 
     public static void config() {
@@ -166,12 +166,12 @@ public class OpenGlGdp {
         height = windowedHeight;
     }
 
-    public static void oGL_UpdateScale() {
+    public static void OGL_UpdateScale() {
         scaleX = width / (float) screenWidth;
         scaleY = height / (float) screenHeight;
     }
 
-    public static void vI_UpdateSize() {
+    public static void VI_UpdateSize() {
         float xScale = (GLN64jPlugin.REG.VI_Registers[GLN64jPlugin.REG.VI_X_SCALE] & Gbi.SR_MASK_12) * Gbi.FIXED2FLOATRECIP10;
 
         float yScale = (GLN64jPlugin.REG.VI_Registers[GLN64jPlugin.REG.VI_Y_SCALE] & Gbi.SR_MASK_12) * Gbi.FIXED2FLOATRECIP10;
@@ -193,6 +193,7 @@ public class OpenGlGdp {
 
     public static void viUpdateScreen() {
         if ((Rsp.gdp.changed & Gdp.CHANGED_COLORBUFFER) != 0) {
+//            hDC.swapBuffers();
             Rsp.gdp.changed &= ~Gdp.CHANGED_COLORBUFFER;
         }
     }

@@ -19,7 +19,7 @@ public class Main implements ModInitializer {
 		ItemRegistry.registerAll();
 	}
 	
-	public static Identifier getID(String name)
+	public static Identifier makeID(String name)
 	{
 		return new Identifier("jcraft64", name);
 	}

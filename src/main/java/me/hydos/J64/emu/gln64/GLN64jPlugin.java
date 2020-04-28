@@ -144,7 +144,6 @@ public class GLN64jPlugin implements GfxPlugin {
     public void updateScreen() {
         if (DEBUG) System.out.println("GFX Plugin (" + name + ") updateScreen.");
         OpenGlGdp.viUpdateScreen();
-        OpenGl.render();
     }
 
     public void viStatusChanged() {
