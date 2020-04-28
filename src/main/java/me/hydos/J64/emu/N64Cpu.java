@@ -484,11 +484,6 @@ public class N64Cpu {
 		if (cpuAction.DoInterrupt)
 			return targetPC;
 
-		if (cop0.inPermLoop()) {
-			System.err.print("In a permanent loop that can not be exited\n\nEmulation will now stop\n");
-			EmuManager.exit();
-		}
-
 		return targetPC;
 	}
 
