@@ -215,7 +215,11 @@ public class Gsp {
 
             PC[PCi] += 8;
             pAddr = PC[PCi];
-            nextCmd = (ram[pAddr] << 24) | ((ram[pAddr + 1] & 0xff) << 16) | ((ram[pAddr + 2] & 0xff) << 8) | (ram[pAddr + 3] & 0xff);
+            try{
+                nextCmd = (ram[pAddr] << 24) | ((ram[pAddr + 1] & 0xff) << 16) | ((ram[pAddr + 2] & 0xff) << 8) | (ram[pAddr + 3] & 0xff);
+            }catch (Exception e){
+                nextCmd = (nextCmd >> 24) & Gbi.SR_MASK_8;
+            }
             nextCmd = (nextCmd >> 24) & Gbi.SR_MASK_8;
 
             gbi.cmds[cmd].exec(w0, w1);

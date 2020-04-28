@@ -25,7 +25,6 @@ public class Video {
 	private final ByteBuffer iMem;
 	private final int[] regMI;
 	private final int[] regDPC;
-	private JFrame hWnd;
 	private long lastFrame;
 	private long lastTime;
 	private final long[] frames = new long[NUM_FRAMES];
@@ -74,8 +73,7 @@ public class Video {
 		this.frameLimit = frameLimit;
 	}
 
-	public void setupPlugin(JFrame hWnd, Properties cfg) {
-		this.hWnd = hWnd;
+	public void setupPlugin(Properties cfg) {
 		String gfx_plugin = cfg.getProperty(GFX_PLUGIN, "DEFAULT_GFX_PLUGIN");
 		try {
 			Class<?> c = Class.forName(gfx_plugin);
@@ -90,7 +88,6 @@ public class Video {
 
 		gfxInfo.memoryBswaped = true;
 		gfxInfo.checkInterrupts = checkInterrupts;
-		gfxInfo.hWnd = hWnd;
 		gfxInfo.rdram = rDram;
 		gfxInfo.dmem = dMem;
 		gfxInfo.imem = iMem;
@@ -136,9 +133,7 @@ public class Video {
 				long total = 0;
 				for (int count = 0; count < NUM_FRAMES; count++)
 					total += frames[count];
-				hWnd.setTitle("FPS: " + frequency / ((double) total / (NUM_FRAMES << 3)));
-			} else {
-				hWnd.setTitle("FPS: -.--");
+				System.out.println("FPS: " + Math.round(frequency / ((double) total / (NUM_FRAMES << 3))));
 			}
 		}
 		currentFrame += 1;
@@ -148,6 +143,7 @@ public class Video {
 
 		if (frameLimit) {
 			while (lastTime + 17L > System.currentTimeMillis()) {
+				Thread.sleep(1);
 			}
 			lastTime = System.currentTimeMillis();
 		}
@@ -163,9 +159,5 @@ public class Video {
 		halfLine += viFieldNumber;
 		return halfLine;
 	}
-
-//    private void shutdownPlugins() {
-//        if (gfxPlugin != null) { gfxPlugin.CloseDLL(); }
-//    }
 
 }
