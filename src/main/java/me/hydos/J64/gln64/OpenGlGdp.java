@@ -7,7 +7,6 @@ import me.hydos.J64.gln64.rdp.textures.TextureCache;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40;
 
-import javax.media.opengl.GL;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.Random;
@@ -121,7 +120,7 @@ public class OpenGlGdp {
         if (Debug.DEBUG_OGL) System.out.println("GL_ARB_multitexture: " + Combiners.ARB_multitexture);
         if (Combiners.ARB_multitexture) {
             int[] maxTextureUnits_t = new int[1];
-            GL40.glGetIntegerv(GL.GL_MAX_TEXTURE_UNITS, maxTextureUnits_t);//GL40.glGetIntegerv(GL.GL_MAX_TEXTURE_UNITS, maxTextureUnits_t, 0);
+            GL40.glGetIntegerv(GL40.GL_MAX_TEXTURE_UNITS, maxTextureUnits_t);//GL40.glGetIntegerv(GL.GL_MAX_TEXTURE_UNITS, maxTextureUnits_t, 0);
 
             Combiners.maxTextureUnits = StrictMath.min(8, maxTextureUnits_t[0]); // The plugin only supports 8, and 4 is really enough
         }

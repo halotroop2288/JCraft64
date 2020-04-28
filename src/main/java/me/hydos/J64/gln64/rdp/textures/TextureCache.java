@@ -6,7 +6,6 @@ import java.nio.ByteBuffer;
 import java.util.Random;
 import java.util.zip.Adler32;
 import java.util.zip.Checksum;
-import javax.media.opengl.GL;
 
 public class TextureCache {
 
@@ -214,7 +213,7 @@ public class TextureCache {
 
         ByteBuffer noise = ByteBuffer.allocateDirect(64 * 64 * 4);
         for (int i = 0; i < 32; i++) {
-            GL40.glBindTexture(GL.GL_TEXTURE_2D, glNoiseNames[i]);
+            GL40.glBindTexture(GL40.GL_TEXTURE_2D, glNoiseNames[i]);
 
             Random rand = new Random();
 
@@ -227,15 +226,15 @@ public class TextureCache {
                     noise.put(y * 64 * 4 + x * 4 + 3, random);
                 }
             }
-            GL40.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA8, 64, 64, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, noise);
+            GL40.glTexImage2D(GL40.GL_TEXTURE_2D, 0, GL40.GL_RGBA8, 64, 64, 0, GL40.GL_RGBA, GL40.GL_UNSIGNED_BYTE, noise);
         }
 
         dummy = CachedTexture.getDummy();
         prune();
         stack.addTop(dummy);
 
-        GL40.glBindTexture(GL.GL_TEXTURE_2D, dummy.glName[0]);
-        GL40.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA8, 2, 2, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, dummyTexture);
+        GL40.glBindTexture(GL40.GL_TEXTURE_2D, dummy.glName[0]);
+        GL40.glTexImage2D(GL40.GL_TEXTURE_2D, 0, GL40.GL_RGBA8, 2, 2, 0, GL40.GL_RGBA, GL40.GL_UNSIGNED_BYTE, dummyTexture);
 
         cachedBytes = dummy.textureBytes;
 
@@ -259,10 +258,10 @@ public class TextureCache {
         if(dummy == null)
             dummy = CachedTexture.getDummy();
         if (ARB_multitexture)
-            GL40.glActiveTexture(GL.GL_TEXTURE0 + t);
-        GL40.glBindTexture(GL.GL_TEXTURE_2D, dummy.glName[0]);
-        GL40.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
-        GL40.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+            GL40.glActiveTexture(GL40.GL_TEXTURE0 + t);
+        GL40.glBindTexture(GL40.GL_TEXTURE_2D, dummy.glName[0]);
+        GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_MIN_FILTER, GL40.GL_NEAREST);
+        GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_MAG_FILTER, GL40.GL_NEAREST);
     }
 
     public void setTexture(float sc, float tc, int level, int tile, int on) {
@@ -472,17 +471,17 @@ public class TextureCache {
 
     private void activateTexture(int t, CachedTexture texture, boolean linear) {
         if (ARB_multitexture)
-            GL40.glActiveTexture(GL.GL_TEXTURE0 + t);
-        GL40.glBindTexture(GL.GL_TEXTURE_2D, texture.glName[0]);
+            GL40.glActiveTexture(GL40.GL_TEXTURE0 + t);
+        GL40.glBindTexture(GL40.GL_TEXTURE_2D, texture.glName[0]);
         if (linear) {
-            GL40.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-            GL40.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+            GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_MIN_FILTER, GL40.GL_LINEAR);
+            GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_MAG_FILTER, GL40.GL_LINEAR);
         } else {
-            GL40.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
-            GL40.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+            GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_MIN_FILTER, GL40.GL_NEAREST);
+            GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_MAG_FILTER, GL40.GL_NEAREST);
         }
-        GL40.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, texture.clampS != 0 ? GL.GL_CLAMP_TO_EDGE : GL.GL_REPEAT);
-        GL40.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, texture.clampT != 0 ? GL.GL_CLAMP_TO_EDGE : GL.GL_REPEAT);
+        GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_WRAP_S, texture.clampS != 0 ? GL40.GL_CLAMP_TO_EDGE : GL40.GL_REPEAT);
+        GL40.glTexParameteri(GL40.GL_TEXTURE_2D, GL40.GL_TEXTURE_WRAP_T, texture.clampT != 0 ? GL40.GL_CLAMP_TO_EDGE : GL40.GL_REPEAT);
         stack.moveToTop(texture);
         current[t] = texture;
     }
@@ -641,12 +640,12 @@ public class TextureCache {
 
         // If multitexturing, set the appropriate texture
         if (ARB_multitexture)
-            GL40.glActiveTexture(GL.GL_TEXTURE0 + t);
+            GL40.glActiveTexture(GL40.GL_TEXTURE0 + t);
 
         current[t] = new CachedTexture();
         prune();
         stack.addTop(current[t]);
-        GL40.glBindTexture(GL.GL_TEXTURE_2D, current[t].glName[0]);
+        GL40.glBindTexture(GL40.GL_TEXTURE_2D, current[t].glName[0]);
 
         current[t].address = textureImage.address;
         current[t].crc = crc;
@@ -732,12 +731,12 @@ public class TextureCache {
 
         // If multitexturing, set the appropriate texture
         if (ARB_multitexture)
-            GL40.glActiveTexture(GL.GL_TEXTURE0);
+            GL40.glActiveTexture(GL40.GL_TEXTURE0);
 
         current[0] = new CachedTexture();
         prune();
         stack.addTop(current[0]);
-        GL40.glBindTexture(GL.GL_TEXTURE_2D, current[0].glName[0]);
+        GL40.glBindTexture(GL40.GL_TEXTURE_2D, current[0].glName[0]);
 
         current[0].address = bgImage.address;
         current[0].crc = crc;
