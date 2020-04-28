@@ -135,7 +135,7 @@ public class Pif {
 		// shutdownPlugins();
 		String controller_plugin = cfg.getProperty(CONTROLLER_PLUGIN, "DEFAULT_CONTROLLER_PLUGIN");
 		try {
-			Class<?> c = Class.forName(controller_plugin);
+			Class c = Class.forName(controller_plugin);
 			inputPlugin = (InputPlugin) c.newInstance();
 		} catch (Exception ex) {
 			System.err.println("No controller plugin loaded.");

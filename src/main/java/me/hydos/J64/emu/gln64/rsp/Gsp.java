@@ -1,6 +1,7 @@
 package me.hydos.J64.emu.gln64.rsp;
 
 import me.hydos.J64.emu.gln64.Gbi;
+import me.hydos.J64.emu.gln64.OpenGl;
 import me.hydos.J64.emu.gln64.OpenGlGdp;
 import me.hydos.J64.emu.gln64.Rsp;
 import me.hydos.J64.emu.gln64.rdp.Gdp;

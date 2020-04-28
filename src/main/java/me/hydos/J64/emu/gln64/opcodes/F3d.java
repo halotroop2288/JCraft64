@@ -162,8 +162,8 @@ public class F3d {
     public static GBIFunc F3D_DList = new GBIFunc() {
         public void exec(int w0, int w1) {
             switch ((w0 >> 16) & SR_MASK_8) {
-                case G_DL_PUSH: gsp.gSPDisplayList(gsp.RSP_SegmentToPhysical(w1));
-                case G_DL_NOPUSH: gsp.gSPBranchList(gsp.RSP_SegmentToPhysical(w1));
+                case G_DL_PUSH -> gsp.gSPDisplayList(gsp.RSP_SegmentToPhysical(w1));
+                case G_DL_NOPUSH -> gsp.gSPBranchList(gsp.RSP_SegmentToPhysical(w1));
             }
         }
     };

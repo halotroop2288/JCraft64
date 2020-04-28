@@ -22,7 +22,7 @@ public class WorldRendererMixin {
     @Inject(method = "render", at=@At("TAIL"))
     public void e(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci){
         VertexConsumerProvider provider = this.bufferBuilders.getEntityVertexConsumers();
-        provider.getBuffer(RenderLayer.getEntitySolid(TextureManager.MISSING_IDENTIFIER));
+        VertexConsumer consumer = provider.getBuffer(RenderLayer.getEntitySolid(TextureManager.MISSING_IDENTIFIER));
 
 //        consumer
 //                .vertex(1f,1f,1f)

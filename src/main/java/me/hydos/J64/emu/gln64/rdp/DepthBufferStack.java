@@ -11,9 +11,12 @@ public class DepthBufferStack {
 
     public DepthBuffer top;
     public DepthBuffer bottom;
+    private int numBuffers;
+    
     public void init() {
         top = null;
         bottom = null;
+        numBuffers = 0;
     }
     
     public void removeBottom() {
@@ -24,6 +27,8 @@ public class DepthBufferStack {
         
         if (bottom != null)
             bottom.lower = null;
+        
+        numBuffers--;
     }
     
     public void remove(DepthBuffer buffer) {
@@ -44,6 +49,8 @@ public class DepthBufferStack {
             buffer.higher.lower = buffer.lower;
             buffer.lower.higher = buffer.higher;
         }
+        
+        numBuffers--;
     }
     
     public void addTop(DepthBuffer newtop) {
@@ -57,6 +64,8 @@ public class DepthBufferStack {
             bottom = newtop;
         
         top = newtop;
+        
+        numBuffers++;
     }
     
     public void moveToTop(DepthBuffer newtop) {

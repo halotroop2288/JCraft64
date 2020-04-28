@@ -590,17 +590,17 @@ public class Memory {
 				throw new MemoryException("Illegal DMEM Memory SW: " + Integer.toHexString(pAddr));
 			}
 			switch (pAddr) {
-				case 0x04040000: regSP[RegisterSP.SP_MEM_ADDR_REG] = value;
-				case 0x04040004: regSP[RegisterSP.SP_DRAM_ADDR_REG] = value;
-				case 0x04040008: {
+				case 0x04040000 -> regSP[RegisterSP.SP_MEM_ADDR_REG] = value;
+				case 0x04040004 -> regSP[RegisterSP.SP_DRAM_ADDR_REG] = value;
+				case 0x04040008 -> {
 					regSP[RegisterSP.SP_RD_LEN_REG] = value;
 					dma.spDmaRead();
 				}
-				case 0x0404000C: {
+				case 0x0404000C -> {
 					regSP[RegisterSP.SP_WR_LEN_REG] = value;
 					System.out.println("SP_DMA_WRITE");
 				}
-				case 0x04040010: {
+				case 0x04040010 -> {
 					if ((value & RegisterSP.SP_CLR_HALT) != 0) {
 						regSP[RegisterSP.SP_STATUS_REG] &= ~RegisterSP.SP_STATUS_HALT;
 					}
@@ -678,11 +678,11 @@ public class Memory {
 					}
 					rsp.runRsp();
 				}
-				case 0x0404001C: regSP[RegisterSP.SP_SEMAPHORE_REG] = 0;
-				case 0x04080000: regSP[RegisterSP.SP_PC_REG] = value & 0xFFC;
-				default: throw new MemoryException("Illegal SP Register SW: " + Integer.toHexString(pAddr));
+				case 0x0404001C -> regSP[RegisterSP.SP_SEMAPHORE_REG] = 0;
+				case 0x04080000 -> regSP[RegisterSP.SP_PC_REG] = value & 0xFFC;
+				default -> throw new MemoryException("Illegal SP Register SW: " + Integer.toHexString(pAddr));
 			}
-//			break;
+			break;
 		case 0x04100000: // DP Command Registers (RDP)
 			switch (pAddr) {
 			case 0x04100000:

@@ -33,7 +33,7 @@ public class Audio {
 	public boolean setupPlugin(JFrame hWnd, Properties cfg) {
 		String audio_plugin = cfg.getProperty(AUDIO_PLUGIN, "NO_AUDIO_PLUGIN");
 		try {
-			Class<?> c = Class.forName(audio_plugin);
+			Class c = Class.forName(audio_plugin);
 			audioPlugin = (AudioPlugin) c.newInstance();
 		} catch (Exception ex) {
 			System.err.println("No audio plugin loaded. " + ex.getMessage());
