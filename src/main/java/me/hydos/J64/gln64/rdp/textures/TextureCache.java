@@ -447,6 +447,7 @@ public class TextureCache {
             }
 
             tmemPtr.position((256 + (pal << 4)) * 8);
+
             paletteCRC16.asIntBuffer().put(pal, crcCalculatePalette(0xFFFFFFFF, tmemPtr.slice(), 16));
             pal++;
         }

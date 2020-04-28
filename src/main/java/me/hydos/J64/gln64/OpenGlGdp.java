@@ -282,8 +282,6 @@ public class OpenGlGdp {
         GL40.glLoadIdentity();
         GL40.glOrtho(0, screenWidth, screenHeight, 0, 1.0f, -1.0f);
         GL40.glViewport(0, heightOffset, width, height);
-        if (Debug.WIREFRAME)
-            GL40.glPolygonMode(GL40.GL_FRONT_AND_BACK, GL40.GL_LINE); //TMP
         GL40.glDepthRange(0.0f, 1.0f);
         GL40.glColor4f(color[0], color[1], color[2], color[3]);
 
@@ -296,8 +294,11 @@ public class OpenGlGdp {
 
         GL40.glLoadIdentity();
 
-        if (culling)
+        if (culling){
             GL40.glEnable(GL40.GL_CULL_FACE);
+        }else{
+            GL40.glDisable(GL40.GL_CULL_FACE);
+        }
 
         GL40.glEnable(GL40.GL_SCISSOR_TEST);
     }
