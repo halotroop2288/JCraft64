@@ -6,7 +6,6 @@ import net.fabricmc.api.ModInitializer;
 
 public class Main implements ModInitializer {
 
-
 	public static void main(String[] args) {
 		EmuManager.setup();
 	}
