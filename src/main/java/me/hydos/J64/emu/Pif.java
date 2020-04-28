@@ -125,7 +125,7 @@ public class Pif {
 		case 0x4A: // Japan
 			break;
 		default:
-			System.err.printf("Unknown country in LoadPifRom\n");
+			System.err.println("Unknown country in LoadPifRom");
 		}
 		Arrays.fill(pifRom, 0, 0x7C0, (byte) 0);
 		return false;
@@ -228,7 +228,7 @@ public class Pif {
 					channel += 1;
 				} else {
 					if (showPifRamErrors)
-						System.err.printf("Unknown Command in PifRamRead(%X)\n", pifRam.get(curPos));
+						System.err.println("Unknown Command in PifRamRead(" + pifRam.get(curPos) + ")");
 					curPos = 0x40;
 				}
 				break;
@@ -263,7 +263,7 @@ public class Pif {
 				break;
 			default:
 				if (showPifRamErrors)
-					System.err.printf("Unkown PifRam control: %d\n", pifRam.get(0x3F));
+					System.err.println("Unkown PifRam control: " + pifRam.get(0x3F));
 			}
 			return;
 		}
@@ -303,13 +303,13 @@ public class Pif {
 						eeprom.eepromCommand(pifRam.slice(), regs.saveUsing, showPifRamErrors);
 						pifRam.position(0);
 					} else {
-						System.err.printf("Command on channel 5?\n");
+						System.err.println("Command on channel 5?");
 					}
 					curPos += (pifRam.get(curPos) & 0xFF) + (pifRam.get(curPos + 1) & 0x3F) + 1;
 					channel += 1;
 				} else {
 					if (showPifRamErrors)
-						System.err.printf("Unknown Command in PifRamWrite(%X)\n", pifRam.get(curPos));
+						System.err.prprintlnUnknown Command in PifRamWrite(%X)\n", pifRam.get(curPos));
 					curPos = 0x40;
 				}
 				break;
@@ -397,7 +397,7 @@ public class Pif {
 			break;
 		default:
 			if (showPifRamErrors)
-				System.err.printf("Unknown ControllerCommand %d\n", command.get(2));
+				System.err.println("Unknown ControllerCommand " + command.get(2));
 		}
 	}
 

@@ -50,7 +50,7 @@ public class F3dexbg extends F3dex2 {
                     break;
                 }
                 default:
-                    System.err.printf("moveword unknown (index: 0x%08X, offset 0x%08X)\n", index, offset);
+                    System.err.println("moveword unknown (index: 0x" + index + ", offset 0x" + offset + ")");
             }
         }
     };
@@ -100,7 +100,7 @@ public class F3dexbg extends F3dex2 {
                     gsp.gSPNormals(gsp.RSP_SegmentToPhysical(w1));
                     break;
                 default:
-                    System.err.printf("movemem unknown (%d)\n", idx);
+                    System.err.println("movemem unknown (" + idx + ")");
             }
         }
     };

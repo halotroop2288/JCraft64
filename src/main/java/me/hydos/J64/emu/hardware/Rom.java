@@ -94,7 +94,7 @@ public class Rom {
 				hFile.read(test.array(), 0, 4);
 				if (!isValidRomImage(test)) {
 					hFile.close();
-					System.err.printf("Not a valid rom image: %X\n", test.getInt(0));
+					System.err.println("Not a valid rom image: " + test.getInt(0));
 					return null;
 				}
 				hFile.seek(0);

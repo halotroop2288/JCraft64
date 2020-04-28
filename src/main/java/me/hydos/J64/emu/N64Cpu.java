@@ -1055,7 +1055,7 @@ public class N64Cpu {
 				tmpDouble = mem.loadDoubleWord(cop0.translateVaddr(addr & ~7));
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("LDL TLB: %X\n", addr);
+				System.err.println("LDL TLB: " + addr);
 				return;
 			} catch (MemoryException e) {
 				e.printStackTrace();
@@ -1078,7 +1078,7 @@ public class N64Cpu {
 				tmpDouble = mem.loadDoubleWord(cop0.translateVaddr(addr & ~7));
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("LDL TLB: %X\n", addr);
+				System.err.println("LDL TLB: " + addr);
 				return;
 			} catch (MemoryException e) {
 				e.printStackTrace();
@@ -1101,7 +1101,7 @@ public class N64Cpu {
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
-					System.err.printf("LB TLB: %X\n", addr);
+					System.err.println("LB TLB: " + addr);
 				}
 				tlbReadException(addr);
 			} catch (MemoryException e) {
@@ -1123,7 +1123,7 @@ public class N64Cpu {
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
-					System.err.printf("LH TLB: %X\n", addr);
+					System.err.println("LH TLB: " + addr);
 				}
 				tlbReadException(addr);
 				return;
@@ -1145,7 +1145,7 @@ public class N64Cpu {
 				tmpWord = mem.loadWord(cop0.translateVaddr(addr & ~3));
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("LWL TLB: %X\n", addr);
+				System.err.println("LWL TLB: " + addr);
 				return;
 			} catch (MemoryException e) {
 				e.printStackTrace();
@@ -1172,7 +1172,7 @@ public class N64Cpu {
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
-					System.err.printf("LW TLB: %X\n", addr);
+					System.err.println("LW TLB: " + addr);
 				}
 				tlbReadException(addr);
 				return;
@@ -1192,7 +1192,7 @@ public class N64Cpu {
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
-					System.err.printf("LBU TLB: %X\n", addr);
+					System.err.println("LBU TLB: " + addr);
 				}
 				tlbReadException(addr);
 				return;
@@ -1216,7 +1216,7 @@ public class N64Cpu {
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
-					System.err.printf("LHU TLB: %X\n", addr);
+					System.err.println("LHU TLB: " + addr);
 				}
 				tlbReadException(addr);
 				return;
@@ -1238,7 +1238,7 @@ public class N64Cpu {
 				tmpWord = mem.loadWord(cop0.translateVaddr(addr & ~3));
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("LWR TLB: %X\n", addr);
+				System.err.println("LWR TLB: " + addr);
 				return;
 			} catch (MemoryException e) {
 				e.printStackTrace();
@@ -1265,7 +1265,7 @@ public class N64Cpu {
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
-					System.err.printf("LWU TLB: %X\n", addr);
+					System.err.println("LWU TLB: " + addr);
 				}
 				tlbReadException(addr);
 				return;
@@ -1293,7 +1293,7 @@ public class N64Cpu {
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("SB TLB: %X\n", addr);
+				System.err.println("SB TLB: " + addr);
 			} catch (MemoryException e) {
 				e.printStackTrace();
 				return;
@@ -1322,7 +1322,7 @@ public class N64Cpu {
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("SH TLB: %X\n", addr);
+				System.err.println("SH TLB: " + addr);
 			} catch (MemoryException e) {
 				e.printStackTrace();
 				return;
@@ -1353,14 +1353,14 @@ public class N64Cpu {
 					}
 				} catch (TlbException e) {
 					e.printStackTrace();
-					System.err.printf("SWL TLB: %X\n", addr);
+					System.err.println("SWL TLB: " + addr);
 				} catch (MemoryException e) {
 					e.printStackTrace();
 					return;
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("SWL TLB: %X\n", addr);
+				System.err.println("SWL TLB: " + addr);
 				return;
 			} catch (MemoryException e) {
 				e.printStackTrace();
@@ -1390,7 +1390,7 @@ public class N64Cpu {
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("SW TLB: %X\n", addr);
+				System.err.println("SW TLB: " + addr);
 			} catch (MemoryException e) {
 				e.printStackTrace();
 				return;
@@ -1413,14 +1413,14 @@ public class N64Cpu {
 					cacheInstructions();
 				} catch (TlbException e) {
 					e.printStackTrace();
-					System.err.printf("SDL TLB: %X\n", addr);
+					System.err.println("SDL TLB: " + addr);
 				} catch (MemoryException e) {
 					e.printStackTrace();
 					return;
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("SDL TLB: %X\n", addr);
+				System.err.println("SDL TLB: " + addr);
 				return;
 			} catch (MemoryException e) {
 				e.printStackTrace();
@@ -1444,14 +1444,14 @@ public class N64Cpu {
 					cacheInstructions();
 				} catch (TlbException e) {
 					e.printStackTrace();
-					System.err.printf("SDR TLB: %X\n", addr);
+					System.err.println("SDR TLB: " + addr);
 				} catch (MemoryException e) {
 					e.printStackTrace();
 					return;
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("SDR TLB: %X\n", addr);
+				System.err.println("SDR TLB: " + addr);
 				return;
 			} catch (MemoryException e) {
 				e.printStackTrace();
@@ -1499,14 +1499,14 @@ public class N64Cpu {
 					}
 				} catch (TlbException e) {
 					e.printStackTrace();
-					System.err.printf("SWL TLB: %X\n", addr);
+					System.err.println("SWL TLB: " + addr);
 				} catch (MemoryException e) {
 					e.printStackTrace();
 					return;
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("SWL TLB: %X\n", addr);
+				System.err.println("SWL TLB: " + addr);
 				return;
 			} catch (MemoryException e) {
 				e.printStackTrace();
@@ -1537,7 +1537,7 @@ public class N64Cpu {
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
-					System.err.printf("LW TLB: %X\n", addr);
+					System.err.println("LW TLB: " + addr);
 				}
 				tlbReadException(addr);
 				return;
@@ -1570,7 +1570,7 @@ public class N64Cpu {
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
-					System.err.printf("LWC1 TLB: %X\n", addr);
+					System.err.println("LWC1 TLB: " + addr);
 				}
 				tlbReadException(addr);
 				return;
@@ -1603,7 +1603,7 @@ public class N64Cpu {
 					}
 				} catch (TlbException e) {
 					e.printStackTrace();
-					System.err.printf("SC TLB: %X\n", addr);
+					System.err.println("SC TLB: " + addr);
 				} catch (MemoryException e) {
 					e.printStackTrace();
 					return;
@@ -1625,7 +1625,7 @@ public class N64Cpu {
 				GPR[(inst >> RT) & 0x1F] = mem.loadDoubleWord(cop0.translateVaddr(addr));
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("LD TLB: %X\n", addr);
+				System.err.println("LD TLB: " + addr);
 			} catch (MemoryException e) {
 				e.printStackTrace();
 				return;
@@ -1647,7 +1647,7 @@ public class N64Cpu {
 				cop1.ldC1((inst >> RT) & 0x1F, mem.loadDoubleWord(cop0.translateVaddr(addr)));
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("LDC1 TLB: %X\n", addr);
+				System.err.println("LDC1 TLB: " + addr);
 			} catch (MemoryException e) {
 				e.printStackTrace();
 				return;
@@ -1678,7 +1678,7 @@ public class N64Cpu {
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("SWC1 TLB: %X\n", addr);
+				System.err.println("SWC1 TLB: " + addr);
 			} catch (MemoryException e) {
 				e.printStackTrace();
 				return;
@@ -1712,7 +1712,7 @@ public class N64Cpu {
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("SDC1 TLB: %X\n", addr);
+				System.err.println("SDC1 TLB: " + addr);
 			} catch (MemoryException e) {
 				e.printStackTrace();
 				return;
@@ -1744,7 +1744,7 @@ public class N64Cpu {
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
-				System.err.printf("SD TLB: %X\n", addr);
+				System.err.println("SD TLB: " + addr);
 			} catch (MemoryException e) {
 				e.printStackTrace();
 				return;
@@ -2074,7 +2074,7 @@ public class N64Cpu {
 		@Override
 		public void run() {
 //            if (GPR[(inst>>RS)&0x1F] == GPR[(inst>>RT)&0x1F])
-//                System.err.printf("Should trap this ???\n");
+//                System.err.println("Should trap this ???\n");
 		}
 	};
 
@@ -2365,7 +2365,7 @@ public class N64Cpu {
 			unknownCount++;
 			if(unknownCount == 20){
 				System.err.println("Warning the rom loaded has lots of Unhandled opcodes. This is not good!");
-				System.out.printf("PC:%X ,Unhandled r4300i OpCode:%X\n", pc, inst);
+				System.out.println("PC:" + pc + " ,Unhandled r4300i OpCode:" + inst);
 			}
 
 		}

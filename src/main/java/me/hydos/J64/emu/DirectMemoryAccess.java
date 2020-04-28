@@ -88,7 +88,7 @@ public class DirectMemoryAccess {
 	// called by Memory
 	public void piDmaRead() {
 		if (regPI[PI_DRAM_ADDR_REG] + regPI[PI_RD_LEN_REG] + 1 > rDram.capacity()) {
-			System.err.printf("PI_DMA_READ not in Memory\n");
+			System.err.println("PI_DMA_READ not in Memory");
 			regPI[PI_STATUS_REG] &= ~PI_STATUS_DMA_BUSY;
 			regMI[Registers.MI_INTR_REG] |= Registers.MI_INTR_PI;
 			checkInterrupts.run();
@@ -119,13 +119,13 @@ public class DirectMemoryAccess {
 			}
 		}
 		if (regs.saveUsing == Registers.FLASHRAM) {
-			System.err.printf("**** FLashRam DMA Read address %X *****\n", regPI[PI_CART_ADDR_REG]);
+			System.err.println("**** FLashRam DMA Read address " + regPI[PI_CART_ADDR_REG] +" *****");
 			regPI[PI_STATUS_REG] &= ~PI_STATUS_DMA_BUSY;
 			regMI[Registers.MI_INTR_REG] |= Registers.MI_INTR_PI;
 			checkInterrupts.run();
 			return;
 		}
-		System.err.printf("PI_DMA_READ where are you dmaing to ?\n");
+		System.err.println("PI_DMA_READ where are you dmaing to ?");
 		regPI[PI_STATUS_REG] &= ~PI_STATUS_DMA_BUSY;
 		regMI[Registers.MI_INTR_REG] |= Registers.MI_INTR_PI;
 		checkInterrupts.run();
@@ -136,7 +136,7 @@ public class DirectMemoryAccess {
 	public void piDmaWrite() {
 		regPI[PI_STATUS_REG] |= PI_STATUS_DMA_BUSY;
 		if (regPI[PI_DRAM_ADDR_REG] + regPI[PI_WR_LEN_REG] + 1 > rDram.capacity()) {
-			System.err.printf("PI_DMA_WRITE not in Memory\n");
+			System.err.println("PI_DMA_WRITE not in Memory");
 			regPI[PI_STATUS_REG] &= ~PI_STATUS_DMA_BUSY;
 			regMI[Registers.MI_INTR_REG] |= Registers.MI_INTR_PI;
 			checkInterrupts.run();
@@ -193,7 +193,7 @@ public class DirectMemoryAccess {
 		}
 
 		if (showUnhandledMemory)
-			System.err.printf("PI_DMA_WRITE not in ROM\n");
+			System.err.println("PI_DMA_WRITE not in ROM");
 		regPI[PI_STATUS_REG] &= ~PI_STATUS_DMA_BUSY;
 		regMI[Registers.MI_INTR_REG] |= Registers.MI_INTR_PI;
 		checkInterrupts.run();
@@ -202,7 +202,7 @@ public class DirectMemoryAccess {
 	// called by Memory
 	public void siDmaRead() {
 		if ((int) regSI[Pif.SI_DRAM_ADDR_REG] > (int) rDram.capacity()) {
-			System.err.printf("SI DMA READ\nSI_DRAM_ADDR_REG not in RDRam space\n");
+			System.err.println("SI DMA READ\nSI_DRAM_ADDR_REG not in RDRam space");
 			return;
 		}
 
@@ -230,7 +230,7 @@ public class DirectMemoryAccess {
 	// called by Memory
 	public void siDmaWrite() {
 		if ((int) regSI[Pif.SI_DRAM_ADDR_REG] > (int) rDram.capacity()) {
-			System.err.printf("SI DMA WRITE\nSI_DRAM_ADDR_REG not in RDRam space\n");
+			System.err.println("SI DMA WRITE\nSI_DRAM_ADDR_REG not in RDRam space");
 			return;
 		}
 
@@ -262,14 +262,14 @@ public class DirectMemoryAccess {
 		regSP[RegisterSP.SP_DRAM_ADDR_REG] &= 0x1FFFFFFF;
 
 		if (regSP[RegisterSP.SP_DRAM_ADDR_REG] > rDram.capacity()) {
-			System.err.printf("SP DMA READ\nSP_DRAM_ADDR_REG not in RDRam space\n");
+			System.err.println("SP DMA READ\nSP_DRAM_ADDR_REG not in RDRam space");
 			regSP[RegisterSP.SP_DMA_BUSY_REG] = 0;
 			regSP[RegisterSP.SP_STATUS_REG] &= ~RegisterSP.SP_STATUS_DMA_BUSY;
 			return;
 		}
 
 		if (regSP[RegisterSP.SP_RD_LEN_REG] + 1 + (regSP[RegisterSP.SP_MEM_ADDR_REG] & 0xFFF) > 0x1000) {
-			System.err.printf("SP DMA READ\ncould not fit copy in memory segement\n");
+			System.err.println("SP DMA READ\ncould not fit copy in memory segement");
 			return;
 		}
 
@@ -321,7 +321,7 @@ public class DirectMemoryAccess {
 			rDram.putInt(0x318, rDram.capacity());
 			break;
 		default:
-			System.err.printf("Unhandled CicChip(%d) in first DMA\n", pif.getCicChipID(rom));
+			System.err.println("Unhandled CicChip(" + pif.getCicChipID(rom) + ") in first DMA");
 		}
 	}
 
