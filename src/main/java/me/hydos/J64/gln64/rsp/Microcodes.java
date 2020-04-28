@@ -131,7 +131,7 @@ public class Microcodes {
             if (uc_crc == specialMicrocodes[i].crc) {
                 current.type = specialMicrocodes[i].type;
                 if (Debug.DEBUG_MICROCODE)
-                    System.out.printf("Found microcode by crc. Using %s\n", Microcode.MicrocodeTypes[current.type]);
+                    System.out.println("Found microcode by crc. Using " + Microcode.MicrocodeTypes[current.type]);
                 return current;
             }
         }
@@ -184,7 +184,7 @@ public class Microcodes {
                 if (type != Microcode.NONE) {
                     current.type = type;
                     if (Debug.DEBUG_MICROCODE)
-                        System.out.printf("Found microcode by standard text. Using %s\n", Microcode.MicrocodeTypes[current.type]);
+                        System.out.println("Found microcode by standard text. Using " + Microcode.MicrocodeTypes[current.type]);
                     return current;
                 }
 
@@ -196,7 +196,7 @@ public class Microcodes {
             if (uc_str.compareTo(specialMicrocode.text) == 0) {
                 current.type = specialMicrocode.type;
                 if (Debug.DEBUG_MICROCODE)
-                    System.out.printf("Found microcode by special text. Using %s\n", Microcode.MicrocodeTypes[current.type]);
+                    System.out.println("Found microcode by special text. Using " + Microcode.MicrocodeTypes[current.type]);
                 return current;
             }
         }
@@ -204,7 +204,7 @@ public class Microcodes {
         String chosen = (String) JOptionPane.showInputDialog(null, uc_str, "Choose the Microcode", JOptionPane.QUESTION_MESSAGE, null, Microcode.MicrocodeTypes, Microcode.MicrocodeTypes[0]);
         int index = Arrays.asList(Microcode.MicrocodeTypes).indexOf(chosen);
         current.type = (index >= 0) ? index : Microcode.F3D;
-        System.out.printf("Couldn't find the microcode. Using %s\n", Microcode.MicrocodeTypes[current.type]);
+        System.out.println("Couldn't find the microcode. Using " + Microcode.MicrocodeTypes[current.type]);
 
         return current;
     }
