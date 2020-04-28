@@ -16,11 +16,13 @@ public class Cop1 {
 		public long DW;
 
 		public int getW(int index) {
-			return switch (mode32 ? index & 1 : 0) {
-				case 0 -> (int) DW;
-				case 1 -> (int) (DW >> 32);
-				default -> 0;
-			};
+			switch (mode32 ? index & 1 : 0) {
+			default:
+			case 0:
+				return (int) DW;
+			case 1:
+				return (int) (DW >> 32);
+			}
 		}
 
 		public void setW(int index, int w) {
@@ -103,10 +105,10 @@ public class Cop1 {
 	// called by Cpu
 	private void setRoundingModel(int fs) {
 		switch (FPCR[fs] & 3) {
-			case 0 -> roundingModel = RC_NEAR;
-			case 1 -> roundingModel = RC_CHOP;
-			case 2 -> roundingModel = RC_UP;
-			case 3 -> roundingModel = RC_DOWN;
+			case 0:  roundingModel = RC_NEAR;
+			case 1:  roundingModel = RC_CHOP;
+			case 2:  roundingModel = RC_UP;
+			case 3:  roundingModel = RC_DOWN;
 		}
 	}
 

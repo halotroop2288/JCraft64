@@ -45,15 +45,27 @@ public class HLEMain {
 		ABI1.loopval = 0;
 		ListLen = ListLen >>> 2;
 		switch (audio_ucode_detect()) {
-			case 1 -> ABI = ABI1.ABI1;
-			case 2 -> ABI = ABI2.ABI2;
-			case 3 -> ABI = ABI3.ABI3;
-			default -> {
+			case 1:
+				{
+					ABI = ABI1.ABI1;
+					break;
+				}
+			case 2:
+				{
+					ABI = ABI2.ABI2;
+					break;
+				}
+			case 3:
+			{
+				ABI = ABI3.ABI3;
+				break;
+			}
+			default: {
 				System.out.println("unknown audio ucode: " + audio_ucode_detect());
 				return;
 			}
 		}
-
+		
 		for (int x = 0; x < ListLen; x += 2) {
 			int pAddr = List + (x << 2);
 			inst1 = (ram[pAddr] << 24) | ((ram[pAddr + 1] & 0xff) << 16) | ((ram[pAddr + 2] & 0xff) << 8)

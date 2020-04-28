@@ -50,11 +50,11 @@ public class FlashRam {
 					return;
 			}
 			if (len > 0x10000) {
-				System.err.printf("DmaFromFlashram FlipBuffer to small (len: %d)\n", len);
+				System.err.println("DmaFromFlashram FlipBuffer to small (len: " + len +")");
 				len = 0x10000;
 			}
 			if ((len & 3) != 0) {
-				System.err.printf("Unaligned flash ram read ???\n");
+				System.err.println("Unaligned flash ram read ???");
 				return;
 			}
 			startOffset = startOffset << 1;
@@ -67,13 +67,13 @@ public class FlashRam {
 			break;
 		case FLASHRAM_MODE_STATUS:
 			if (startOffset != 0 && len != 8)
-				System.err.printf("Reading flashstatus not being handled correctly\nStart: %X len: %X\n", startOffset,
-						len);
+				System.err.println("Reading flashstatus not being handled correctly\n"
+					+ "Start: " + startOffset + " len: " + len);
 			dest.putInt(0, (int) (flashStatus >> 32));
 			dest.putInt(4, (int) (flashStatus));
 			break;
 		default:
-			System.err.printf("DmaFromFlashram Start: %X, Offset: %X len: %X\n", dest.arrayOffset(), startOffset, len);
+			System.err.println("DmaFromFlashram Start: " + dest.arrayOffset() + ", Offset: " + startOffset + " len: " + len);
 		}
 	}
 
@@ -84,7 +84,7 @@ public class FlashRam {
 			flashRamPointer = source;
 			break;
 		default:
-			System.err.printf("DmaToFlashram Start: %X, Offset: %X len: %X\n", source.arrayOffset(), startOffset, len);
+			System.err.println("DmaToFlashram Start: " + source.arrayOffset() + ", Offset: %X" + startOffset + " len: " + len);
 		}
 	}
 
@@ -94,7 +94,7 @@ public class FlashRam {
 		case 0x08000000:
 			return (int) (flashStatus >> 32);
 		default:
-			System.err.printf("Reading from flash ram status (%X)\n", pAddr);
+			System.err.println("Reading from flash ram status (" + pAddr + ")");
 			break;
 		}
 		return (int) (flashStatus >> 32);
@@ -141,8 +141,8 @@ public class FlashRam {
 				}
 				break;
 			default:
-				System.err.printf("Writing %X to flash ram command register\nFlashFlag: %d\n", flashRamCommand,
-						flashFlag);
+				System.err.println("Writing " + flashRamCommand + " to flash ram command register\n"
+					+ "FlashFlag: " + flashFlag);
 			}
 			flashFlag = FLASHRAM_MODE_NOPES;
 			break;
@@ -169,7 +169,7 @@ public class FlashRam {
 			flashStatus = 0x1111800400C20000L;
 			break;
 		default:
-			System.err.printf("Writing %X to flash ram command register\n", flashRamCommand);
+			System.err.println("Writing " + flashRamCommand + " to flash ram command register");
 		}
 	}
 

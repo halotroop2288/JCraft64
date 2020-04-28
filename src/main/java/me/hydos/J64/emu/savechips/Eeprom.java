@@ -68,23 +68,23 @@ public class Eeprom {
 			break;
 		case 4: // Read from Eeprom
 			if (command.get(0) != 2)
-				System.err.printf("What am I meant to do with this Eeprom Command\n");
+				System.err.println("What am I meant to do with this Eeprom Command");
 			if (command.get(1) != 8)
-				System.err.printf("What am I meant to do with this Eeprom Command\n");
+				System.err.println("What am I meant to do with this Eeprom Command");
 			command.position(4);
 			readFromEeprom(command.slice(), command.get(3));
 			break;
 		case 5:
 			if (command.get(0) != 10)
-				System.err.printf("What am I meant to do with this Eeprom Command\n");
+				System.err.println("What am I meant to do with this Eeprom Command");
 			if (command.get(1) != 1)
-				System.err.printf("What am I meant to do with this Eeprom Command\n");
+				System.err.println("What am I meant to do with this Eeprom Command");
 			command.position(4);
 			writeToEeprom(command.slice(), command.get(3));
 			break;
 		default:
 			if (showPifRamErrors)
-				System.err.printf("Unkown EepromCommand %d\n", command.get(2));
+				System.err.println("Unkown EepromCommand " + command.get(2));
 		}
 	}
 

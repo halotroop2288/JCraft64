@@ -1,6 +1,6 @@
 package me.hydos.J64;
 
-import me.hydos.J64.minecraft.blocks.N64Renderer;
+import me.hydos.J64.minecraft.N64Renderer;
 import me.hydos.J64.minecraft.registry.BlockRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -11,7 +11,8 @@ public class ClientMain implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-	BlockEntityRendererRegistry.INSTANCE.register(BlockRegistry.BLACK_N64_BLOCK_ENTITY, N64Renderer::new);
-	BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(), BlockRegistry.BLACK_N64, BlockRegistry.TV);
+		BlockEntityRendererRegistry.INSTANCE.register(BlockRegistry.N64_BE_TYPE, N64Renderer::new);
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), BlockRegistry.n64_blocks);
+		BlockRenderLayerMap.INSTANCE.putBlock(BlockRegistry.TV, RenderLayer.getCutout());
     }
 }

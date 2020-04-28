@@ -681,11 +681,11 @@ public class OpenGlGdp {
                 GL40.glEnable(GL40.GL_BLEND);
 
                 switch (Rsp.gdp.otherMode.w1 >> 16) {
-                    case 0x0448, 0x055A -> GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ONE);
-                    case 0x0C08, 0x0F0A -> GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ZERO);
-                    case 0x0C18, 0x0C19, 0x0050, 0x0055 -> GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
-                    case 0x0FA5, 0x5055 -> GL40.glBlendFunc(GL40.GL_ZERO, GL40.GL_ONE);
-                    default -> GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
+                    case 0x0448: case 0x055A: GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ONE);
+                    case 0x0C08: case 0x0F0A: GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ZERO);
+                    case 0x0C18: case 0x0C19: case 0x0050: case 0x0055: GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
+                    case 0x0FA5: case 0x5055: GL40.glBlendFunc(GL40.GL_ZERO, GL40.GL_ONE);
+                    default: GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
                 }
             } else {
                 GL40.glDisable(GL40.GL_BLEND);

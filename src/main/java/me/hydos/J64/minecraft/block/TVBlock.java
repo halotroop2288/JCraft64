@@ -1,6 +1,7 @@
-package me.hydos.J64.minecraft.blocks;
+package me.hydos.J64.minecraft.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.item.ItemPlacementContext;
