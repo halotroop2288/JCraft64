@@ -22,7 +22,6 @@ public class OpenGl {
                 Rsp.gdp.gDPSetDepthSource(Gbi.G_ZS_PIXEL); // 0
 
                 Rsp.gdp.gDPSetRenderMode(0, 0);
-
                 Rsp.gdp.gDPSetAlphaDither(Gbi.G_AD_DISABLE); // 3
                 Rsp.gdp.gDPSetColorDither(Gbi.G_CD_DISABLE); // 3
                 Rsp.gdp.gDPSetCombineKey(Gbi.G_CK_NONE); // 0

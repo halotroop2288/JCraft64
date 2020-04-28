@@ -31,5 +31,8 @@ public class Main implements ModInitializer {
 	public static Identifier makeID(String name)
 	{
 		return new Identifier("jcraft64", name);
+		Registry.register(Registry.BLOCK, N64_ID, N64);
+		Registry.register(Registry.ITEM, N64_ID, N64_ITEM);
+		Registry.register(Registry.BLOCK_ENTITY_TYPE, N64_ID, BlockEntityType.Builder.create(N64BlockEntity::new, N64).build(null));
 	}
 }
