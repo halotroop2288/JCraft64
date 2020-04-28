@@ -309,7 +309,7 @@ public class Pif {
 					channel += 1;
 				} else {
 					if (showPifRamErrors)
-						System.err.prprintlnUnknown Command in PifRamWrite(%X)\n", pifRam.get(curPos));
+						System.err.println("Unknown Command in PifRamWrite(" + pifRam.get(curPos) + ")");
 					curPos = 0x40;
 				}
 				break;
