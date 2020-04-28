@@ -1,11 +1,11 @@
 {
-	"credit": "Made with Blockbench",
+	"credit": "Made by halotroop2288 with Blockbench",
 	"textures": {
-		"base": "jcraft64:block/nintendo_sixty_four",
-		"cartridge": "jcraft64:block/cartridge",
+		"particle": "jcraft64:block/black_n64_base",
+		"base": "jcraft64:block/black_n64_base",
+		"cartridge": "jcraft64:block/n64_cartridge",
 		"gameart": "jcraft64:block/games/gameart",
-		"bottom": "jcraft64:block/nintendo_sixty_four_bottom",
-		"particle": "jcraft64:block/nintendo_sixty_four"
+		"bottom": "jcraft64:block/black_n64_bottom"
 	},
 	"elements": [
 		{
@@ -14,12 +14,12 @@
 			"to": [16, 3, 2.5],
 			"rotation": {"angle": 0, "axis": "y", "origin": [14.875, 1.5, 1.75]},
 			"faces": {
-				"north": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"},
-				"east": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"},
+				"north": {"uv": [0, 2.5, 3, 5.5], "texture": "#base", "cullface": "north"},
+				"east": {"uv": [0, 2.5, 3, 5.5], "texture": "#base", "cullface": "east"},
 				"south": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"},
 				"west": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"},
 				"up": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"},
-				"down": {"uv": [13, 13, 16, 16], "texture": "#bottom"}
+				"down": {"uv": [13, 13, 16, 16], "texture": "#bottom", "cullface": "down"}
 			}
 		},
 		{
@@ -28,12 +28,12 @@
 			"to": [2.5, 3, 2.5],
 			"rotation": {"angle": 0, "axis": "y", "origin": [1.375, 1.5, 1.75]},
 			"faces": {
-				"north": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"},
+				"north": {"uv": [0, 2.5, 3, 5.5], "texture": "#base", "cullface": "north"},
 				"east": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"},
 				"south": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"},
-				"west": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"},
+				"west": {"uv": [0, 2.5, 3, 5.5], "texture": "#base", "cullface": "west"},
 				"up": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"},
-				"down": {"uv": [0, 2.5, 3, 5.5], "texture": "#base"}
+				"down": {"uv": [0, 2.5, 3, 5.5], "texture": "#base", "cullface": "down"}
 			}
 		},
 		{
@@ -46,7 +46,7 @@
 				"east": {"uv": [0, 2.5, 2, 4.5], "texture": "#base"},
 				"south": {"uv": [0, 2.5, 2, 4.5], "texture": "#base"},
 				"west": {"uv": [0, 2.5, 2, 4.5], "texture": "#base"},
-				"down": {"uv": [0, 2.5, 2, 4.5], "texture": "#base"}
+				"down": {"uv": [0, 2.5, 2, 4.5], "texture": "#base", "cullface": "down"}
 			}
 		},
 		{
@@ -59,7 +59,7 @@
 				"east": {"uv": [0, 2.5, 2, 4.5], "texture": "#base"},
 				"south": {"uv": [0, 2.5, 2, 4.5], "texture": "#base"},
 				"west": {"uv": [0, 2.5, 2, 4.5], "texture": "#base"},
-				"down": {"uv": [0, 2.5, 2, 4.5], "texture": "#base"}
+				"down": {"uv": [0, 2.5, 2, 4.5], "texture": "#base", "cullface": "down"}
 			}
 		},
 		{
@@ -135,7 +135,7 @@
 			"rotation": {"angle": 0, "axis": "y", "origin": [10.625, 2, 15]},
 			"faces": {
 				"east": {"uv": [0, 2.25, 2, 4.25], "texture": "#base"},
-				"south": {"uv": [0, 2.25, 2, 8.25], "rotation": 90, "texture": "#base"},
+				"south": {"uv": [0, 2.25, 2, 8.25], "rotation": 90, "texture": "#base", "cullface": "south"},
 				"west": {"uv": [0, 2.25, 2, 4.25], "texture": "#base"},
 				"up": {"uv": [0, 2.25, 2, 8.25], "rotation": 90, "texture": "#base"},
 				"down": {"uv": [0, 2.25, 2, 8.25], "rotation": 90, "texture": "#base"}
@@ -147,11 +147,7 @@
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2.625, 0.99]},
 			"faces": {
 				"north": {"uv": [8, 0, 10.5, 1.75], "texture": "#base"},
-				"east": {"uv": [0, 0, 0, 1.75], "texture": "#missing"},
-				"south": {"uv": [0, 0, 2.5, 1.75], "texture": "#missing"},
-				"west": {"uv": [0, 0, 0, 1.75], "texture": "#missing"},
-				"up": {"uv": [0, 0, 2.5, 0], "texture": "#missing"},
-				"down": {"uv": [0, 0, 2.5, 0], "texture": "#missing"}
+				"south": {"uv": [0, 0, 2.5, 1.75], "texture": "#missing"}
 			}
 		},
 		{
@@ -163,8 +159,7 @@
 				"north": {"uv": [0, 0, 16, 16], "texture": "#gameart"},
 				"east": {"uv": [1, 0, 1.25, 4], "texture": "#cartridge"},
 				"west": {"uv": [1, 0, 1.25, 4], "texture": "#cartridge"},
-				"up": {"uv": [1, 0, 1.25, 4], "rotation": 90, "texture": "#cartridge"},
-				"down": {"uv": [1, 0, 1.25, 4], "rotation": 90, "texture": "#cartridge"}
+				"up": {"uv": [1, 0, 1.25, 4], "rotation": 90, "texture": "#cartridge"}
 			}
 		},
 		{
@@ -182,6 +177,40 @@
 			}
 		}
 	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [65, 0, 0],
+			"translation": [-6, 5, 2.5],
+			"scale": [-0.75, 0.75, -0.75]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [65, 0, 0],
+			"translation": [-6, 5, 2.5],
+			"scale": [-0.75, 0.75, -0.75]
+		},
+		"firstperson_righthand": {
+			"translation": [1.5, 6.5, -1.25],
+			"scale": [-0.65, 0.65, -0.65]
+		},
+		"firstperson_lefthand": {
+			"translation": [1.5, 6.5, -1.25],
+			"scale": [-0.65, 0.65, -0.65]
+		},
+		"ground": {
+			"translation": [0, 5, 0]
+		},
+		"gui": {
+			"rotation": [25, -180, 0],
+			"translation": [0, 5, 0]
+		},
+		"head": {
+			"translation": [0, 14, 0]
+		},
+		"fixed": {
+			"rotation": [-90, -180, 0],
+			"translation": [0, 0, -8.5]
+		}
+	},
 	"groups": [
 		{
 			"name": "Console",

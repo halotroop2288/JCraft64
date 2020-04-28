@@ -1,4 +1,4 @@
-package me.hydos.J64.minecraft.blocks;
+package me.hydos.J64.minecraft;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
