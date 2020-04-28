@@ -1,11 +1,11 @@
 {
 	"credit": "Made by halotroop2288 with Blockbench",
 	"textures": {
-		"particle": "jcraft64:block/black_n64_base",
-		"base": "jcraft64:block/black_n64_base",
+		"particle": "jcraft64:block/charcoal_n64_base",
+		"base": "jcraft64:block/charcoal_n64_base",
 		"cartridge": "jcraft64:block/n64_cartridge",
 		"gameart": "jcraft64:block/games/gameart",
-		"bottom": "jcraft64:block/black_n64_bottom"
+		"bottom": "jcraft64:block/charcoal_n64_bottom"
 	},
 	"elements": [
 		{

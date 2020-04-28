@@ -1,12 +1,11 @@
 package me.hydos.J64.minecraft.registry;
 
 import java.util.Arrays;
-import java.util.List;
 
 import me.hydos.J64.Main;
-import me.hydos.J64.minecraft.blocks.N64Block;
-import me.hydos.J64.minecraft.blocks.N64BlockEntity;
-import me.hydos.J64.minecraft.blocks.TVBlock;
+import me.hydos.J64.minecraft.block.N64Block;
+import me.hydos.J64.minecraft.block.TVBlock;
+import me.hydos.J64.minecraft.block.entity.N64BlockEntity;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -22,9 +21,9 @@ public class BlockRegistry {
 	
 	private static String[] n64_colours = // https://consolevariations.com/blog/every-nintendo-64-console-variation-ever-complete-color-list
 		{
-			"jungle_green", "ice_blue", "grape_purple", "fire_orange", "smoke_black", "watermelon_red", "white_blue", "white_red",
-			"pikachu_dark_blue", "pikachu_light_blue", "pikachu_orange", "pokemon_stadium",
-			"gold", "charcoal_orange",
+//			"jungle_green", "ice_blue", "grape_purple", "fire_orange", "smoke_black", "watermelon_red", "white_blue", "white_red",
+//			"pikachu_dark_blue", "pikachu_light_blue", "pikachu_orange", "pokemon_stadium",
+//			"gold", "charcoal_orange",
 			"charcoal"
 		};
 

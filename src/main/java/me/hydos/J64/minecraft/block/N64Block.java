@@ -1,6 +1,7 @@
-package me.hydos.J64.minecraft.blocks;
+package me.hydos.J64.minecraft.block;
 
 import me.hydos.J64.emu.util.EmuManager;
+import me.hydos.J64.minecraft.block.entity.N64BlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

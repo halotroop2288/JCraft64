@@ -1,5 +1,6 @@
-package me.hydos.J64.minecraft.blocks;
+package me.hydos.J64.minecraft;
 
+import me.hydos.J64.minecraft.block.entity.N64BlockEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;

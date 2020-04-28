@@ -1,4 +1,4 @@
-package me.hydos.J64.minecraft.blocks;
+package me.hydos.J64.minecraft.block.entity;
 
 import me.hydos.J64.minecraft.registry.BlockRegistry;
 import net.minecraft.block.entity.BlockEntity;
