@@ -17,7 +17,7 @@ import net.minecraft.util.registry.Registry;
 public class Main implements ModInitializer {
 
 	public static final Identifier N64_ID = new Identifier("jcraft64", "black_n64");
-	public static final Block N64 = new N64Block(FabricBlockSettings.of(Material.ANVIL).build());
+	public static final Block N64 = new N64Block(FabricBlockSettings.of(Material.ANVIL).nonOpaque().build());
 	public static final Item N64_ITEM = new BlockItem(N64, new Item.Settings().group(ItemGroup.COMBAT));
 	public static BlockEntityType<N64BlockEntity> n64BlockEntity;
 
