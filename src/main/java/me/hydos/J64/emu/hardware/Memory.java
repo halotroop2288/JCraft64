@@ -130,7 +130,7 @@ public class Memory {
 	// called by Cpu
 	public byte loadByte(int pAddr) throws MemoryException {
 		if (DEBUG_MEMORY)
-			System.out.printf("LB:%X ", pAddr);
+			System.out.println("LB:" + pAddr + " ");
 		if (pAddr >= 0x00000000 && pAddr < 0x00400000) // RAM
 			return RDRAM.get(pAddr);
 		else if (pAddr >= 0x00400000 && pAddr < 0x00800000) // Extended RAM
@@ -146,7 +146,7 @@ public class Memory {
 	// called by Cpu
 	public short loadHalfWord(int pAddr) throws MemoryException {
 		if (DEBUG_MEMORY)
-			System.out.printf("LH:%X ", pAddr);
+			System.out.println("LH:" + pAddr + " ");
 		if (pAddr >= 0x00000000 && pAddr < 0x00400000) // RAM
 			return RDRAM.getShort(pAddr);
 		else if (pAddr >= 0x00400000 && pAddr < 0x00800000) // Extended RAM
@@ -162,7 +162,7 @@ public class Memory {
 	// called by Cpu
 	public final int loadWord(int pAddr) throws MemoryException {
 		if (DEBUG_MEMORY)
-			System.out.printf("LW:%X ", pAddr);
+			System.out.println("LW:"+ pAddr + " ");
 		if (pAddr >= 0x00000000 && pAddr < 0x00800000) // RAM = 0x00000000 to 0x003FFFFF, Extended RAM = 0x00400000 to
 														// 0x007FFFFF
 			return (rdram[pAddr] << 24) | ((rdram[pAddr + 1] & 0xff) << 16) | ((rdram[pAddr + 2] & 0xff) << 8)
@@ -184,14 +184,14 @@ public class Memory {
 	// called by Cpu
 	public long loadDoubleWord(int pAddr) throws MemoryException {
 		if (DEBUG_MEMORY)
-			System.out.printf("LD:%X ", pAddr);
+			System.out.println("LD:" + pAddr + " ");
 		return (((long) loadWord(pAddr)) << 32) | (((long) loadWord(pAddr + 4)) & 0xFFFFFFFFL);
 	}
 
 	// called by Cpu
 	public void storeByte(int pAddr, byte value) throws MemoryException {
 		if (DEBUG_MEMORY)
-			System.out.printf("SB:%X ", pAddr);
+			System.out.println("SB:" + pAddr + " ");
 		if (pAddr >= 0x00000000 && pAddr < 0x00400000) // RAM
 			RDRAM.put(pAddr, value);
 		else if (pAddr >= 0x00400000 && pAddr < 0x00800000) // Extended RAM
@@ -207,7 +207,7 @@ public class Memory {
 	// called by Cpu
 	public void storeHalfWord(int pAddr, short value) throws MemoryException {
 		if (DEBUG_MEMORY)
-			System.out.printf("SH:%X ", pAddr);
+			System.out.println("SH:" + pAddr + " ");
 		if (pAddr >= 0x00000000 && pAddr < 0x00400000) // RAM
 			RDRAM.putShort(pAddr, value);
 		else if (pAddr >= 0x00400000 && pAddr < 0x00800000) // Extended RAM
@@ -223,7 +223,7 @@ public class Memory {
 	// called by Cpu
 	public void storeWord(int pAddr, int value) throws MemoryException {
 		if (DEBUG_MEMORY)
-			System.out.printf("SW:%X ", pAddr);
+			System.out.println("SW:" + pAddr + " ");
 		if (pAddr >= 0x00000000 && pAddr < 0x00400000) // RAM
 			RDRAM.putInt(pAddr, value);
 		else if (pAddr >= 0x00400000 && pAddr < 0x00800000) // Extended RAM
@@ -239,7 +239,7 @@ public class Memory {
 	// called by Cpu
 	public void storeDoubleWord(int pAddr, long value) throws MemoryException {
 		if (DEBUG_MEMORY)
-			System.out.printf("SD:%X ", pAddr);
+			System.out.println("SD:" + pAddr + " ");
 		storeWord(pAddr, (int) (value >> 32));
 		storeWord(pAddr + 4, (int) value);
 	}
@@ -625,7 +625,7 @@ public class Memory {
 						checkInterrupts.run();
 					}
 					if ((value & RegisterSP.SP_SET_INTR) != 0)
-						System.err.print("SP_SET_INTR\n");
+						System.err.println("SP_SET_INTR");
 					if ((value & RegisterSP.SP_CLR_SSTEP) != 0) {
 						regSP[RegisterSP.SP_STATUS_REG] &= ~RegisterSP.SP_STATUS_SSTEP;
 					}

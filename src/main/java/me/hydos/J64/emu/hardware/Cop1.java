@@ -146,7 +146,7 @@ public class Cop1 {
 
 	public void ctC1(int fs, int value) {
 		if (fs != 31) {
-			System.err.print("CTC1 what register are you writing to ?\n");
+			System.err.println("CTC1 what register are you writing to?");
 			return;
 		}
 		FPCR[fs] = value;
@@ -155,7 +155,7 @@ public class Cop1 {
 
 	public int cfC1(int fs) {
 		if (fs != 31 && fs != 0) {
-			System.err.print("CFC1 what register are you reading from ?\n");
+			System.err.println("CFC1 what register are you reading from?");
 			return 0;
 		}
 		return FPCR[fs];
@@ -256,12 +256,15 @@ public class Cop1 {
 			float temp1 = FPR[ft].getF();
 
 			if (Float.isNaN(temp0) || Float.isNaN(temp1)) {
-				System.err.print("Nan ?\n");
+				System.err.println("Nan ?");
 				less = false;
 				equal = false;
 				unorded = true;
 				if ((funct & 8) != 0) {
-					System.err.printf("Signal InvalidOperationException\nin r4300i_COP1_S_CMP\n%X  %ff\n%X  %ff\n", temp0, temp0, temp1, temp1);
+					System.err.println("Signal InvalidOperationException\n"
+						+ "in r4300i_COP1_S_CMP\n"
+						+ temp0 + "  " + temp0 + "\n"
+						+ temp1 + "  " + temp1);
 				}
 			} else {
 				less = temp0 < temp1;
@@ -371,12 +374,12 @@ public class Cop1 {
 			double temp1 = FPR[ft].getD();
 
 			if (Double.isNaN(temp0) || Double.isNaN(temp1)) {
-				System.err.print("Nan ?\n");
+				System.err.println("Nan ?");
 				less = false;
 				equal = false;
 				unorded = true;
 				if ((funct & 8) != 0) {
-					System.err.print("Signal InvalidOperationException\nin r4300i_COP1_D_CMP\n");
+					System.err.println("Signal InvalidOperationException\nin r4300i_COP1_D_CMP");
 				}
 			} else {
 				less = temp0 < temp1;
