@@ -573,9 +573,9 @@ public class Combiners {
         cached.right = null;
 
         switch (compiler) {
-            case TEXTURE_ENV -> cached.compiled = new TextureEnv(color, alpha);
-            case TEXTURE_ENV_COMBINE -> cached.compiled = new TextureEnvCombiner(color, alpha);
-            case NV_REGISTER_COMBINERS -> cached.compiled = new NVRegisterCombiner(color, alpha);
+            case TEXTURE_ENV:  cached.compiled = new TextureEnv(color, alpha);
+            case TEXTURE_ENV_COMBINE:  cached.compiled = new TextureEnvCombiner(color, alpha);
+            case NV_REGISTER_COMBINERS:  cached.compiled = new NVRegisterCombiner(color, alpha);
         }
 
         return cached;
@@ -657,48 +657,48 @@ public class Combiners {
 
     public final void setConstant(float[] constant, int color, int alpha) {
         switch (color) {
-            case PRIMITIVE -> {
+            case PRIMITIVE:  {
                 constant[0] = primColor.r;
                 constant[1] = primColor.g;
                 constant[2] = primColor.b;
             }
-            case ENVIRONMENT -> {
+            case ENVIRONMENT:  {
                 constant[0] = envColor[0];
                 constant[1] = envColor[1];
                 constant[2] = envColor[2];
             }
-            case PRIMITIVE_ALPHA -> {
+            case PRIMITIVE_ALPHA:  {
                 constant[0] = primColor.a;
                 constant[1] = primColor.a;
                 constant[2] = primColor.a;
             }
-            case ENV_ALPHA -> {
+            case ENV_ALPHA:  {
                 constant[0] = envColor[3];
                 constant[1] = envColor[3];
                 constant[2] = envColor[3];
             }
-            case PRIM_LOD_FRAC -> {
+            case PRIM_LOD_FRAC:  {
                 constant[0] = primColor.l;
                 constant[1] = primColor.l;
                 constant[2] = primColor.l;
             }
-            case ONE -> {
+            case ONE:  {
                 constant[0] = 1.0f;
                 constant[1] = 1.0f;
                 constant[2] = 1.0f;
             }
-            case ZERO -> {
+            case ZERO:  {
                 constant[0] = 0.0f;
                 constant[1] = 0.0f;
                 constant[2] = 0.0f;
             }
         }
         switch (alpha) {
-            case PRIMITIVE_ALPHA -> constant[3] = primColor.a;
-            case ENV_ALPHA -> constant[3] = envColor[3];
-            case PRIM_LOD_FRAC -> constant[3] = primColor.l;
-            case ONE -> constant[3] = 1.0f;
-            case ZERO -> constant[3] = 0.0f;
+            case PRIMITIVE_ALPHA:  constant[3] = primColor.a;
+            case ENV_ALPHA:  constant[3] = envColor[3];
+            case PRIM_LOD_FRAC:  constant[3] = primColor.l;
+            case ONE:  constant[3] = 1.0f;
+            case ZERO:  constant[3] = 0.0f;
         }
     }
 

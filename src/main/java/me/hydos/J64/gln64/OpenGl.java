@@ -5,7 +5,6 @@ import net.minecraft.client.MinecraftClient;
 import org.lwjgl.opengl.GL40;
 
 import java.nio.FloatBuffer;
-import javax.swing.JFrame;
 
 public class OpenGl {
 

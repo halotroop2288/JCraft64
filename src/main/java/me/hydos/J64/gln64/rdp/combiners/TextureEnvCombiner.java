@@ -182,14 +182,14 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                     usesT1 |= a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA;
 
                     switch (a.stage[i].op[j].op) {
-                        case Combiners.LOAD -> {
+                        case Combiners.LOAD: {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     (a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA) && (curUnit == 0))
                                 curUnit++;
                             alpha[curUnit].combine = GL40.GL_REPLACE;
                             SetAlphaCombinerArg(curUnit, 0, a.stage[i].op[j].param1);
                         }
-                        case Combiners.SUB -> {
+                        case Combiners.SUB: {
                             if (!Combiners.ARB_texture_env_combine)
                                 break;
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
@@ -210,7 +210,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                                 curUnit++;
                             }
                         }
-                        case Combiners.MUL -> {
+                        case Combiners.MUL: {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     (a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA) && (curUnit == 0))
                                 curUnit++;
@@ -218,7 +218,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             SetAlphaCombinerArg(curUnit, 1, a.stage[i].op[j].param1);
                             curUnit++;
                         }
-                        case Combiners.ADD -> {
+                        case Combiners.ADD: {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     (a.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA) && (curUnit == 0))
                                 curUnit++;
@@ -233,7 +233,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             }
                             curUnit++;
                         }
-                        case Combiners.INTER -> {
+                        case Combiners.INTER: {
                             usesT0 |= (a.stage[i].op[j].param2 == Combiners.TEXEL0_ALPHA) || (a.stage[i].op[j].param3 == Combiners.TEXEL0_ALPHA);
                             usesT1 |= (a.stage[i].op[j].param2 == Combiners.TEXEL1_ALPHA) || (a.stage[i].op[j].param3 == Combiners.TEXEL1_ALPHA);
                             alpha[curUnit].combine = GL40.GL_INTERPOLATE;
@@ -296,14 +296,14 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                     usesT1 |= ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA));
 
                     switch (c.stage[i].op[j].op) {
-                        case Combiners.LOAD -> {
+                        case Combiners.LOAD: {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA)) && (curUnit == 0))
                                 curUnit++;
                             color[curUnit].combine = GL40.GL_REPLACE;
                             SetColorCombinerArg(curUnit, 0, c.stage[i].op[j].param1);
                         }
-                        case Combiners.SUB -> {
+                        case Combiners.SUB: {
                             if (!Combiners.ARB_texture_env_combine)
                                 break;
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
@@ -324,7 +324,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                                 curUnit++;
                             }
                         }
-                        case Combiners.MUL -> {
+                        case Combiners.MUL: {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA)) && (curUnit == 0))
                                 curUnit++;
@@ -332,7 +332,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             SetColorCombinerArg(curUnit, 1, c.stage[i].op[j].param1);
                             curUnit++;
                         }
-                        case Combiners.ADD -> {
+                        case Combiners.ADD: {
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&
                                     ((c.stage[i].op[j].param1 == Combiners.TEXEL1) || (c.stage[i].op[j].param1 == Combiners.TEXEL1_ALPHA)) && (curUnit == 0))
                                 curUnit++;
@@ -347,7 +347,7 @@ public class TextureEnvCombiner implements Combiners.CompiledCombiner {
                             }
                             curUnit++;
                         }
-                        case Combiners.INTER -> {
+                        case Combiners.INTER: {
                             usesT0 |= (c.stage[i].op[j].param2 == Combiners.TEXEL0) || (c.stage[i].op[j].param3 == Combiners.TEXEL0) || (c.stage[i].op[j].param3 == Combiners.TEXEL0_ALPHA);
                             usesT1 |= (c.stage[i].op[j].param2 == Combiners.TEXEL1) || (c.stage[i].op[j].param3 == Combiners.TEXEL1) || (c.stage[i].op[j].param3 == Combiners.TEXEL1_ALPHA);
                             if (!(Combiners.ARB_texture_env_crossbar || Combiners.NV_texture_env_combine4) &&

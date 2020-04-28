@@ -180,25 +180,33 @@ public class EmuManager {
             cpu.GPR[30] = 0x00000000;
 
             switch (country) {
-                case 0x44, 0x46, 0x49, 0x50, 0x53, 0x55, 0x58, 0x59 -> {
+            case 0x44:
+            case 0x46:
+            case 0x49:
+            case 0x50:
+            case 0x53:
+            case 0x55:
+            case 0x58:
+            case 0x59:
+            {
                     switch (cicChip) {
-                        case 2 -> {
+                        case 2: {
                             cpu.GPR[5] = 0xC0F1D859;
                             cpu.GPR[14] = 0x2DE108EA;
                             cpu.GPR[24] = 0x00000000;
                         }
-                        case 3 -> {
+                        case 3: {
                             cpu.GPR[5] = 0xD4646273;
                             cpu.GPR[14] = 0x1AF99984;
                             cpu.GPR[24] = 0x00000000;
                         }
-                        case 5 -> {
+                        case 5: {
                             mem.DMEM.putInt(0x1004, 0xBDA807FC);
                             cpu.GPR[5] = 0xDECAAAD1;
                             cpu.GPR[14] = 0x0CF85C13;
                             cpu.GPR[24] = 0x00000002;
                         }
-                        case 6 -> {
+                        case 6: {
                             cpu.GPR[5] = 0xB04DC903;
                             cpu.GPR[14] = 0x1AF99984;
                             cpu.GPR[24] = 0x00000002;
@@ -208,7 +216,7 @@ public class EmuManager {
                     cpu.GPR[23] = 0x00000006;
                     cpu.GPR[31] = 0xA4001554;
                 }
-                default -> {
+                default: {
                     switch (cicChip) {
                         case 2:
                             cpu.GPR[5] = 0xC95973D5;
@@ -234,8 +242,8 @@ public class EmuManager {
                 }
             }
             switch (cicChip) {
-                case 1 -> cpu.GPR[22] = 0x0000003F;
-                case 2 -> {
+                case 1: cpu.GPR[22] = 0x0000003F;
+                case 2: {
                     cpu.GPR[1] = 0x00000001;
                     cpu.GPR[2] = 0x0EBDA536;
                     cpu.GPR[3] = 0x0EBDA536;
@@ -246,7 +254,7 @@ public class EmuManager {
                     cpu.GPR[22] = 0x0000003F;
                     cpu.GPR[25] = 0x9DEBB54F;
                 }
-                case 3 -> {
+                case 3: {
                     cpu.GPR[1] = 0x00000001;
                     cpu.GPR[2] = 0x49A5EE96;
                     cpu.GPR[3] = 0x49A5EE96;
@@ -257,7 +265,7 @@ public class EmuManager {
                     cpu.GPR[22] = 0x00000078;
                     cpu.GPR[25] = 0x825B21C9;
                 }
-                case 5 -> {
+                case 5: {
                     mem.DMEM.putInt(0x1000, 0x3C0DBFC0);
                     mem.DMEM.putInt(0x1008, 0x25AD07C0);
                     mem.DMEM.putInt(0x100C, 0x31080080);
@@ -275,7 +283,7 @@ public class EmuManager {
                     cpu.GPR[22] = 0x00000091;
                     cpu.GPR[25] = 0xCDCE565F;
                 }
-                case 6 -> {
+                case 6: {
                     cpu.GPR[1] = 0x00000000;
                     cpu.GPR[2] = 0xA95930A4;
                     cpu.GPR[3] = 0xA95930A4;
