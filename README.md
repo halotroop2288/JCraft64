@@ -1,9 +1,8 @@
-# Fabric Example Mod
+# JCraft64
 
-## Setup
-
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+JCraft64 is a mod for Minecraft (using Fabric Loader), which incorporates a Nintendo 64 
+emulator as an in-game item and block.
 
 ## License
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This mod is released under the GPLv3 Public License. For more info see LICENSE.
