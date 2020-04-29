@@ -8,7 +8,6 @@ import java.nio.ByteBuffer;
 import javax.swing.JFrame;
 
 import me.hydos.J64.api.plugin.GfxPlugin;
-import me.hydos.J64.gingerlite.GingerLite;
 import net.minecraft.client.MinecraftClient;
 
 public class GLN64jPlugin implements GfxPlugin {
@@ -140,10 +139,6 @@ public class GLN64jPlugin implements GfxPlugin {
             OpenGlGdp.OGL_ResizeWindow();
             if (DEBUG) Debug.OpenDebugDlg();
         });
-    }
-
-    public void showCFB() {
-        if (DEBUG) System.out.println("GFX Plugin (" + name + ") showCFB.");
     }
 
     public void updateScreen() {
