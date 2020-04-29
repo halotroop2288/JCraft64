@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-public class Cop1 {
+public class CoProcessor1 {
 
 	public static final int REVISION_REGISTER = 0;
 	public static final int FSTATUS_REGISTER = 31;
@@ -81,7 +81,7 @@ public class Cop1 {
 			new MathContext(7, RoundingMode.CEILING), new MathContext(7, RoundingMode.FLOOR) };
 
 	/** Creates a new instance of Cop1 */
-	public Cop1() {
+	public CoProcessor1() {
 		for (int i = 0; i < FPR.length; i++)
 			FPR[i] = new MipsDword();
 		FPCR[REVISION_REGISTER] = 0x00000511;

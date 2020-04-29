@@ -1,6 +1,6 @@
 package me.hydos.J64.emu.hardware;
 
-public class Cop0 {
+public class CoProcessor0 {
 
 	private static final boolean DEBUG_EXCEPTIONS = false;
 	private static final boolean DEBUG_TLB = false;
@@ -207,7 +207,7 @@ public class Cop0 {
 	/**
 	 * Creates a new instance of Cop0
 	 */
-	public Cop0(int countPerOp) throws TlbException {
+	public CoProcessor0(int countPerOp) throws TlbException {
 		this.countPerOp = countPerOp;
 
 		try {

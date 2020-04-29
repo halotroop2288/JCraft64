@@ -1,9 +1,11 @@
 package me.hydos.J64.gingerlite;
 
 import me.hydos.J64.gingerlite.image.Image;
-import net.minecraft.client.MinecraftClient;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -19,10 +21,6 @@ public class GingerLite {
 
     private static final List<Integer> vaoList = new ArrayList<>();
     private static final List<Integer> vboList = new ArrayList<>();
-
-    public static void init() {
-
-    }
 
     public static void enable(int GLFUNC) {
         GL11.glEnable(GLFUNC);
