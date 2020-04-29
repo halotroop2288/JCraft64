@@ -76,9 +76,9 @@ public class Debug {
 
     public static void DebugMsg(int type, String format, Object... args) {
         if (DumpMessages && dumpFile != null) {
-            dumpFile.printf(format, args);
+            dumpFile.println(format + args);
         } else {
-            System.out.printf(format, args);
+            System.out.println(format + args);
         }
     }
 

@@ -75,8 +75,7 @@ public class EmuManager {
         closeCpu();
 
         Rom rom = new Rom(romFile);
-        if (DEBUG)
-            System.out.println("Opened rom: " + romFile);
+        if (DEBUG) System.out.println("Opened rom: " + romFile);
 
         File Directory = new File(AUTO_SAVE_DIR);
         if (!Directory.exists())
@@ -106,7 +105,7 @@ public class EmuManager {
         try {
             coprocessor0 = new CoProcessor0(countPerOp);
         } catch (CoProcessor0.TlbException ex) {
-            System.err.print("Failed to allocate Memory\n");
+            System.err.println("Failed to allocate Memory");
             exit();
         }
         assert coprocessor0 != null;

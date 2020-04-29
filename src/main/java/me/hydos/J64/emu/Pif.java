@@ -110,10 +110,10 @@ public class Pif {
 	public boolean loadPifRom(int country) {
 		switch (country) {
 		case 0x44: // Germany
-		case 0x46: // french
-		case 0x49: // Italian
+		case 0x46: // France
+		case 0x49: // Italy
 		case 0x50: // Europe
-		case 0x53: // Spanish
+		case 0x53: // Spain
 		case 0x55: // Australia
 		case 0x58: // X (PAL)
 		case 0x59: // X (PAL)
@@ -125,7 +125,7 @@ public class Pif {
 		case 0x4A: // Japan
 			break;
 		default:
-			System.err.printf("Unknown country in LoadPifRom\n");
+			System.err.println("Unknown country in LoadPifRom");
 		}
 		Arrays.fill(pifRom, 0, 0x7C0, (byte) 0);
 		return false;
@@ -135,7 +135,7 @@ public class Pif {
 		// shutdownPlugins();
 		String controller_plugin = cfg.getProperty(CONTROLLER_PLUGIN, "DEFAULT_CONTROLLER_PLUGIN");
 		try {
-			Class c = Class.forName(controller_plugin);
+			Class<?> c = Class.forName(controller_plugin);
 			inputPlugin = (InputPlugin) c.newInstance();
 		} catch (Exception ex) {
 			System.err.println("No controller plugin loaded.");
@@ -228,7 +228,7 @@ public class Pif {
 					channel += 1;
 				} else {
 					if (showPifRamErrors)
-						System.err.printf("Unknown Command in PifRamRead(%X)\n", pifRam.get(curPos));
+						System.err.println("Unknown Command in PifRamRead(" + pifRam.get(curPos) + ")");
 					curPos = 0x40;
 				}
 				break;
@@ -263,7 +263,7 @@ public class Pif {
 				break;
 			default:
 				if (showPifRamErrors)
-					System.err.printf("Unkown PifRam control: %d\n", pifRam.get(0x3F));
+					System.err.println("Unkown PifRam control: " + pifRam.get(0x3F));
 			}
 			return;
 		}
@@ -303,13 +303,13 @@ public class Pif {
 						eeprom.eepromCommand(pifRam.slice(), regs.saveUsing, showPifRamErrors);
 						pifRam.position(0);
 					} else {
-						System.err.printf("Command on channel 5?\n");
+						System.err.println("Command on channel 5?");
 					}
 					curPos += (pifRam.get(curPos) & 0xFF) + (pifRam.get(curPos + 1) & 0x3F) + 1;
 					channel += 1;
 				} else {
 					if (showPifRamErrors)
-						System.err.printf("Unknown Command in PifRamWrite(%X)\n", pifRam.get(curPos));
+						System.err.println("Unknown Command in PifRamWrite(" + pifRam.get(curPos) + ")");
 					curPos = 0x40;
 				}
 				break;
@@ -397,7 +397,7 @@ public class Pif {
 			break;
 		default:
 			if (showPifRamErrors)
-				System.err.printf("Unknown ControllerCommand %d\n", command.get(2));
+				System.err.println("Unknown ControllerCommand " + command.get(2));
 		}
 	}
 
