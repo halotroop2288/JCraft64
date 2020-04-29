@@ -42,10 +42,7 @@ public class OpenGlGdp {
         public GLVertex() {
         }
 
-        public GLVertex(float x, float y, float z, float w,
-                        float r1, float g1, float b1, float a1,
-                        float r2, float g2, float b2, float a2,
-                        float s0, float t0, float s1, float t1, float f) {
+        public GLVertex(float x, float y, float z, float w, float r1, float g1, float b1, float a1, float r2, float g2, float b2, float a2, float s0, float t0, float s1, float t1, float f) {
             vtx = FloatBuffer.allocate(4);
             vtx.put(x);
             vtx.put(y);

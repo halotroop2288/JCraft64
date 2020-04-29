@@ -261,7 +261,9 @@ public class CoProcessor1 {
 				equal = false;
 				unorded = true;
 				if ((funct & 8) != 0) {
-					System.err.printf("Signal InvalidOperationException\nin r4300i_COP1_S_CMP\n%X  %ff\n%X  %ff\n", temp0, temp0, temp1, temp1);
+					System.err.println("Signal InvalidOperationException\nin r4300i_COP1_S_CMP\n"
+						+ temp0 + "  " + temp0 + "\n"
+						+ temp1 + "  " + temp1 + "\n");
 				}
 			} else {
 				less = temp0 < temp1;

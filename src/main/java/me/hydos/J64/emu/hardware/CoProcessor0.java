@@ -86,29 +86,30 @@ public class CoProcessor0 {
 	// used by Cpu, DebugOps
 	public int[] CP0 = new int[33];
 
-	// Exceptions //////////////////////////////////////////////////////////////
+	// Exceptions // TODO: Implement commented exceptions
 
 	private static final int EXC_INT = 0 << 2; /* interrupt */
-	private static final int EXC_MOD = 1 << 2; /* Tlb mod */
+//	private static final int EXC_MOD = 1 << 2; /* Tlb mod */
 	private static final int EXC_RMISS = 2 << 2; /* Read Tlb Miss */
-	private static final int EXC_WMISS = 3 << 2; /* Write Tlb Miss */
+//	private static final int EXC_WMISS = 3 << 2; /* Write Tlb Miss */
 	private static final int EXC_RADE = 4 << 2; /* Read Address Error */
 	private static final int EXC_WADE = 5 << 2; /* Write Address Error */
-	private static final int EXC_IBE = 6 << 2; /* Instruction Bus Error */
-	private static final int EXC_DBE = 7 << 2; /* Data Bus Error */
+//	private static final int EXC_IBE = 6 << 2; /* Instruction Bus Error */
+//	private static final int EXC_DBE = 7 << 2; /* Data Bus Error */
 	private static final int EXC_SYSCALL = 8 << 2; /* SYSCALL */
-	private static final int EXC_BREAK = 9 << 2; /* BREAKpoint */
-	private static final int EXC_II = 10 << 2; /* Illegal Instruction */
-	private static final int EXC_CPU = 11 << 2; /* CoProcessor Unusable */
-	private static final int EXC_OV = 12 << 2; /* OVerflow */
-	private static final int EXC_TRAP = 13 << 2; /* Trap exception */
-	private static final int EXC_VCEI = 14 << 2; /* Virt. Coherency on Inst. fetch */
-	private static final int EXC_FPE = 15 << 2; /* Floating Point Exception */
-	private static final int EXC_WATCH = 23 << 2; /* Watchpoint reference */
-	private static final int EXC_VCED = 31 << 2; /* Virt. Coherency on data read */
+	private static final int EXC_BREAK = 9 << 2; /* Breakpoint */
+//	private static final int EXC_II = 10 << 2; /* Illegal Instruction */
+	private static final int EXC_CPU = 11 << 2; /* Co-processor Unusable */
+//	private static final int EXC_OV = 12 << 2; /* Overflow */
+//	private static final int EXC_TRAP = 13 << 2; /* Trap exception */
+//	private static final int EXC_VCEI = 14 << 2; /* Virt. Coherency on Inst. fetch */
+//	private static final int EXC_FPE = 15 << 2; /* Floating Point Exception */
+//	private static final int EXC_WATCH = 23 << 2; /* Watchpoint reference */
+//	private static final int EXC_VCED = 31 << 2; /* Virt. Coherency on data read */
 
-	// Tlb /////////////////////////////////////////////////////////////////////
+	// Tlb //
 
+	@SuppressWarnings("serial")
 	public static class TlbException extends Exception {
 		public TlbException(String message) {
 			super(message);
