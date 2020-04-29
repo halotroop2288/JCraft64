@@ -1,12 +1,13 @@
-package me.hydos.J64.gln64.opcodes;
+package me.hydos.J64.gfx.opcodes;
+
+import me.hydos.J64.gfx.rdp.Gdp;
+import me.hydos.J64.gfx.rsp.Gsp;
 
 import static me.hydos.J64.emu.util.debug.Debug.*;
-import static me.hydos.J64.gfx.Gbi.*;
 
-import me.hydos.J64.gfx.opcodes.F3dex2;
-import me.hydos.J64.gfx.rdp.Gdp;
 import me.hydos.J64.gfx.rsp.GBIFunc;
-import me.hydos.J64.gfx.rsp.Gsp;
+
+import static me.hydos.J64.gfx.Gbi.*;
 
 public class F3dexbg extends F3dex2 {
 
@@ -49,7 +50,7 @@ public class F3dexbg extends F3dex2 {
                     break;
                 }
                 default:
-                    System.err.println("moveword unknown (index: 0x" + index + ", offset 0x" + offset + ")");
+                    System.err.printf("moveword unknown (index: 0x%08X, offset 0x%08X)\n", index, offset);
             }
         }
     };
@@ -99,7 +100,7 @@ public class F3dexbg extends F3dex2 {
                     gsp.gSPNormals(gsp.RSP_SegmentToPhysical(w1));
                     break;
                 default:
-                    System.err.println("movemem unknown (" + idx + ")");
+                    System.err.printf("movemem unknown (%d)\n", idx);
             }
         }
     };

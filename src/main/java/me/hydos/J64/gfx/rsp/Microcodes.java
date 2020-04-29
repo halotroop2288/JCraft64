@@ -1,4 +1,4 @@
-package me.hydos.J64.gln64.rsp;
+package me.hydos.J64.gfx.rsp;
 
 import me.hydos.J64.emu.util.debug.Debug;
 import me.hydos.J64.gfx.GLN64jPlugin;
@@ -8,6 +8,7 @@ import me.hydos.J64.gfx.opcodes.F3d;
 import me.hydos.J64.gfx.opcodes.F3ddkr;
 import me.hydos.J64.gfx.opcodes.F3dex;
 import me.hydos.J64.gfx.opcodes.F3dex2;
+import me.hydos.J64.gfx.opcodes.F3dexbg;
 import me.hydos.J64.gfx.opcodes.F3dpd;
 import me.hydos.J64.gfx.opcodes.F3dwrus;
 import me.hydos.J64.gfx.opcodes.L3d;
@@ -16,9 +17,7 @@ import me.hydos.J64.gfx.opcodes.L3dex2;
 import me.hydos.J64.gfx.opcodes.Rdpfuncs2;
 import me.hydos.J64.gfx.opcodes.S2dex;
 import me.hydos.J64.gfx.opcodes.S2dex2;
-import me.hydos.J64.gfx.rsp.GBIFunc;
-import me.hydos.J64.gfx.rsp.Microcode;
-import me.hydos.J64.gln64.opcodes.F3dexbg;
+
 import java.util.Arrays;
 import java.util.zip.Adler32;
 import java.util.zip.Checksum;
@@ -132,7 +131,7 @@ public class Microcodes {
             if (uc_crc == specialMicrocodes[i].crc) {
                 current.type = specialMicrocodes[i].type;
                 if (Debug.DEBUG_MICROCODE)
-                    System.out.println("Found microcode by crc. Using " + Microcode.MicrocodeTypes[current.type]);
+                    System.out.printf("Found microcode by crc. Using %s\n", Microcode.MicrocodeTypes[current.type]);
                 return current;
             }
         }
@@ -185,7 +184,7 @@ public class Microcodes {
                 if (type != Microcode.NONE) {
                     current.type = type;
                     if (Debug.DEBUG_MICROCODE)
-                        System.out.println("Found microcode by standard text. Using " + Microcode.MicrocodeTypes[current.type]);
+                        System.out.printf("Found microcode by standard text. Using %s\n", Microcode.MicrocodeTypes[current.type]);
                     return current;
                 }
 
@@ -197,7 +196,7 @@ public class Microcodes {
             if (uc_str.compareTo(specialMicrocode.text) == 0) {
                 current.type = specialMicrocode.type;
                 if (Debug.DEBUG_MICROCODE)
-                    System.out.println("Found microcode by special text. Using " + Microcode.MicrocodeTypes[current.type]);
+                    System.out.printf("Found microcode by special text. Using %s\n", Microcode.MicrocodeTypes[current.type]);
                 return current;
             }
         }
@@ -205,7 +204,7 @@ public class Microcodes {
         String chosen = (String) JOptionPane.showInputDialog(null, uc_str, "Choose the Microcode", JOptionPane.QUESTION_MESSAGE, null, Microcode.MicrocodeTypes, Microcode.MicrocodeTypes[0]);
         int index = Arrays.asList(Microcode.MicrocodeTypes).indexOf(chosen);
         current.type = (index >= 0) ? index : Microcode.F3D;
-        System.out.println("Couldn't find the microcode. Using " + Microcode.MicrocodeTypes[current.type]);
+        System.out.printf("Couldn't find the microcode. Using %s\n", Microcode.MicrocodeTypes[current.type]);
 
         return current;
     }

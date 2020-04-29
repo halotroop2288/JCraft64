@@ -1,8 +1,8 @@
 package me.hydos.J64.emu;
 
-import me.hydos.J64.emu.hardware.Cop0;
-import me.hydos.J64.emu.hardware.Cop0.TlbException;
-import me.hydos.J64.emu.hardware.Cop1;
+import me.hydos.J64.emu.hardware.CoProcessor0;
+import me.hydos.J64.emu.hardware.CoProcessor0.TlbException;
+import me.hydos.J64.emu.hardware.CoProcessor1;
 import me.hydos.J64.emu.hardware.Memory;
 import me.hydos.J64.emu.hardware.Memory.MemoryException;
 import me.hydos.J64.emu.util.EmuManager;
@@ -229,8 +229,8 @@ public class N64Cpu {
 	public long[] GPR = new long[32];
 
 	// used by DebugOps
-	protected Cop0 cop0;
-	protected Cop1 cop1;
+	protected CoProcessor0 coprocessor0;
+	protected CoProcessor1 coProcessor1;
 	protected int jumpToLocation;
 	protected long HI;
 	protected long LO;
@@ -312,13 +312,13 @@ public class N64Cpu {
 	}
 
 	// called by Main
-	public void connect(Cop0 cop0, Cop1 cop1) {
+	public void connect(CoProcessor0 coprocessor0, CoProcessor1 coProcessor1) {
 		// this.regMI = regs.regMI;
-		this.cop0 = cop0;
-		this.cop1 = cop1;
+		this.coprocessor0 = coprocessor0;
+		this.coProcessor1 = coProcessor1;
 //        this.mem = mem;
 
-		this.regCop0 = cop0.CP0;
+		this.regCop0 = coprocessor0.CP0;
 //        LO = 0x0;
 //        HI = 0x0;
 	}
@@ -342,21 +342,21 @@ public class N64Cpu {
 			regMI[Registers.MI_INTR_REG] |= (mem.audioIntrReg[0] & Registers.MI_INTR_AI);
 
 			if ((regMI[Registers.MI_INTR_MASK_REG] & regMI[Registers.MI_INTR_REG]) != 0) {
-				cop0.CP0[Cop0.FAKE_CAUSE_REGISTER] |= Cop0.CAUSE_IP2;
+				coprocessor0.CP0[CoProcessor0.FAKE_CAUSE_REGISTER] |= CoProcessor0.CAUSE_IP2;
 			} else {
-				cop0.CP0[Cop0.FAKE_CAUSE_REGISTER] &= ~Cop0.CAUSE_IP2;
+				coprocessor0.CP0[CoProcessor0.FAKE_CAUSE_REGISTER] &= ~CoProcessor0.CAUSE_IP2;
 			}
-			if ((cop0.CP0[Cop0.STATUS_REGISTER] & Cop0.STATUS_IE) == 0) {
+			if ((coprocessor0.CP0[CoProcessor0.STATUS_REGISTER] & CoProcessor0.STATUS_IE) == 0) {
 				return;
 			}
-			if ((cop0.CP0[Cop0.STATUS_REGISTER] & Cop0.STATUS_EXL) != 0) {
+			if ((coprocessor0.CP0[CoProcessor0.STATUS_REGISTER] & CoProcessor0.STATUS_EXL) != 0) {
 				return;
 			}
-			if ((cop0.CP0[Cop0.STATUS_REGISTER] & Cop0.STATUS_ERL) != 0) {
+			if ((coprocessor0.CP0[CoProcessor0.STATUS_REGISTER] & CoProcessor0.STATUS_ERL) != 0) {
 				return;
 			}
 
-			if ((cop0.CP0[Cop0.STATUS_REGISTER] & cop0.CP0[Cop0.FAKE_CAUSE_REGISTER] & 0xFF00) != 0) {
+			if ((coprocessor0.CP0[CoProcessor0.STATUS_REGISTER] & coprocessor0.CP0[CoProcessor0.FAKE_CAUSE_REGISTER] & 0xFF00) != 0) {
 				if (!cpuAction.DoInterrupt) {
 					cpuAction.DoSomething = true;
 					cpuAction.DoInterrupt = true;
@@ -370,34 +370,34 @@ public class N64Cpu {
 	// called by Main
 	public void startEmulation() {
 		cpuAction = new ACTION();
-		cop0.initTimers();
+		coprocessor0.initTimers();
 		startInterpreterCPU(); // make this a thread later
 	}
 
 	private void addressErrorException(int address, boolean fromRead) {
 		if (inDelaySlot)
-			jumpToLocation = cop0.doAddressError(true, address, fromRead, pc) + 4;
+			jumpToLocation = coprocessor0.doAddressError(true, address, fromRead, pc) + 4;
 		else
-			jumpTo(cop0.doAddressError(false, address, fromRead, pc));
+			jumpTo(coprocessor0.doAddressError(false, address, fromRead, pc));
 	}
 
 	private boolean testCop1UsableException() {
-		if ((cop0.CP0[Cop0.STATUS_REGISTER] & Cop0.STATUS_CU1) != 0)
+		if ((coprocessor0.CP0[CoProcessor0.STATUS_REGISTER] & CoProcessor0.STATUS_CU1) != 0)
 			return false;
 		if (inDelaySlot) {
-			jumpToLocation = cop0.doCopUnusableException(true, 1, pc) + 4;
+			jumpToLocation = coprocessor0.doCopUnusableException(true, 1, pc) + 4;
 			return false;
 		} else {
-			jumpTo(cop0.doCopUnusableException(false, 1, pc));
+			jumpTo(coprocessor0.doCopUnusableException(false, 1, pc));
 			return true;
 		}
 	}
 
 	private void tlbReadException(int address) {
 		if (inDelaySlot)
-			jumpToLocation = cop0.doTlbMiss(true, address, pc) + 4;
+			jumpToLocation = coprocessor0.doTlbMiss(true, address, pc) + 4;
 		else
-			jumpTo(cop0.doTlbMiss(false, address, pc));
+			jumpTo(coprocessor0.doTlbMiss(false, address, pc));
 	}
 
 	// The main emulation loop
@@ -406,7 +406,7 @@ public class N64Cpu {
 		while (true) {
 			try {
 				if (cacheInstructions) {
-					int pAddr = cop0.translateVaddr(pc);
+					int pAddr = coprocessor0.translateVaddr(pc);
 					cachedOp = cachedOpcodes[(pAddr < 0x400000) ? (pAddr >>> 2) : ((pAddr - 0x3C00000) >>> 2)];
 					if (cachedOp.cached) {
 						inst = cachedOp.inst;
@@ -418,21 +418,21 @@ public class N64Cpu {
 								: r4300i_Opcode[(inst >> OP) & 0x3F];
 					}
 				} else {
-					inst = mem.loadWord(cop0.translateVaddr(pc));
+					inst = mem.loadWord(coprocessor0.translateVaddr(pc));
 //                    if (dump_inst && !dump.containsKey(pc)) {
 //                        dump.put(pc, inst);
 //                        System.out.println(Integer.toHexString(pc)+" : "+Integer.toBinaryString(inst));
 //                    }
 				}
 			} catch (TlbException e) {
-				pc = cop0.doTlbMiss(inDelaySlot, pc, pc);
+				pc = coprocessor0.doTlbMiss(inDelaySlot, pc, pc);
 				continue;
 			} catch (MemoryException e) {
 				e.printStackTrace();
 				continue;
 			}
 
-			cop0.tick++;
+			coprocessor0.tick++;
 
 			if (cacheInstructions)
 				cachedCode.run();
@@ -447,7 +447,7 @@ public class N64Cpu {
 	private boolean executeInstruction() {
 		try {
 			if (cacheInstructions) {
-				int pAddr = cop0.translateVaddr(pc);
+				int pAddr = coprocessor0.translateVaddr(pc);
 				cachedOp = cachedOpcodes[(pAddr < 0x400000) ? (pAddr >>> 2) : ((pAddr - 0x3C00000) >>> 2)];
 				if (cachedOp.cached) {
 					inst = cachedOp.inst;
@@ -459,17 +459,17 @@ public class N64Cpu {
 							: r4300i_Opcode[(inst >> OP) & 0x3F];
 				}
 			} else {
-				inst = mem.loadWord(cop0.translateVaddr(pc));
+				inst = mem.loadWord(coprocessor0.translateVaddr(pc));
 			}
 		} catch (TlbException e) {
-			pc = cop0.doTlbMiss(inDelaySlot, pc, pc);
+			pc = coprocessor0.doTlbMiss(inDelaySlot, pc, pc);
 			return false;
 		} catch (MemoryException e) {
 			e.printStackTrace();
 			return false;
 		}
 
-		cop0.tick++;
+		coprocessor0.tick++;
 
 		if (cacheInstructions)
 			cachedCode.run();
@@ -496,7 +496,7 @@ public class N64Cpu {
 		try {
 			int instr;
 			if (cacheInstructions) {
-				int pAddr = cop0.translateVaddr(pc + 4);
+				int pAddr = coprocessor0.translateVaddr(pc + 4);
 				cachedOp = cachedOpcodes[(pAddr < 0x400000) ? (pAddr >>> 2) : ((pAddr - 0x3C00000) >>> 2)];
 				if (cachedOp.cached) {
 					instr = cachedOp.inst;
@@ -507,7 +507,7 @@ public class N64Cpu {
 							: r4300i_Opcode[(instr >> 26) & 0x3F];
 				}
 			} else {
-				instr = mem.loadWord(cop0.translateVaddr(pc + 4));
+				instr = mem.loadWord(coprocessor0.translateVaddr(pc + 4));
 			}
 			tmpOp = (instr >> 26) & 0x3F;
 			tmpRs = (instr >> 21) & 0x1F;
@@ -704,7 +704,7 @@ public class N64Cpu {
 	private void jumpTo(int address) {
 		inDelaySlot = false;
 		pc = address;
-		cop0.timerDone();
+		coprocessor0.timerDone();
 		if (cpuAction.DoSomething) {
 //            if (cpuAction.CloseCPU) {
 //                System.out.println("Closing CPU");
@@ -716,7 +716,7 @@ public class N64Cpu {
 			}
 			if (cpuAction.DoInterrupt) {
 				cpuAction.DoInterrupt = false;
-				pc = cop0.doIntrException(false, pc);
+				pc = coprocessor0.doIntrException(false, pc);
 			}
 
 			cpuAction.DoSomething = false;
@@ -773,11 +773,11 @@ public class N64Cpu {
 		public void run() {
 			if (testCop1UsableException())
 				return;
-			cop1.ft = (inst >> RT) & 0x1F;
-			cop1.fs = (inst >> RD) & 0x1F;
-			cop1.fd = (inst >> SA) & 0x1F;
-			cop1.funct = inst & 0x3F;
-			r4300i_CoP1[cop1.fmt = (inst >> RS) & 0x1F].run();
+			coProcessor1.ft = (inst >> RT) & 0x1F;
+			coProcessor1.fs = (inst >> RD) & 0x1F;
+			coProcessor1.fd = (inst >> SA) & 0x1F;
+			coProcessor1.funct = inst & 0x3F;
+			r4300i_CoP1[coProcessor1.fmt = (inst >> RS) & 0x1F].run();
 		}
 	};
 
@@ -1052,7 +1052,7 @@ public class N64Cpu {
 		public void run() {
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
-				tmpDouble = mem.loadDoubleWord(cop0.translateVaddr(addr & ~7));
+				tmpDouble = mem.loadDoubleWord(coprocessor0.translateVaddr(addr & ~7));
 			} catch (TlbException e) {
 				e.printStackTrace();
 				System.err.println("LDL TLB: " + addr);
@@ -1075,7 +1075,7 @@ public class N64Cpu {
 		public void run() {
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
-				tmpDouble = mem.loadDoubleWord(cop0.translateVaddr(addr & ~7));
+				tmpDouble = mem.loadDoubleWord(coprocessor0.translateVaddr(addr & ~7));
 			} catch (TlbException e) {
 				e.printStackTrace();
 				System.err.println("LDL TLB: " + addr);
@@ -1097,7 +1097,7 @@ public class N64Cpu {
 			}
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
-				GPR[(inst >> RT) & 0x1F] = mem.loadByte(cop0.translateVaddr(addr));
+				GPR[(inst >> RT) & 0x1F] = mem.loadByte(coprocessor0.translateVaddr(addr));
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
@@ -1119,7 +1119,7 @@ public class N64Cpu {
 				return;
 			}
 			try {
-				GPR[(inst >> RT) & 0x1F] = mem.loadHalfWord(cop0.translateVaddr(addr));
+				GPR[(inst >> RT) & 0x1F] = mem.loadHalfWord(coprocessor0.translateVaddr(addr));
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
@@ -1142,7 +1142,7 @@ public class N64Cpu {
 		public void run() {
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
-				tmpWord = mem.loadWord(cop0.translateVaddr(addr & ~3));
+				tmpWord = mem.loadWord(coprocessor0.translateVaddr(addr & ~3));
 			} catch (TlbException e) {
 				e.printStackTrace();
 				System.err.println("LWL TLB: " + addr);
@@ -1168,7 +1168,7 @@ public class N64Cpu {
 				return;
 			}
 			try {
-				GPR[(inst >> RT) & 0x1F] = mem.loadWord(cop0.translateVaddr(addr));
+				GPR[(inst >> RT) & 0x1F] = mem.loadWord(coprocessor0.translateVaddr(addr));
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
@@ -1188,7 +1188,7 @@ public class N64Cpu {
 		public void run() {
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
-				GPR[(inst >> RT) & 0x1F] = mem.loadByte(cop0.translateVaddr(addr)) & 0xFFL;
+				GPR[(inst >> RT) & 0x1F] = mem.loadByte(coprocessor0.translateVaddr(addr)) & 0xFFL;
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
@@ -1212,7 +1212,7 @@ public class N64Cpu {
 				return;
 			}
 			try {
-				GPR[(inst >> RT) & 0x1F] = mem.loadHalfWord(cop0.translateVaddr(addr)) & 0xFFFFL;
+				GPR[(inst >> RT) & 0x1F] = mem.loadHalfWord(coprocessor0.translateVaddr(addr)) & 0xFFFFL;
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
@@ -1235,7 +1235,7 @@ public class N64Cpu {
 		public void run() {
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
-				tmpWord = mem.loadWord(cop0.translateVaddr(addr & ~3));
+				tmpWord = mem.loadWord(coprocessor0.translateVaddr(addr & ~3));
 			} catch (TlbException e) {
 				e.printStackTrace();
 				System.err.println("LWR TLB: " + addr);
@@ -1261,7 +1261,7 @@ public class N64Cpu {
 				return;
 			}
 			try {
-				GPR[(inst >> RT) & 0x1F] = mem.loadWord(cop0.translateVaddr(addr)) & 0xFFFFFFFFL;
+				GPR[(inst >> RT) & 0x1F] = mem.loadWord(coprocessor0.translateVaddr(addr)) & 0xFFFFFFFFL;
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
@@ -1282,14 +1282,14 @@ public class N64Cpu {
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
 				if (cacheInstructions) {
-					int pAddr = cop0.translateVaddr(addr);
+					int pAddr = coprocessor0.translateVaddr(addr);
 					if (pAddr < 0x400000)
 						cachedOpcodes[pAddr >>> 2].cached = false;
 					else if (((pAddr - 0x3C00000) >>> 2) < cachedOpcodes.length)
 						cachedOpcodes[(pAddr - 0x3C00000) >>> 2].cached = false;
 					mem.storeByte(pAddr, (byte) GPR[(inst >> RT) & 0x1F]);
 				} else {
-					mem.storeByte(cop0.translateVaddr(addr), (byte) GPR[(inst >> RT) & 0x1F]);
+					mem.storeByte(coprocessor0.translateVaddr(addr), (byte) GPR[(inst >> RT) & 0x1F]);
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
@@ -1311,14 +1311,14 @@ public class N64Cpu {
 			}
 			try {
 				if (cacheInstructions) {
-					int pAddr = cop0.translateVaddr(addr);
+					int pAddr = coprocessor0.translateVaddr(addr);
 					if (pAddr < 0x400000)
 						cachedOpcodes[pAddr >>> 2].cached = false;
 					else if (((pAddr - 0x3C00000) >>> 2) < cachedOpcodes.length)
 						cachedOpcodes[(pAddr - 0x3C00000) >>> 2].cached = false;
 					mem.storeHalfWord(pAddr, (short) GPR[(inst >> RT) & 0x1F]);
 				} else {
-					mem.storeHalfWord(cop0.translateVaddr(addr), (short) GPR[(inst >> RT) & 0x1F]);
+					mem.storeHalfWord(coprocessor0.translateVaddr(addr), (short) GPR[(inst >> RT) & 0x1F]);
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
@@ -1338,18 +1338,18 @@ public class N64Cpu {
 		public void run() {
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
-				tmpWord = (mem.loadWord(cop0.translateVaddr(addr & ~3)) & SWL_MASK[addr & 3])
+				tmpWord = (mem.loadWord(coprocessor0.translateVaddr(addr & ~3)) & SWL_MASK[addr & 3])
 						+ ((int) GPR[(inst >> RT) & 0x1F] >>> SWL_SHIFT[addr & 3]);
 				try {
 					if (cacheInstructions) {
-						int pAddr = cop0.translateVaddr(addr) & ~0x03;
+						int pAddr = coprocessor0.translateVaddr(addr) & ~0x03;
 						if (pAddr < 0x400000)
 							cachedOpcodes[pAddr >>> 2].cached = false;
 						else if (((pAddr - 0x3C00000) >>> 2) < cachedOpcodes.length)
 							cachedOpcodes[(pAddr - 0x3C00000) >>> 2].cached = false;
 						mem.storeWord(pAddr, tmpWord);
 					} else {
-						mem.storeWord(cop0.translateVaddr(addr) & ~0x03, tmpWord);
+						mem.storeWord(coprocessor0.translateVaddr(addr) & ~0x03, tmpWord);
 					}
 				} catch (TlbException e) {
 					e.printStackTrace();
@@ -1379,14 +1379,14 @@ public class N64Cpu {
 			}
 			try {
 				if (cacheInstructions) {
-					int pAddr = cop0.translateVaddr(addr);
+					int pAddr = coprocessor0.translateVaddr(addr);
 					if (pAddr < 0x400000)
 						cachedOpcodes[pAddr >>> 2].cached = false;
 					else if (((pAddr - 0x3C00000) >>> 2) < cachedOpcodes.length)
 						cachedOpcodes[(pAddr - 0x3C00000) >>> 2].cached = false;
 					mem.storeWord(pAddr, (int) GPR[(inst >> RT) & 0x1F]);
 				} else {
-					mem.storeWord(cop0.translateVaddr(addr), (int) GPR[(inst >> RT) & 0x1F]);
+					mem.storeWord(coprocessor0.translateVaddr(addr), (int) GPR[(inst >> RT) & 0x1F]);
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
@@ -1407,7 +1407,7 @@ public class N64Cpu {
 		public void run() {
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
-				tmpDouble = (mem.loadDoubleWord(cop0.translateVaddr(addr & ~7)) & SDL_MASK[addr & 7])
+				tmpDouble = (mem.loadDoubleWord(coprocessor0.translateVaddr(addr & ~7)) & SDL_MASK[addr & 7])
 						+ (GPR[(inst >> RT) & 0x1F] >> SDL_SHIFT[addr & 7]);
 				try {
 					cacheInstructions();
@@ -1438,7 +1438,7 @@ public class N64Cpu {
 		public void run() {
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
-				tmpDouble = (mem.loadDoubleWord(cop0.translateVaddr(addr & ~7)) & SDR_MASK[addr & 7])
+				tmpDouble = (mem.loadDoubleWord(coprocessor0.translateVaddr(addr & ~7)) & SDR_MASK[addr & 7])
 						+ (GPR[(inst >> RT) & 0x1F] << SDR_SHIFT[addr & 7]);
 				try {
 					cacheInstructions();
@@ -1462,7 +1462,7 @@ public class N64Cpu {
 
 	private void cacheInstructions() throws TlbException, MemoryException {
 		if (cacheInstructions) {
-			int pAddr = cop0.translateVaddr(addr & ~7);
+			int pAddr = coprocessor0.translateVaddr(addr & ~7);
 			if (pAddr < 0x400000) {
 				cachedOpcodes[pAddr >>> 2].cached = false;
 				cachedOpcodes[(pAddr + 4) >>> 2].cached = false;
@@ -1472,7 +1472,7 @@ public class N64Cpu {
 			}
 			mem.storeDoubleWord(pAddr, tmpDouble);
 		} else {
-			mem.storeDoubleWord(cop0.translateVaddr(addr & ~7), tmpDouble);
+			mem.storeDoubleWord(coprocessor0.translateVaddr(addr & ~7), tmpDouble);
 		}
 	}
 
@@ -1484,18 +1484,18 @@ public class N64Cpu {
 		public void run() {
 			addr = (int) GPR[(inst >> RS) & 0x1F] + (short) inst;
 			try {
-				tmpWord = (mem.loadWord(cop0.translateVaddr(addr & ~3)) & SWR_MASK[addr & 3])
+				tmpWord = (mem.loadWord(coprocessor0.translateVaddr(addr & ~3)) & SWR_MASK[addr & 3])
 						+ ((int) GPR[(inst >> RT) & 0x1F] << SWR_SHIFT[addr & 3]);
 				try {
 					if (cacheInstructions) {
-						int pAddr = cop0.translateVaddr(addr) & ~0x03;
+						int pAddr = coprocessor0.translateVaddr(addr) & ~0x03;
 						if (pAddr < 0x400000)
 							cachedOpcodes[pAddr >>> 2].cached = false;
 						else if (((pAddr - 0x3C00000) >>> 2) < cachedOpcodes.length)
 							cachedOpcodes[(pAddr - 0x3C00000) >>> 2].cached = false;
 						mem.storeWord(pAddr, tmpWord);
 					} else {
-						mem.storeWord(cop0.translateVaddr(addr) & ~0x03, tmpWord);
+						mem.storeWord(coprocessor0.translateVaddr(addr) & ~0x03, tmpWord);
 					}
 				} catch (TlbException e) {
 					e.printStackTrace();
@@ -1533,7 +1533,7 @@ public class N64Cpu {
 				return;
 			}
 			try {
-				GPR[(inst >> RT) & 0x1F] = mem.loadWord(cop0.translateVaddr(addr));
+				GPR[(inst >> RT) & 0x1F] = mem.loadWord(coprocessor0.translateVaddr(addr));
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
@@ -1548,7 +1548,7 @@ public class N64Cpu {
 			llBit = 1;
 			llAddr = addr;
 			try {
-				llAddr = cop0.translateVaddr(llAddr);
+				llAddr = coprocessor0.translateVaddr(llAddr);
 			} catch (TlbException e) {
 				e.printStackTrace();
 			}
@@ -1566,7 +1566,7 @@ public class N64Cpu {
 				return;
 			}
 			try {
-				cop1.lwC1((inst >> RT) & 0x1F, mem.loadWord(cop0.translateVaddr(addr)));
+				coProcessor1.lwC1((inst >> RT) & 0x1F, mem.loadWord(coprocessor0.translateVaddr(addr)));
 			} catch (TlbException e) {
 				if (EmuManager.GLOBAL_DEBUG) {
 					e.printStackTrace();
@@ -1592,14 +1592,14 @@ public class N64Cpu {
 			if (llBit == 1) {
 				try {
 					if (cacheInstructions) {
-						int pAddr = cop0.translateVaddr(addr);
+						int pAddr = coprocessor0.translateVaddr(addr);
 						if (pAddr < 0x400000)
 							cachedOpcodes[pAddr >>> 2].cached = false;
 						else if (((pAddr - 0x3C00000) >>> 2) < cachedOpcodes.length)
 							cachedOpcodes[(pAddr - 0x3C00000) >>> 2].cached = false;
 						mem.storeWord(pAddr, (int) GPR[(inst >> RT) & 0x1F]);
 					} else {
-						mem.storeWord(cop0.translateVaddr(addr), (int) GPR[(inst >> RT) & 0x1F]);
+						mem.storeWord(coprocessor0.translateVaddr(addr), (int) GPR[(inst >> RT) & 0x1F]);
 					}
 				} catch (TlbException e) {
 					e.printStackTrace();
@@ -1622,7 +1622,7 @@ public class N64Cpu {
 				return;
 			}
 			try {
-				GPR[(inst >> RT) & 0x1F] = mem.loadDoubleWord(cop0.translateVaddr(addr));
+				GPR[(inst >> RT) & 0x1F] = mem.loadDoubleWord(coprocessor0.translateVaddr(addr));
 			} catch (TlbException e) {
 				e.printStackTrace();
 				System.err.println("LD TLB: " + addr);
@@ -1644,7 +1644,7 @@ public class N64Cpu {
 				return;
 			}
 			try {
-				cop1.ldC1((inst >> RT) & 0x1F, mem.loadDoubleWord(cop0.translateVaddr(addr)));
+				coProcessor1.ldC1((inst >> RT) & 0x1F, mem.loadDoubleWord(coprocessor0.translateVaddr(addr)));
 			} catch (TlbException e) {
 				e.printStackTrace();
 				System.err.println("LDC1 TLB: " + addr);
@@ -1667,14 +1667,14 @@ public class N64Cpu {
 			}
 			try {
 				if (cacheInstructions) {
-					int pAddr = cop0.translateVaddr(addr);
+					int pAddr = coprocessor0.translateVaddr(addr);
 					if (pAddr < 0x400000)
 						cachedOpcodes[pAddr >>> 2].cached = false;
 					else if (((pAddr - 0x3C00000) >>> 2) < cachedOpcodes.length)
 						cachedOpcodes[(pAddr - 0x3C00000) >>> 2].cached = false;
-					mem.storeWord(pAddr, cop1.swC1((inst >> RT) & 0x1F));
+					mem.storeWord(pAddr, coProcessor1.swC1((inst >> RT) & 0x1F));
 				} else {
-					mem.storeWord(cop0.translateVaddr(addr), cop1.swC1((inst >> RT) & 0x1F));
+					mem.storeWord(coprocessor0.translateVaddr(addr), coProcessor1.swC1((inst >> RT) & 0x1F));
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
@@ -1698,7 +1698,7 @@ public class N64Cpu {
 			}
 			try {
 				if (cacheInstructions) {
-					int pAddr = cop0.translateVaddr(addr);
+					int pAddr = coprocessor0.translateVaddr(addr);
 					if (pAddr < 0x400000) {
 						cachedOpcodes[pAddr >>> 2].cached = false;
 						cachedOpcodes[(pAddr + 4) >>> 2].cached = false;
@@ -1706,9 +1706,9 @@ public class N64Cpu {
 						cachedOpcodes[(pAddr - 0x3C00000) >>> 2].cached = false;
 						cachedOpcodes[((pAddr + 4) - 0x3C00000) >>> 2].cached = false;
 					}
-					mem.storeDoubleWord(pAddr, cop1.sdC1((inst >> RT) & 0x1F));
+					mem.storeDoubleWord(pAddr, coProcessor1.sdC1((inst >> RT) & 0x1F));
 				} else {
-					mem.storeDoubleWord(cop0.translateVaddr(addr), cop1.sdC1((inst >> RT) & 0x1F));
+					mem.storeDoubleWord(coprocessor0.translateVaddr(addr), coProcessor1.sdC1((inst >> RT) & 0x1F));
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
@@ -1730,7 +1730,7 @@ public class N64Cpu {
 			}
 			try {
 				if (cacheInstructions) {
-					int pAddr = cop0.translateVaddr(addr);
+					int pAddr = coprocessor0.translateVaddr(addr);
 					if (pAddr < 0x400000) {
 						cachedOpcodes[pAddr >>> 2].cached = false;
 						cachedOpcodes[(pAddr + 4) >>> 2].cached = false;
@@ -1740,7 +1740,7 @@ public class N64Cpu {
 					}
 					mem.storeDoubleWord(pAddr, GPR[(inst >> RT) & 0x1F]);
 				} else {
-					mem.storeDoubleWord(cop0.translateVaddr(addr), GPR[(inst >> RT) & 0x1F]);
+					mem.storeDoubleWord(coprocessor0.translateVaddr(addr), GPR[(inst >> RT) & 0x1F]);
 				}
 			} catch (TlbException e) {
 				e.printStackTrace();
@@ -1826,9 +1826,9 @@ public class N64Cpu {
 		@Override
 		public void run() {
 			if (inDelaySlot)
-				jumpToLocation = cop0.doSysCallException(true, pc) + 4;
+				jumpToLocation = coprocessor0.doSysCallException(true, pc) + 4;
 			else
-				jumpTo(cop0.doSysCallException(false, pc));
+				jumpTo(coprocessor0.doSysCallException(false, pc));
 		}
 	};
 
@@ -1836,9 +1836,9 @@ public class N64Cpu {
 		@Override
 		public void run() {
 			if (inDelaySlot)
-				jumpToLocation = cop0.doBreakException(true, pc) + 4;
+				jumpToLocation = coprocessor0.doBreakException(true, pc) + 4;
 			else
-				jumpTo(cop0.doBreakException(false, pc));
+				jumpTo(coprocessor0.doBreakException(false, pc));
 		}
 	};
 
@@ -2219,42 +2219,42 @@ public class N64Cpu {
 	public Runnable r4300i_COP1_MF = new Runnable() {
 		@Override
 		public void run() {
-			GPR[(inst >> RT) & 0x1F] = cop1.mfC1((inst >> RD) & 0x1F);
+			GPR[(inst >> RT) & 0x1F] = coProcessor1.mfC1((inst >> RD) & 0x1F);
 		}
 	};
 
 	public Runnable r4300i_COP1_DMF = new Runnable() {
 		@Override
 		public void run() {
-			GPR[(inst >> RT) & 0x1F] = cop1.dmfC1((inst >> RD) & 0x1F);
+			GPR[(inst >> RT) & 0x1F] = coProcessor1.dmfC1((inst >> RD) & 0x1F);
 		}
 	};
 
 	public Runnable r4300i_COP1_CF = new Runnable() {
 		@Override
 		public void run() {
-			GPR[(inst >> RT) & 0x1F] = cop1.cfC1((inst >> RD) & 0x1F);
+			GPR[(inst >> RT) & 0x1F] = coProcessor1.cfC1((inst >> RD) & 0x1F);
 		}
 	};
 
 	public Runnable r4300i_COP1_MT = new Runnable() {
 		@Override
 		public void run() {
-			cop1.mtC1((inst >> RD) & 0x1F, (int) GPR[(inst >> RT) & 0x1F]);
+			coProcessor1.mtC1((inst >> RD) & 0x1F, (int) GPR[(inst >> RT) & 0x1F]);
 		}
 	};
 
 	public Runnable r4300i_COP1_DMT = new Runnable() {
 		@Override
 		public void run() {
-			cop1.dmtC1((inst >> RD) & 0x1F, GPR[(inst >> RT) & 0x1F]);
+			coProcessor1.dmtC1((inst >> RD) & 0x1F, GPR[(inst >> RT) & 0x1F]);
 		}
 	};
 
 	public Runnable r4300i_COP1_CT = new Runnable() {
 		@Override
 		public void run() {
-			cop1.ctC1((inst >> RD) & 0x1F, (int) GPR[(inst >> RT) & 0x1F]);
+			coProcessor1.ctC1((inst >> RD) & 0x1F, (int) GPR[(inst >> RT) & 0x1F]);
 		}
 	};
 
@@ -2262,7 +2262,7 @@ public class N64Cpu {
 	public Runnable r4300i_COP1_BCF = new Runnable() {
 		@Override
 		public void run() {
-			if ((cop1.FPCR[Cop1.FSTATUS_REGISTER] & Cop1.FPCSR_C) == 0)
+			if ((coProcessor1.FPCR[CoProcessor1.FSTATUS_REGISTER] & CoProcessor1.FPCSR_C) == 0)
 				jumpToLocation = pc + (((short) inst) << 2) + 4;
 			else
 				jumpToLocation = pc + 8;
@@ -2277,7 +2277,7 @@ public class N64Cpu {
 	public Runnable r4300i_COP1_BCT = new Runnable() {
 		@Override
 		public void run() {
-			if ((cop1.FPCR[Cop1.FSTATUS_REGISTER] & Cop1.FPCSR_C) != 0)
+			if ((coProcessor1.FPCR[CoProcessor1.FSTATUS_REGISTER] & CoProcessor1.FPCSR_C) != 0)
 				jumpToLocation = pc + (((short) inst) << 2) + 4;
 			else
 				jumpToLocation = pc + 8;
@@ -2292,7 +2292,7 @@ public class N64Cpu {
 	public Runnable r4300i_COP1_BCFL = new Runnable() {
 		@Override
 		public void run() {
-			if ((cop1.FPCR[Cop1.FSTATUS_REGISTER] & Cop1.FPCSR_C) == 0) {
+			if ((coProcessor1.FPCR[CoProcessor1.FSTATUS_REGISTER] & CoProcessor1.FPCSR_C) == 0) {
 				jumpToLocation = pc + (((short) inst) << 2) + 4;
 				pc += 4;
 				inDelaySlot = true;
@@ -2308,7 +2308,7 @@ public class N64Cpu {
 	public Runnable r4300i_COP1_BCTL = new Runnable() {
 		@Override
 		public void run() {
-			if ((cop1.FPCR[Cop1.FSTATUS_REGISTER] & Cop1.FPCSR_C) != 0) {
+			if ((coProcessor1.FPCR[CoProcessor1.FSTATUS_REGISTER] & CoProcessor1.FPCSR_C) != 0) {
 				jumpToLocation = pc + (((short) inst) << 2) + 4;
 				pc += 4;
 				inDelaySlot = true;
@@ -2325,16 +2325,16 @@ public class N64Cpu {
 	public Runnable r4300i_COP0_MF = new Runnable() {
 		@Override
 		public void run() {
-			GPR[(inst >> RT) & 0x1F] = cop0.mfC0((inst >> RD) & 0x1F);
+			GPR[(inst >> RT) & 0x1F] = coprocessor0.mfC0((inst >> RD) & 0x1F);
 		}
 	};
 
 	public Runnable r4300i_COP0_MT = new Runnable() {
 		@Override
 		public void run() {
-			cop0.mtC0((inst >> RD) & 0x1F, (int) GPR[(inst >> RT) & 0x1F]);
-			if (((inst >> RD) & 0x1F) == Cop0.STATUS_REGISTER) {
-				cop1.setMode32((cop0.CP0[Cop0.STATUS_REGISTER] & Cop0.STATUS_FR) == 0);
+			coprocessor0.mtC0((inst >> RD) & 0x1F, (int) GPR[(inst >> RT) & 0x1F]);
+			if (((inst >> RD) & 0x1F) == CoProcessor0.STATUS_REGISTER) {
+				coProcessor1.setMode32((coprocessor0.CP0[CoProcessor0.STATUS_REGISTER] & CoProcessor0.STATUS_FR) == 0);
 				CheckInterrupts.run();
 			}
 		}
@@ -2343,12 +2343,12 @@ public class N64Cpu {
 	public Runnable r4300i_COP0_CO_ERET = new Runnable() {
 		@Override
 		public void run() {
-			if ((cop0.CP0[Cop0.STATUS_REGISTER] & Cop0.STATUS_ERL) != 0) {
-				jumpToLocation = cop0.CP0[Cop0.ERROREPC_REGISTER];
-				cop0.CP0[Cop0.STATUS_REGISTER] &= ~Cop0.STATUS_ERL;
+			if ((coprocessor0.CP0[CoProcessor0.STATUS_REGISTER] & CoProcessor0.STATUS_ERL) != 0) {
+				jumpToLocation = coprocessor0.CP0[CoProcessor0.ERROREPC_REGISTER];
+				coprocessor0.CP0[CoProcessor0.STATUS_REGISTER] &= ~CoProcessor0.STATUS_ERL;
 			} else {
-				jumpToLocation = cop0.CP0[Cop0.EPC_REGISTER];
-				cop0.CP0[Cop0.STATUS_REGISTER] &= ~Cop0.STATUS_EXL;
+				jumpToLocation = coprocessor0.CP0[CoProcessor0.EPC_REGISTER];
+				coprocessor0.CP0[CoProcessor0.STATUS_REGISTER] &= ~CoProcessor0.STATUS_EXL;
 			}
 			llBit = 0;
 			CheckInterrupts.run();

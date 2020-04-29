@@ -48,7 +48,7 @@ public class Memory {
 	private final byte[] dmem;
 	public ByteBuffer IMEM;
 
-	private Cop0 cop0;
+	private CoProcessor0 coprocessor0;
 	private RegisterSP rsp;
 	private Video video;
 	private Audio audio;
@@ -123,8 +123,8 @@ public class Memory {
 	}
 
 	// called by Main
-	public void setTimer(Cop0 cop0) {
-		this.cop0 = cop0;
+	public void setTimer(CoProcessor0 coprocessor0) {
+		this.coprocessor0 = coprocessor0;
 	}
 
 	// called by Cpu
@@ -365,9 +365,9 @@ public class Memory {
 				return regVI[GfxPlugin.VI_INTR_REG];
 			case 0x04400010:
 				if (video.gfxPlugin != null) {
-					cop0.update();
+					coprocessor0.update();
 //                            return video.gfxPlugin.updateCurrentHalfLine(cop0.timer);
-					return video.updateCurrentHalfLine(cop0.timer);
+					return video.updateCurrentHalfLine(coprocessor0.timer);
 				}
 				// return video.updateCurrentHalfLine();
 			case 0x04400014:
