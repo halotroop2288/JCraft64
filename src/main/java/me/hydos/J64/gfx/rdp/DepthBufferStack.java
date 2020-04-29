@@ -18,41 +18,7 @@ public class DepthBufferStack {
         bottom = null;
         numBuffers = 0;
     }
-    
-    public void removeBottom() {
-        if (bottom == top)
-            top = null;
-        
-        bottom = bottom.higher;
-        
-        if (bottom != null)
-            bottom.lower = null;
-        
-        numBuffers--;
-    }
-    
-    public void remove(DepthBuffer buffer) {
-        if ((buffer == bottom) && (buffer == top)) {
-            top = null;
-            bottom = null;
-        } else if (buffer == bottom) {
-            bottom = buffer.higher;
-            
-            if (bottom != null)
-                bottom.lower = null;
-        } else if (buffer == top) {
-            top = buffer.lower;
-            
-            if (top != null)
-                top.higher = null;
-        } else {
-            buffer.higher.lower = buffer.lower;
-            buffer.lower.higher = buffer.higher;
-        }
-        
-        numBuffers--;
-    }
-    
+
     public void addTop(DepthBuffer newtop) {
         newtop.lower = top;
         newtop.higher = null;

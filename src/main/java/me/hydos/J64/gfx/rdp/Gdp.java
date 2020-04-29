@@ -99,10 +99,8 @@ public class Gdp {
         public int size;
         public int width;
         public int height;
-        public int bpl;
         public int address;
         public boolean changed;
-        public int depthImage;
     }
 
     public static class Scissor {
@@ -113,19 +111,8 @@ public class Gdp {
         public float lry;
     }
 
-    public static class Convert {
-        public int k0;
-        public int k1;
-        public int k2;
-        public int k3;
-        public int k4;
-        public int k5;
-    }
-
     public static class Key {
-        public float[] center = new float[4];
         public float[] scale = new float[4];
-        public float[] width = new float[4];
     }
 
     public int DList;

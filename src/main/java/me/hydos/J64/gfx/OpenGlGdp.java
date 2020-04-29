@@ -2,8 +2,8 @@ package me.hydos.J64.gfx;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.hydos.J64.emu.util.debug.Debug;
-import me.hydos.J64.gfx.rdp.combiners.Combiners;
 import me.hydos.J64.gfx.rdp.Gdp;
+import me.hydos.J64.gfx.rdp.combiners.Combiners;
 import me.hydos.J64.gfx.rdp.textures.TextureCache;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,59 +19,8 @@ public class OpenGlGdp {
 
     private static final int SIZEOF_FLOAT = 4;
     private static final int SIZEOF_GLVERTEX = 17 * SIZEOF_FLOAT;
-
-    private static class GLSimpleVertex {
-        public float x, y, z, w;
-
-        public float[] color = new float[4]; // r,g,b,a
-        public float[] secondaryColor = new float[4]; // r,g,b,a
-
-        public float s0, t0, s1, t1;
-
-        public float fog;
-    }
-
-    private static class GLVertex {
-        public FloatBuffer vtx; // 4
-        public FloatBuffer color; // 4
-        public FloatBuffer secondaryColor; // 4
-        public FloatBuffer tex0; // 2
-        public FloatBuffer tex1; // 2
-        public FloatBuffer fog; // 1
-
-        public GLVertex() {
-        }
-
-        public GLVertex(float x, float y, float z, float w,
-                        float r1, float g1, float b1, float a1,
-                        float r2, float g2, float b2, float a2,
-                        float s0, float t0, float s1, float t1, float f) {
-            vtx = FloatBuffer.allocate(4);
-            vtx.put(x);
-            vtx.put(y);
-            vtx.put(z);
-            vtx.put(w);
-            color = FloatBuffer.allocate(4);
-            color.put(r1);
-            color.put(g1);
-            color.put(b1);
-            color.put(a1);
-            secondaryColor = FloatBuffer.allocate(4);
-            secondaryColor.put(r2);
-            secondaryColor.put(g2);
-            secondaryColor.put(b2);
-            secondaryColor.put(a2);
-            tex0 = FloatBuffer.allocate(2);
-            tex0.put(s0);
-            tex0.put(t0);
-            tex1 = FloatBuffer.allocate(2);
-            tex1.put(s1);
-            tex1.put(t1);
-            fog = FloatBuffer.allocate(1);
-            fog.put(f);
-        }
-    }
-
+    private static final GLSimpleVertex rect0 = new GLSimpleVertex();
+    private static final GLSimpleVertex rect1 = new GLSimpleVertex();
     public static TextureCache cache = new TextureCache();
     public static Combiners combiners = new Combiners();
     public static int screenWidth;
@@ -80,7 +29,7 @@ public class OpenGlGdp {
 //    public static GLAutoDrawable hDC;
 
     private static int numTriangles;
-    private static GLVertex[] vertices = new GLVertex[256];
+    private static final GLVertex[] vertices = new GLVertex[256];
     private static FloatBuffer bigArray;
     private static float scaleX;
     private static float scaleY;
@@ -93,10 +42,8 @@ public class OpenGlGdp {
     private static int height;
     private static int heightOffset;
     private static boolean usePolygonStipple;
-    private static byte[][][] stipplePattern = new byte[32][8][128];
+    private static final byte[][][] stipplePattern = new byte[32][8][128];
     private static int lastStipple;
-    private static final GLSimpleVertex rect0 = new GLSimpleVertex();
-    private static final GLSimpleVertex rect1 = new GLSimpleVertex();
     private static int windowedWidth;
     private static int windowedHeight;
 
@@ -274,7 +221,6 @@ public class OpenGlGdp {
         GL40.glClear(GL40.GL_COLOR_BUFFER_BIT);
     }
 
-    @Environment(EnvType.CLIENT)
     public static void OGL_DrawRect(int ulx, int uly, int lrx, int lry, float[] color, int depthSource) {
         OpenGl.OGL_GspUpdateStates();
 
@@ -299,16 +245,15 @@ public class OpenGlGdp {
 
         GL40.glLoadIdentity();
 
-        if (culling){
+        if (culling) {
             GL40.glEnable(GL40.GL_CULL_FACE);
-        }else{
+        } else {
             GL40.glDisable(GL40.GL_CULL_FACE);
         }
 
         GL40.glEnable(GL40.GL_SCISSOR_TEST);
     }
 
-    @Environment(EnvType.CLIENT)
     public static void OGL_DrawTexturedRect(float ulx, float uly, float lrx, float lry, float uls, float ult, float lrs, float lrt, boolean flip, int depthSource, int cycleType) {
         OpenGl.OGL_GspUpdateStates();
 
@@ -572,12 +517,12 @@ public class OpenGlGdp {
     public static void OGL_DrawTriangles() {
         if (numTriangles < 1)
             return;
-        stipple();
+        stippleTransparency();
         GL40.glDrawArrays(GL40.GL_TRIANGLES, 0, numVertices);
         numTriangles = numVertices = 0;
     }
 
-    private static void stipple() {
+    private static void stippleTransparency() {
         if (usePolygonStipple && (Gdp.RDP_GETOM_ALPHA_COMPARE_EN(Rsp.gdp.otherMode) == Gbi.G_AC_DITHER) && (Gdp.RDP_GETOM_ALPHA_CVG_SELECT(Rsp.gdp.otherMode) == 0)) {
             lastStipple = (lastStipple + 1) & 0x7;
             GL40.glPolygonStipple(ByteBuffer.wrap(stipplePattern[(int) (Combiners.envColor[3] * 255.0f) >> 3][lastStipple]));//GL40.glPolygonStipple(stipplePattern[(int) (Combiners.envColor[3] * 255.0f) >> 3][lastStipple], 0);
@@ -603,8 +548,7 @@ public class OpenGlGdp {
                 GL40.glEnable(GL40.GL_ALPHA_TEST);
 
                 GL40.glAlphaFunc((Rsp.gdp.blendColor[3] > 0.0f) ? GL40.GL_GEQUAL : GL40.GL_GREATER, Rsp.gdp.blendColor[3]);
-            }
-            else if (Gdp.RDP_GETOM_CVG_TIMES_ALPHA(Rsp.gdp.otherMode) != 0) {
+            } else if (Gdp.RDP_GETOM_CVG_TIMES_ALPHA(Rsp.gdp.otherMode) != 0) {
                 GL40.glEnable(GL40.GL_ALPHA_TEST);
 
                 GL40.glAlphaFunc(GL40.GL_GEQUAL, 0.5f);
@@ -681,11 +625,22 @@ public class OpenGlGdp {
                 GL40.glEnable(GL40.GL_BLEND);
 
                 switch (Rsp.gdp.otherMode.w1 >> 16) {
-                    case 0x0448: case 0x055A: GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ONE);
-                    case 0x0C08: case 0x0F0A: GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ZERO);
-                    case 0x0C18: case 0x0C19: case 0x0050: case 0x0055: GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
-                    case 0x0FA5: case 0x5055: GL40.glBlendFunc(GL40.GL_ZERO, GL40.GL_ONE);
-                    default: GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
+                    case 0x0448:
+                    case 0x055A:
+                        GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ONE);
+                    case 0x0C08:
+                    case 0x0F0A:
+                        GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ZERO);
+                    case 0x0C18:
+                    case 0x0C19:
+                    case 0x0050:
+                    case 0x0055:
+                        GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
+                    case 0x0FA5:
+                    case 0x5055:
+                        GL40.glBlendFunc(GL40.GL_ZERO, GL40.GL_ONE);
+                    default:
+                        GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
                 }
             } else {
                 GL40.glDisable(GL40.GL_BLEND);
@@ -700,6 +655,30 @@ public class OpenGlGdp {
         cache.changed &= TextureCache.CHANGED_TMEM;
         Rsp.gdp.changed &= Gdp.CHANGED_TILE;
         Rsp.gdp.changed &= Gdp.CHANGED_TEXTURE;
+    }
+
+    public static void setHeightOffset(int heightOffset) {
+        OpenGlGdp.heightOffset = heightOffset;
+    }
+
+    private static class GLSimpleVertex {
+        public float x, y, z, w;
+
+        public float[] color = new float[4]; // r,g,b,a
+        public float[] secondaryColor = new float[4]; // r,g,b,a
+
+        public float s0, t0, s1, t1;
+
+        public float fog;
+    }
+
+    private static class GLVertex {
+        public FloatBuffer vtx; // 4
+        public FloatBuffer color; // 4
+        public FloatBuffer secondaryColor; // 4
+        public FloatBuffer tex0; // 2
+        public FloatBuffer tex1; // 2
+        public FloatBuffer fog; // 1
     }
 
 }
