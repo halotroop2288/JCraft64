@@ -102,25 +102,25 @@ public class EmuManager {
         countPerOp = Default_CountPerOp;
         regs.saveUsing = Registers.AUTO;
 
-        Cop0 cop0 = null;
+        CoProcessor0 coprocessor0 = null;
         try {
-            cop0 = new Cop0(countPerOp);
-        } catch (Cop0.TlbException ex) {
+            coprocessor0 = new CoProcessor0(countPerOp);
+        } catch (CoProcessor0.TlbException ex) {
             System.err.print("Failed to allocate Memory\n");
             exit();
         }
-        assert cop0 != null;
-        cop0.useTlb(UseTlb);
-        cop0.setTimerInterrupts(cpu.CheckInterrupts, pif.timerInterrupt, dma.timerInterrupt, video.timerInterrupt);
-        video.setTimer(cop0);
+        assert coprocessor0 != null;
+        coprocessor0.useTlb(UseTlb);
+        coprocessor0.setTimerInterrupts(cpu.CheckInterrupts, pif.timerInterrupt, dma.timerInterrupt, video.timerInterrupt);
+        video.setTimer(coprocessor0);
         video.setFrameLimit(FrameLimit);
-        mem.setTimer(cop0);
+        mem.setTimer(coprocessor0);
 
-        Cop1 cop1 = new Cop1();
+        CoProcessor1 coProcessor1 = new CoProcessor1();
 
         cpu.cacheInstructions(CacheInstructions);
-        cpu.connect(cop0, cop1);
-        cpu.setOps(opcodeBuilder.buildInterpreterOps(cpu, cop1, cop0));
+        cpu.connect(coprocessor0, coProcessor1);
+        cpu.setOps(opcodeBuilder.buildInterpreterOps(cpu, coProcessor1, coprocessor0));
         // cpu.setOps(opcodeBuilder.buildDebugCpuOps(cpu)); TODO: when you toggle debug bool it changes cpu to debug cpu
 
         closeCpu();

@@ -1,6 +1,6 @@
 package me.hydos.J64.emu.debug;
 
-import static me.hydos.J64.emu.hardware.Cop1.FSTATUS_REGISTER;
+import static me.hydos.J64.emu.hardware.CoProcessor1.FSTATUS_REGISTER;
 
 import me.hydos.J64.emu.N64Cpu;
 import me.hydos.J64.emu.hardware.Memory;
@@ -249,12 +249,12 @@ public class TestCpu extends N64Cpu {
 	public Runnable r4300i_LWC1_Debug = () -> {
 		if (Debug.DEBUG_I_OPCODES || Debug.DEBUG_LD_OPCODES || Debug.DEBUG_CP_OPCODES)
 			System.out.print(
-					getITypeDebug("LWC1", GPR[base], cop1.FPR[cop1.mode32 ? rt >> 1 : rt].DW, offset));
+					getITypeDebug("LWC1", GPR[base], coProcessor1.FPR[coProcessor1.mode32 ? rt >> 1 : rt].DW, offset));
 
 		r4300i_LWC1.run();
 
 		if (Debug.DEBUG_I_OPCODES || Debug.DEBUG_LD_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("ft=%X VA=%X\n", cop1.FPR[cop1.mode32 ? rt >> 1 : rt].DW,
+			System.out.printf("ft=%X VA=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? rt >> 1 : rt].DW,
 					(int) ((GPR[base] & 0x00000000FFFFFFFFL) + (int) offset));
 	};
 
@@ -271,37 +271,37 @@ public class TestCpu extends N64Cpu {
 	public Runnable r4300i_LDC1_Debug = () -> {
 		if (Debug.DEBUG_I_OPCODES || Debug.DEBUG_LD_OPCODES || Debug.DEBUG_CP_OPCODES)
 			System.out.print(
-					getITypeDebug("LDC1", GPR[base], cop1.FPR[cop1.mode32 ? rt >> 1 : rt].DW, offset));
+					getITypeDebug("LDC1", GPR[base], coProcessor1.FPR[coProcessor1.mode32 ? rt >> 1 : rt].DW, offset));
 
 		r4300i_LDC1.run();
 
 		if (Debug.DEBUG_I_OPCODES || Debug.DEBUG_LD_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("ft=%X VA=%X\n", cop1.FPR[cop1.mode32 ? rt >> 1 : rt].DW,
+			System.out.printf("ft=%X VA=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? rt >> 1 : rt].DW,
 					(int) ((GPR[base] & 0x00000000FFFFFFFFL) + (int) offset));
 	};
 
 	public Runnable r4300i_SWC1_Debug = () -> {
 		if (Debug.DEBUG_I_OPCODES || Debug.DEBUG_ST_OPCODES || Debug.DEBUG_CP_OPCODES)
 			System.out.print(
-					getITypeDebug("SWC1", GPR[base], cop1.FPR[cop1.mode32 ? rt >> 1 : rt].DW, offset));
+					getITypeDebug("SWC1", GPR[base], coProcessor1.FPR[coProcessor1.mode32 ? rt >> 1 : rt].DW, offset));
 
 		r4300i_SWC1.run();
 
 		if (Debug.DEBUG_I_OPCODES || Debug.DEBUG_ST_OPCODES || Debug.DEBUG_CP_OPCODES)
 			System.out.printf("VA=%X *=%X\n", (int) ((GPR[base] & 0x00000000FFFFFFFFL) + offset),
-					cop1.FPR[cop1.mode32 ? rt >> 1 : rt].DW);
+					coProcessor1.FPR[coProcessor1.mode32 ? rt >> 1 : rt].DW);
 	};
 
 	public Runnable r4300i_SDC1_Debug = () -> {
 		if (Debug.DEBUG_I_OPCODES || Debug.DEBUG_ST_OPCODES || Debug.DEBUG_CP_OPCODES)
 			System.out.print(
-					getITypeDebug("SDC1", GPR[base], cop1.FPR[cop1.mode32 ? rt >> 1 : rt].DW, offset));
+					getITypeDebug("SDC1", GPR[base], coProcessor1.FPR[coProcessor1.mode32 ? rt >> 1 : rt].DW, offset));
 
 		r4300i_SDC1.run();
 
 		if (Debug.DEBUG_I_OPCODES || Debug.DEBUG_ST_OPCODES || Debug.DEBUG_CP_OPCODES)
 			System.out.printf("VA=%X *=%X\n", (int) ((GPR[base] & 0x00000000FFFFFFFFL) + offset),
-					cop1.FPR[cop1.mode32 ? rt >> 1 : rt].DW);
+					coProcessor1.FPR[coProcessor1.mode32 ? rt >> 1 : rt].DW);
 	};
 
 	public Runnable r4300i_SD_Debug = () -> {
@@ -734,7 +734,7 @@ public class TestCpu extends N64Cpu {
 	/************************** COP0 functions **************************/
 	public Runnable r4300i_COP0_MF_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("MFC0", 0, GPR[rt], cop0.CP0[rd] & 0xFFFFFFFFL));
+			System.out.print(getRTypeDebug("MFC0", 0, GPR[rt], coprocessor0.CP0[rd] & 0xFFFFFFFFL));
 
 		r4300i_COP0_MF.run();
 
@@ -744,12 +744,12 @@ public class TestCpu extends N64Cpu {
 
 	public Runnable r4300i_COP0_MT_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("MTC0", 0, GPR[rt], cop0.CP0[rd] & 0xFFFFFFFFL));
+			System.out.print(getRTypeDebug("MTC0", 0, GPR[rt], coprocessor0.CP0[rd] & 0xFFFFFFFFL));
 
 		r4300i_COP0_MT.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("rd=%X\n", cop0.CP0[rd]);
+			System.out.printf("rd=%X\n", coprocessor0.CP0[rd]);
 	};
 
 	/************************** COP0 CO functions ***********************/
@@ -757,23 +757,23 @@ public class TestCpu extends N64Cpu {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
 			System.out.printf("%s.\n", getRTypeDebug("TLBR", 0, 0, 0));
 
-		cop0.r4300i_COP0_CO_TLBR.run();
+		coprocessor0.r4300i_COP0_CO_TLBR.run();
 	};
 
-	public Runnable r4300i_COP0_CO_TLBWI_Debug = () -> cop0.r4300i_COP0_CO_TLBWI.run();
+	public Runnable r4300i_COP0_CO_TLBWI_Debug = () -> coprocessor0.r4300i_COP0_CO_TLBWI.run();
 
 	public Runnable r4300i_COP0_CO_TLBWR_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
 			System.out.printf("%s.\n", getRTypeDebug("TLBWR", 0, 0, 0));
 
-		cop0.r4300i_COP0_CO_TLBWR.run();
+		coprocessor0.r4300i_COP0_CO_TLBWR.run();
 	};
 
 	public Runnable r4300i_COP0_CO_TLBP_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
 			System.out.printf("%s.\n", getRTypeDebug("TLBP", 0, 0, 0));
 
-		cop0.r4300i_COP0_CO_TLBP.run();
+		coprocessor0.r4300i_COP0_CO_TLBP.run();
 	};
 
 	public Runnable r4300i_COP0_CO_ERET_Debug = () -> {
@@ -789,7 +789,7 @@ public class TestCpu extends N64Cpu {
 	/************************** COP1 functions **************************/
 	public Runnable r4300i_COP1_MF_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("MFC1", 0, GPR[rt], cop1.FPR[cop1.mode32 ? rd >> 1 : rd].DW));
+			System.out.print(getRTypeDebug("MFC1", 0, GPR[rt], coProcessor1.FPR[coProcessor1.mode32 ? rd >> 1 : rd].DW));
 
 		r4300i_COP1_MF.run();
 
@@ -799,7 +799,7 @@ public class TestCpu extends N64Cpu {
 
 	public Runnable r4300i_COP1_DMF_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("DMFC1", 0, GPR[rt], cop1.FPCR[rd]));
+			System.out.print(getRTypeDebug("DMFC1", 0, GPR[rt], coProcessor1.FPCR[rd]));
 
 		r4300i_COP1_DMF.run();
 
@@ -809,7 +809,7 @@ public class TestCpu extends N64Cpu {
 
 	public Runnable r4300i_COP1_CF_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CFC1", 0, GPR[rt], cop1.FPCR[rd]));
+			System.out.print(getRTypeDebug("CFC1", 0, GPR[rt], coProcessor1.FPCR[rd]));
 
 		r4300i_COP1_CF.run();
 
@@ -819,32 +819,32 @@ public class TestCpu extends N64Cpu {
 
 	public Runnable r4300i_COP1_MT_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("MTC1", 0, GPR[rt], cop1.FPR[cop1.mode32 ? rd >> 1 : rd].DW));
+			System.out.print(getRTypeDebug("MTC1", 0, GPR[rt], coProcessor1.FPR[coProcessor1.mode32 ? rd >> 1 : rd].DW));
 
 		r4300i_COP1_MT.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fs=%X\n", cop1.FPR[cop1.mode32 ? rd >> 1 : rd].DW);
+			System.out.printf("fs=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? rd >> 1 : rd].DW);
 	};
 
 	public Runnable r4300i_COP1_DMT_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("DMTC1", 0, GPR[rt], cop1.FPCR[rd]));
+			System.out.print(getRTypeDebug("DMTC1", 0, GPR[rt], coProcessor1.FPCR[rd]));
 
 		r4300i_COP1_DMT.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fs=%X\n", cop1.FPR[cop1.mode32 ? rd >> 1 : rd].DW);
+			System.out.printf("fs=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? rd >> 1 : rd].DW);
 	};
 
 	public Runnable r4300i_COP1_CT_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CTC1", 0, GPR[rt], cop1.FPCR[rd]));
+			System.out.print(getRTypeDebug("CTC1", 0, GPR[rt], coProcessor1.FPCR[rd]));
 
 		r4300i_COP1_CT.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fs=%X\n", cop1.FPCR[rd]);
+			System.out.printf("fs=%X\n", coProcessor1.FPCR[rd]);
 	};
 
 	/************************* COP1: BC1 functions ***********************/
@@ -891,334 +891,334 @@ public class TestCpu extends N64Cpu {
 	/************************** COP1: S functions ************************/
 	public Runnable r4300i_COP1_S_ADD_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("ADD.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW,
-					cop1.FPR[cop1.mode32 ? cop1.ft >> 1 : cop1.ft].DW,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("ADD.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.ft >> 1 : coProcessor1.ft].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_ADD.run();
+		coProcessor1.r4300i_COP1_S_ADD.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_SUB_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("SUB.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW,
-					cop1.FPR[cop1.mode32 ? cop1.ft >> 1 : cop1.ft].DW,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("SUB.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.ft >> 1 : coProcessor1.ft].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_SUB.run();
+		coProcessor1.r4300i_COP1_S_SUB.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_MUL_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("MUL.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW,
-					cop1.FPR[cop1.mode32 ? cop1.ft >> 1 : cop1.ft].DW,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("MUL.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.ft >> 1 : coProcessor1.ft].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_MUL.run();
+		coProcessor1.r4300i_COP1_S_MUL.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_DIV_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("DIV.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW,
-					cop1.FPR[cop1.mode32 ? cop1.ft >> 1 : cop1.ft].DW,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("DIV.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.ft >> 1 : coProcessor1.ft].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_DIV.run();
+		coProcessor1.r4300i_COP1_S_DIV.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_SQRT_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("SQRT.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("SQRT.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_SQRT.run();
+		coProcessor1.r4300i_COP1_S_SQRT.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_ABS_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("ABS.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("ABS.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_ABS.run();
+		coProcessor1.r4300i_COP1_S_ABS.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_MOV_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("MOV.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("MOV.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_MOV.run();
+		coProcessor1.r4300i_COP1_S_MOV.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_NEG_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("NEG.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("NEG.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_NEG.run();
+		coProcessor1.r4300i_COP1_S_NEG.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_TRUNC_L_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("TRUNC.L.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("TRUNC.L.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_TRUNC_L.run();
+		coProcessor1.r4300i_COP1_S_TRUNC_L.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_TRUNC_W_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("TRUNC.W.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("TRUNC.W.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_TRUNC_W.run();
+		coProcessor1.r4300i_COP1_S_TRUNC_W.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
-	public Runnable r4300i_COP1_S_FLOOR_W_Debug = () -> cop1.r4300i_COP1_S_FLOOR_W.run();
+	public Runnable r4300i_COP1_S_FLOOR_W_Debug = () -> coProcessor1.r4300i_COP1_S_FLOOR_W.run();
 
 	public Runnable r4300i_COP1_S_CVT_D_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CVT.D.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("CVT.D.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_CVT_D.run();
+		coProcessor1.r4300i_COP1_S_CVT_D.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_CVT_W_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CVT.W.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("CVT.W.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_CVT_W.run();
+		coProcessor1.r4300i_COP1_S_CVT_W.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_CVT_L_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CVT.L.S", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("CVT.L.S", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_CVT_L.run();
+		coProcessor1.r4300i_COP1_S_CVT_L.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_S_CMP_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CMP.S", 0, cop1.FPR[cop1.mode32 ? cop1.ft >> 1 : cop1.ft].DW,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("CMP.S", 0, coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.ft >> 1 : coProcessor1.ft].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_S_CMP.run();
+		coProcessor1.r4300i_COP1_S_CMP.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("31=%X\n", cop1.FPCR[FSTATUS_REGISTER]);
+			System.out.printf("31=%X\n", coProcessor1.FPCR[FSTATUS_REGISTER]);
 	};
 
 	/************************** COP1: D functions ************************/
 	public Runnable r4300i_COP1_D_ADD_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("ADD.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW,
-					cop1.FPR[cop1.mode32 ? cop1.ft >> 1 : cop1.ft].DW,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("ADD.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.ft >> 1 : coProcessor1.ft].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_ADD.run();
+		coProcessor1.r4300i_COP1_D_ADD.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_SUB_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("SUB.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW,
-					cop1.FPR[cop1.mode32 ? cop1.ft >> 1 : cop1.ft].DW,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("SUB.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.ft >> 1 : coProcessor1.ft].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_SUB.run();
+		coProcessor1.r4300i_COP1_D_SUB.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_MUL_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("MUL.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW,
-					cop1.FPR[cop1.mode32 ? cop1.ft >> 1 : cop1.ft].DW,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("MUL.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.ft >> 1 : coProcessor1.ft].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_MUL.run();
+		coProcessor1.r4300i_COP1_D_MUL.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_DIV_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("DIV.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW,
-					cop1.FPR[cop1.mode32 ? cop1.ft >> 1 : cop1.ft].DW,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("DIV.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.ft >> 1 : coProcessor1.ft].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_DIV.run();
+		coProcessor1.r4300i_COP1_D_DIV.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_SQRT_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("SQRT.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("SQRT.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_SQRT.run();
+		coProcessor1.r4300i_COP1_D_SQRT.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_ABS_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("ABS.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("ABS.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_ABS.run();
+		coProcessor1.r4300i_COP1_D_ABS.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_MOV_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("MOV.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("MOV.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_MOV.run();
+		coProcessor1.r4300i_COP1_D_MOV.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_NEG_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("NEG.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("NEG.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_NEG.run();
+		coProcessor1.r4300i_COP1_D_NEG.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_TRUNC_W_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("TRUNC.W.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("TRUNC.W.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_TRUNC_W.run();
+		coProcessor1.r4300i_COP1_D_TRUNC_W.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_CVT_S_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CVT.S.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("CVT.S.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_CVT_S.run();
+		coProcessor1.r4300i_COP1_D_CVT_S.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_CVT_W_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CVT.W.D", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("CVT.W.D", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_CVT_W.run();
+		coProcessor1.r4300i_COP1_D_CVT_W.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_D_CMP_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CMP.D", 0, cop1.FPR[cop1.mode32 ? cop1.ft >> 1 : cop1.ft].DW,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("CMP.D", 0, coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.ft >> 1 : coProcessor1.ft].DW,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_D_CMP.run();
+		coProcessor1.r4300i_COP1_D_CMP.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("31=%X\n", cop1.FPCR[FSTATUS_REGISTER]);
+			System.out.printf("31=%X\n", coProcessor1.FPCR[FSTATUS_REGISTER]);
 	};
 
 	/************************** COP1: W functions ************************/
 	public Runnable r4300i_COP1_W_CVT_S_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CVT.S.W", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("CVT.S.W", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_W_CVT_S.run();
+		coProcessor1.r4300i_COP1_W_CVT_S.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	public Runnable r4300i_COP1_W_CVT_D_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CVT.D.W", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("CVT.D.W", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_W_CVT_D.run();
+		coProcessor1.r4300i_COP1_W_CVT_D.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 	/************************** COP1: L functions ************************/
 	public Runnable r4300i_COP1_L_CVT_S_Debug = () -> {
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.print(getRTypeDebug("CVT.S.L", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW, 0,
-					cop1.FPR[cop1.mode32 ? cop1.fs >> 1 : cop1.fs].DW));
+			System.out.print(getRTypeDebug("CVT.S.L", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW, 0,
+					coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fs >> 1 : coProcessor1.fs].DW));
 
-		cop1.r4300i_COP1_L_CVT_S.run();
+		coProcessor1.r4300i_COP1_L_CVT_S.run();
 
 		if (Debug.DEBUG_R_OPCODES || Debug.DEBUG_CP_OPCODES)
-			System.out.printf("fd=%X\n", cop1.FPR[cop1.mode32 ? cop1.fd >> 1 : cop1.fd].DW);
+			System.out.printf("fd=%X\n", coProcessor1.FPR[coProcessor1.mode32 ? coProcessor1.fd >> 1 : coProcessor1.fd].DW);
 	};
 
 

@@ -1,8 +1,8 @@
 package me.hydos.J64.emu;
 
 import me.hydos.J64.emu.debug.TestCpu;
-import me.hydos.J64.emu.hardware.Cop0;
-import me.hydos.J64.emu.hardware.Cop1;
+import me.hydos.J64.emu.hardware.CoProcessor0;
+import me.hydos.J64.emu.hardware.CoProcessor1;
 
 public class OpcodeBuilder {
 
@@ -18,7 +18,7 @@ public class OpcodeBuilder {
     public static final int R4300I_COP1_W = 9;
     public static final int R4300I_COP1_L = 10;
 
-    public Runnable[][] buildInterpreterOps(N64Cpu cpu, Cop1 cop1, Cop0 cop0){
+    public Runnable[][] buildInterpreterOps(N64Cpu cpu, CoProcessor1 coProcessor1, CoProcessor0 coprocessor0){
         Runnable[][] ops = new Runnable[11][0];
 
         ops[R4300I_OPCODE] = new Runnable[64];
@@ -230,14 +230,14 @@ public class OpcodeBuilder {
         ops[R4300I_COP0][31] = cpu.R4300i_opcode_COP0_CO;
 
         ops[R4300I_COP0_FUNCTION][0] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP0_FUNCTION][1] = cop0.r4300i_COP0_CO_TLBR;
-        ops[R4300I_COP0_FUNCTION][2] = cop0.r4300i_COP0_CO_TLBWI;
+        ops[R4300I_COP0_FUNCTION][1] = coprocessor0.r4300i_COP0_CO_TLBR;
+        ops[R4300I_COP0_FUNCTION][2] = coprocessor0.r4300i_COP0_CO_TLBWI;
         ops[R4300I_COP0_FUNCTION][3] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP0_FUNCTION][4] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP0_FUNCTION][5] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP0_FUNCTION][6] = cop0.r4300i_COP0_CO_TLBWR;
+        ops[R4300I_COP0_FUNCTION][6] = coprocessor0.r4300i_COP0_CO_TLBWR;
         ops[R4300I_COP0_FUNCTION][7] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP0_FUNCTION][8] = cop0.r4300i_COP0_CO_TLBP;
+        ops[R4300I_COP0_FUNCTION][8] = coprocessor0.r4300i_COP0_CO_TLBP;
         ops[R4300I_COP0_FUNCTION][9] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP0_FUNCTION][10] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP0_FUNCTION][11] = cpu.R4300i_UnknownOpcode;
@@ -360,22 +360,22 @@ public class OpcodeBuilder {
         ops[R4300I_COP1_BC][30] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_BC][31] = cpu.R4300i_UnknownOpcode;
 
-        ops[R4300I_COP1_S][0] = cop1.r4300i_COP1_S_ADD;
-        ops[R4300I_COP1_S][1] = cop1.r4300i_COP1_S_SUB;
-        ops[R4300I_COP1_S][2] = cop1.r4300i_COP1_S_MUL;
-        ops[R4300I_COP1_S][3] = cop1.r4300i_COP1_S_DIV;
-        ops[R4300I_COP1_S][4] = cop1.r4300i_COP1_S_SQRT;
-        ops[R4300I_COP1_S][5] = cop1.r4300i_COP1_S_ABS;
-        ops[R4300I_COP1_S][6] = cop1.r4300i_COP1_S_MOV;
-        ops[R4300I_COP1_S][7] = cop1.r4300i_COP1_S_NEG;
+        ops[R4300I_COP1_S][0] = coProcessor1.r4300i_COP1_S_ADD;
+        ops[R4300I_COP1_S][1] = coProcessor1.r4300i_COP1_S_SUB;
+        ops[R4300I_COP1_S][2] = coProcessor1.r4300i_COP1_S_MUL;
+        ops[R4300I_COP1_S][3] = coProcessor1.r4300i_COP1_S_DIV;
+        ops[R4300I_COP1_S][4] = coProcessor1.r4300i_COP1_S_SQRT;
+        ops[R4300I_COP1_S][5] = coProcessor1.r4300i_COP1_S_ABS;
+        ops[R4300I_COP1_S][6] = coProcessor1.r4300i_COP1_S_MOV;
+        ops[R4300I_COP1_S][7] = coProcessor1.r4300i_COP1_S_NEG;
         ops[R4300I_COP1_S][8] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP1_S][9] = cop1.r4300i_COP1_S_TRUNC_L;
+        ops[R4300I_COP1_S][9] = coProcessor1.r4300i_COP1_S_TRUNC_L;
         ops[R4300I_COP1_S][10] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_S][11] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_S][12] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_S_ROUND_W;
-        ops[R4300I_COP1_S][13] = cop1.r4300i_COP1_S_TRUNC_W;
+        ops[R4300I_COP1_S][13] = coProcessor1.r4300i_COP1_S_TRUNC_W;
         ops[R4300I_COP1_S][14] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP1_S][15] = cop1.r4300i_COP1_S_FLOOR_W;
+        ops[R4300I_COP1_S][15] = coProcessor1.r4300i_COP1_S_FLOOR_W;
         ops[R4300I_COP1_S][16] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_S][17] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_S][18] = cpu.R4300i_UnknownOpcode;
@@ -393,11 +393,11 @@ public class OpcodeBuilder {
         ops[R4300I_COP1_S][30] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_S][31] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_S][32] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP1_S][33] = cop1.r4300i_COP1_S_CVT_D;
+        ops[R4300I_COP1_S][33] = coProcessor1.r4300i_COP1_S_CVT_D;
         ops[R4300I_COP1_S][34] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_S][35] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP1_S][36] = cop1.r4300i_COP1_S_CVT_W;
-        ops[R4300I_COP1_S][37] = cop1.r4300i_COP1_S_CVT_L;
+        ops[R4300I_COP1_S][36] = coProcessor1.r4300i_COP1_S_CVT_W;
+        ops[R4300I_COP1_S][37] = coProcessor1.r4300i_COP1_S_CVT_L;
         ops[R4300I_COP1_S][38] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_S][39] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_S][40] = cpu.R4300i_UnknownOpcode;
@@ -410,35 +410,35 @@ public class OpcodeBuilder {
         ops[R4300I_COP1_S][47] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_S][48] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_S_CMP;
         ops[R4300I_COP1_S][49] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_S_CMP;
-        ops[R4300I_COP1_S][50] = cop1.r4300i_COP1_S_CMP;
+        ops[R4300I_COP1_S][50] = coProcessor1.r4300i_COP1_S_CMP;
         ops[R4300I_COP1_S][51] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_S_CMP;
-        ops[R4300I_COP1_S][52] = cop1.r4300i_COP1_S_CMP;
-        ops[R4300I_COP1_S][53] = cop1.r4300i_COP1_S_CMP;
-        ops[R4300I_COP1_S][54] = cop1.r4300i_COP1_S_CMP;
-        ops[R4300I_COP1_S][55] = cop1.r4300i_COP1_S_CMP;
+        ops[R4300I_COP1_S][52] = coProcessor1.r4300i_COP1_S_CMP;
+        ops[R4300I_COP1_S][53] = coProcessor1.r4300i_COP1_S_CMP;
+        ops[R4300I_COP1_S][54] = coProcessor1.r4300i_COP1_S_CMP;
+        ops[R4300I_COP1_S][55] = coProcessor1.r4300i_COP1_S_CMP;
         ops[R4300I_COP1_S][56] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_S_CMP;
         ops[R4300I_COP1_S][57] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_S_CMP;
         ops[R4300I_COP1_S][58] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_S_CMP;
         ops[R4300I_COP1_S][59] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_S_CMP;
-        ops[R4300I_COP1_S][60] = cop1.r4300i_COP1_S_CMP;
+        ops[R4300I_COP1_S][60] = coProcessor1.r4300i_COP1_S_CMP;
         ops[R4300I_COP1_S][61] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_S_CMP;
-        ops[R4300I_COP1_S][62] = cop1.r4300i_COP1_S_CMP;
+        ops[R4300I_COP1_S][62] = coProcessor1.r4300i_COP1_S_CMP;
         ops[R4300I_COP1_S][63] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_S_CMP;
 
-        ops[R4300I_COP1_D][0] = cop1.r4300i_COP1_D_ADD;
-        ops[R4300I_COP1_D][1] = cop1.r4300i_COP1_D_SUB;
-        ops[R4300I_COP1_D][2] = cop1.r4300i_COP1_D_MUL;
-        ops[R4300I_COP1_D][3] = cop1.r4300i_COP1_D_DIV;
-        ops[R4300I_COP1_D][4] = cop1.r4300i_COP1_D_SQRT;
-        ops[R4300I_COP1_D][5] = cop1.r4300i_COP1_D_ABS;
-        ops[R4300I_COP1_D][6] = cop1.r4300i_COP1_D_MOV;
-        ops[R4300I_COP1_D][7] = cop1.r4300i_COP1_D_NEG;
+        ops[R4300I_COP1_D][0] = coProcessor1.r4300i_COP1_D_ADD;
+        ops[R4300I_COP1_D][1] = coProcessor1.r4300i_COP1_D_SUB;
+        ops[R4300I_COP1_D][2] = coProcessor1.r4300i_COP1_D_MUL;
+        ops[R4300I_COP1_D][3] = coProcessor1.r4300i_COP1_D_DIV;
+        ops[R4300I_COP1_D][4] = coProcessor1.r4300i_COP1_D_SQRT;
+        ops[R4300I_COP1_D][5] = coProcessor1.r4300i_COP1_D_ABS;
+        ops[R4300I_COP1_D][6] = coProcessor1.r4300i_COP1_D_MOV;
+        ops[R4300I_COP1_D][7] = coProcessor1.r4300i_COP1_D_NEG;
         ops[R4300I_COP1_D][8] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][9] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][10] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][11] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][12] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_ROUND_W;
-        ops[R4300I_COP1_D][13] = cop1.r4300i_COP1_D_TRUNC_W;
+        ops[R4300I_COP1_D][13] = coProcessor1.r4300i_COP1_D_TRUNC_W;
         ops[R4300I_COP1_D][14] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][15] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][16] = cpu.R4300i_UnknownOpcode;
@@ -457,11 +457,11 @@ public class OpcodeBuilder {
         ops[R4300I_COP1_D][29] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][30] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][31] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP1_D][32] = cop1.r4300i_COP1_D_CVT_S;
+        ops[R4300I_COP1_D][32] = coProcessor1.r4300i_COP1_D_CVT_S;
         ops[R4300I_COP1_D][33] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][34] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][35] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP1_D][36] = cop1.r4300i_COP1_D_CVT_W;
+        ops[R4300I_COP1_D][36] = coProcessor1.r4300i_COP1_D_CVT_W;
         ops[R4300I_COP1_D][37] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CVT_L;
         ops[R4300I_COP1_D][38] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][39] = cpu.R4300i_UnknownOpcode;
@@ -475,7 +475,7 @@ public class OpcodeBuilder {
         ops[R4300I_COP1_D][47] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_D][48] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CMP;
         ops[R4300I_COP1_D][49] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CMP;
-        ops[R4300I_COP1_D][50] = cop1.r4300i_COP1_D_CMP;
+        ops[R4300I_COP1_D][50] = coProcessor1.r4300i_COP1_D_CMP;
         ops[R4300I_COP1_D][51] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CMP;
         ops[R4300I_COP1_D][52] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CMP;
         ops[R4300I_COP1_D][53] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CMP;
@@ -485,9 +485,9 @@ public class OpcodeBuilder {
         ops[R4300I_COP1_D][57] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CMP;
         ops[R4300I_COP1_D][58] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CMP;
         ops[R4300I_COP1_D][59] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CMP;
-        ops[R4300I_COP1_D][60] = cop1.r4300i_COP1_D_CMP;
+        ops[R4300I_COP1_D][60] = coProcessor1.r4300i_COP1_D_CMP;
         ops[R4300I_COP1_D][61] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CMP;
-        ops[R4300I_COP1_D][62] = cop1.r4300i_COP1_D_CMP;
+        ops[R4300I_COP1_D][62] = coProcessor1.r4300i_COP1_D_CMP;
         ops[R4300I_COP1_D][63] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_D_CMP;
 
         ops[R4300I_COP1_W][0] = cpu.R4300i_UnknownOpcode;
@@ -522,8 +522,8 @@ public class OpcodeBuilder {
         ops[R4300I_COP1_W][29] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_W][30] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_W][31] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP1_W][32] = cop1.r4300i_COP1_W_CVT_S;
-        ops[R4300I_COP1_W][33] = cop1.r4300i_COP1_W_CVT_D;
+        ops[R4300I_COP1_W][32] = coProcessor1.r4300i_COP1_W_CVT_S;
+        ops[R4300I_COP1_W][33] = coProcessor1.r4300i_COP1_W_CVT_D;
         ops[R4300I_COP1_W][34] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_W][35] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_W][36] = cpu.R4300i_UnknownOpcode;
@@ -587,7 +587,7 @@ public class OpcodeBuilder {
         ops[R4300I_COP1_L][29] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_L][30] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_L][31] = cpu.R4300i_UnknownOpcode;
-        ops[R4300I_COP1_L][32] = cop1.r4300i_COP1_L_CVT_S;
+        ops[R4300I_COP1_L][32] = coProcessor1.r4300i_COP1_L_CVT_S;
         ops[R4300I_COP1_L][33] = cpu.R4300i_UnknownOpcode; // cpu.r4300i_COP1_L_CVT_D;
         ops[R4300I_COP1_L][34] = cpu.R4300i_UnknownOpcode;
         ops[R4300I_COP1_L][35] = cpu.R4300i_UnknownOpcode;

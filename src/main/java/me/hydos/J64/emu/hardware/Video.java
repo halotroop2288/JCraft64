@@ -33,7 +33,7 @@ public class Video {
 	private final long frequency;
 	private int viIntrTime = 500000;
 	private int viFieldNumber;
-	private Cop0 cop0;
+	private CoProcessor0 coprocessor0;
 	private boolean frameLimit;
 
 	public Runnable timerInterrupt = new Runnable() {
@@ -41,10 +41,10 @@ public class Video {
 			regMI[Registers.MI_INTR_REG] |= Registers.MI_INTR_VI;
 			checkInterrupts.run();
 			if (gfxPlugin != null) {
-				cop0.update();
+				coprocessor0.update();
 				long time = System.currentTimeMillis();
 				try {
-					cop0.changeTimer(Cop0.VI_TIMER, cop0.timer + cop0.nextTimer[Cop0.VI_TIMER] + refreshScreen());
+					coprocessor0.changeTimer(CoProcessor0.VI_TIMER, coprocessor0.timer + coprocessor0.nextTimer[CoProcessor0.VI_TIMER] + refreshScreen());
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -66,8 +66,8 @@ public class Video {
 		viFieldNumber = 0;
 	}
 
-	public void setTimer(Cop0 cop0) {
-		this.cop0 = cop0;
+	public void setTimer(CoProcessor0 coprocessor0) {
+		this.coprocessor0 = coprocessor0;
 	}
 
 	public void setFrameLimit(boolean frameLimit) {
