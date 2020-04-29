@@ -110,10 +110,10 @@ public class Pif {
 	public boolean loadPifRom(int country) {
 		switch (country) {
 		case 0x44: // Germany
-		case 0x46: // french
-		case 0x49: // Italian
+		case 0x46: // France
+		case 0x49: // Italy
 		case 0x50: // Europe
-		case 0x53: // Spanish
+		case 0x53: // Spain
 		case 0x55: // Australia
 		case 0x58: // X (PAL)
 		case 0x59: // X (PAL)
@@ -135,7 +135,7 @@ public class Pif {
 		// shutdownPlugins();
 		String controller_plugin = cfg.getProperty(CONTROLLER_PLUGIN, "DEFAULT_CONTROLLER_PLUGIN");
 		try {
-			Class c = Class.forName(controller_plugin);
+			Class<?> c = Class.forName(controller_plugin);
 			inputPlugin = (InputPlugin) c.newInstance();
 		} catch (Exception ex) {
 			System.err.println("No controller plugin loaded.");
