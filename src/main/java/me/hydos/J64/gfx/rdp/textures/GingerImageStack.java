@@ -2,10 +2,10 @@ package me.hydos.J64.gfx.rdp.textures;
 
 import org.lwjgl.opengl.GL40;
 
-public class CachedTextureStack {
+public class GingerImageStack {
 
-    public CachedTexture top;
-    public CachedTexture bottom;
+    public N64Texture top;
+    public N64Texture bottom;
 
     public void init() {
         top = null;
@@ -24,7 +24,7 @@ public class CachedTextureStack {
 
     }
 
-    public void remove(CachedTexture texture) {
+    public void remove(N64Texture texture) {
         if ((texture == bottom) && (texture == top)) {
             top = null;
             bottom = null;
@@ -46,7 +46,7 @@ public class CachedTextureStack {
         GL40.glDeleteTextures(texture.glName);
     }
 
-    public void addTop(CachedTexture newtop) {
+    public void addTop(N64Texture newtop) {
         GL40.glGenTextures(newtop.glName);
 
         newtop.lower = top;
@@ -62,7 +62,7 @@ public class CachedTextureStack {
 
     }
 
-    public void moveToTop(CachedTexture newtop) {
+    public void moveToTop(N64Texture newtop) {
         if (newtop == top)
             return;
 

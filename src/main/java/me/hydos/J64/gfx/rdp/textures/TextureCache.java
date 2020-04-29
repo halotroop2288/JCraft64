@@ -145,11 +145,11 @@ public class TextureCache {
 
     public int changed;
     public gDPTile[] textureTile = new gDPTile[2];
-    public CachedTexture[] current = new CachedTexture[2];
+    public N64Texture[] current = new N64Texture[2];
 
     private boolean ARB_multitexture; // TNT, GeForce, Rage 128, Radeon
     private int cachedBytes;
-    private CachedTextureStack stack = new CachedTextureStack();
+    private GingerImageStack stack = new GingerImageStack();
     private Texture texture = new Texture();
     private gDPTile[] tiles = new gDPTile[8];
     private gDPTile loadTile = new gDPTile();
@@ -165,7 +165,7 @@ public class TextureCache {
     private int hits;
     private int misses;
     private int[] glNoiseNames = new int[32];
-    private CachedTexture dummy;
+    private N64Texture dummy;
     private BgImage bgImage = new BgImage();
     private Checksum crc32;
     private ByteBuffer rdram;
@@ -229,7 +229,7 @@ public class TextureCache {
             GL40.glTexImage2D(GL40.GL_TEXTURE_2D, 0, GL40.GL_RGBA8, 64, 64, 0, GL40.GL_RGBA, GL40.GL_UNSIGNED_BYTE, noise);
         }
 
-        dummy = CachedTexture.getDummy();
+        dummy = N64Texture.getDummy();
         prune();
         stack.addTop(dummy);
 
@@ -256,7 +256,7 @@ public class TextureCache {
 
     public void activateDummy(int t) {
         if(dummy == null)
-            dummy = CachedTexture.getDummy();
+            dummy = N64Texture.getDummy();
         if (ARB_multitexture)
             GL40.glActiveTexture(GL40.GL_TEXTURE0 + t);
         GL40.glBindTexture(GL40.GL_TEXTURE_2D, dummy.glName[0]);
@@ -470,7 +470,7 @@ public class TextureCache {
         }
     }
 
-    private void activateTexture(int t, CachedTexture texture, boolean linear) {
+    private void activateTexture(int t, N64Texture texture, boolean linear) {
         if (ARB_multitexture)
             GL40.glActiveTexture(GL40.GL_TEXTURE0 + t);
         GL40.glBindTexture(GL40.GL_TEXTURE_2D, texture.glName[0]);
@@ -614,7 +614,7 @@ public class TextureCache {
         }
         int crc = (int) crc32.getValue();
 
-        CachedTexture tex = stack.top;
+        N64Texture tex = stack.top;
         while (tex != null) {
             if ((tex.crc == crc) &&
                     (tex.width == width) &&
@@ -643,7 +643,7 @@ public class TextureCache {
         if (ARB_multitexture)
             GL40.glActiveTexture(GL40.GL_TEXTURE0 + t);
 
-        current[t] = new CachedTexture();
+        current[t] = new N64Texture();
         prune();
         stack.addTop(current[t]);
         GL40.glBindTexture(GL40.GL_TEXTURE_2D, current[t].glName[0]);
@@ -713,7 +713,7 @@ public class TextureCache {
         }
         int crc = (int) crc32.getValue();
 
-        CachedTexture tex = stack.top;
+        N64Texture tex = stack.top;
         while (tex != null) {
             if ((tex.crc == crc) &&
                     (tex.width == bgImage.width) &&
@@ -734,7 +734,7 @@ public class TextureCache {
         if (ARB_multitexture)
             GL40.glActiveTexture(GL40.GL_TEXTURE0);
 
-        current[0] = new CachedTexture();
+        current[0] = new N64Texture();
         prune();
         stack.addTop(current[0]);
         GL40.glBindTexture(GL40.GL_TEXTURE_2D, current[0].glName[0]);

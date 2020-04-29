@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL40;
 
 import java.nio.ByteBuffer;
 
-public class CachedTexture {
+public class N64Texture {
 
     public int[] glName = new int[1];
     public int address;
@@ -34,11 +34,11 @@ public class CachedTexture {
     public float shiftScaleS;
     public float shiftScaleT;
     public int textureBytes;
-    public CachedTexture lower;
-    public CachedTexture higher;
+    public N64Texture lower;
+    public N64Texture higher;
 
-    public static CachedTexture getDummy() {
-        CachedTexture dummy = new CachedTexture();
+    public static N64Texture getDummy() {
+        N64Texture dummy = new N64Texture();
         dummy.address = 0;
         dummy.clampS = 1;
         dummy.clampT = 1;

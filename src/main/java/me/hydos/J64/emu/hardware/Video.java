@@ -43,11 +43,7 @@ public class Video {
 			if (gfxPlugin != null) {
 				coprocessor0.update();
 				long time = System.currentTimeMillis();
-				try {
-					coprocessor0.changeTimer(CoProcessor0.VI_TIMER, coprocessor0.timer + coprocessor0.nextTimer[CoProcessor0.VI_TIMER] + refreshScreen());
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				coprocessor0.changeTimer(CoProcessor0.VI_TIMER, coprocessor0.timer + coprocessor0.nextTimer[CoProcessor0.VI_TIMER] + refreshScreen());
 				millisInGfx += (System.currentTimeMillis() - time);
 			}
 		}
@@ -113,7 +109,7 @@ public class Video {
 		}
 	}
 
-	private int refreshScreen() throws InterruptedException {
+	private int refreshScreen() {
 		int oldViVsyncReg = 0;
 		if (oldViVsyncReg != regVI[GfxPlugin.VI_V_SYNC_REG]) {
 			viIntrTime = (regVI[GfxPlugin.VI_V_SYNC_REG] + 1) * 1500;

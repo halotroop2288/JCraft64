@@ -358,10 +358,10 @@ public class Gsp {
             lights[n].vec[1] = (float) rdram.get(address + 9) / 127.0f;
             lights[n].vec[2] = (float) rdram.get(address + 10) / 127.0f;
             int a = address >> 1;
-            lights[n].x = (float) rdram.asShortBuffer().get(a + 16);
-            lights[n].y = (float) rdram.asShortBuffer().get(a + 17);
-            lights[n].z = (float) rdram.asShortBuffer().get(a + 18);
-            lights[n].w = (float) rdram.asShortBuffer().get(a + 19);
+            lights[n].x = rdram.asShortBuffer().get(a + 16);
+            lights[n].y = rdram.asShortBuffer().get(a + 17);
+            lights[n].z = rdram.asShortBuffer().get(a + 18);
+            lights[n].w = rdram.asShortBuffer().get(a + 19);
             lights[n].nonzero = rdram.get(address + 12);
             lights[n].ca = (float) lights[n].nonzero / 16.0f;
         }

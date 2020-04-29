@@ -34,8 +34,5 @@ public class Registers {
     public int VI_Y_SCALE;
     public int[] VI_Registers;
 
-    /** Creates a new instance of N64 */
-    public Registers() {
-    }
 
 }

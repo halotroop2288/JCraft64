@@ -59,21 +59,6 @@ public class Math3D {
         m0[3][3] = tmp3;
     }
 
-    public static void transpose3x3Matrix(float[][] mtx) {
-        float eax = mtx[1][0];
-        float ebx = mtx[0][1];
-        mtx[1][0] = ebx;
-        mtx[0][1] = eax;
-        eax = mtx[2][0];
-        ebx = mtx[0][2];
-        mtx[2][0] = ebx;
-        mtx[0][2] = eax;
-        eax = mtx[1][2];
-        ebx = mtx[2][1];
-        mtx[1][2] = ebx;
-        mtx[2][1] = eax;
-    }
-    
     public static void transformVertex(float[] vtx, float[][] mtx) { //, float perspNorm )
         float tmp0 = vtx[0] * mtx[0][0] + vtx[1] * mtx[1][0] + vtx[2] * mtx[2][0];
         float tmp1 = vtx[0] * mtx[0][1] + vtx[1] * mtx[1][1] + vtx[2] * mtx[2][1];
@@ -100,13 +85,7 @@ public class Math3D {
         v[1] /= length;
         v[2] /= length;
     }
-    
-    public static void normalize2D(float[] v) {
-        float length = (float)StrictMath.hypot(v[0], v[1]);
-        v[0] /= length;
-        v[1] /= length;
-    }
-    
+
     public static float dotProduct(float[] v0, float[] v1) {
         return v0[0] * v1[0] + v0[1] * v1[1] + v0[2] * v1[2];
     }

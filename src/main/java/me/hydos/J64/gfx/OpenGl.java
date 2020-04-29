@@ -1,57 +1,15 @@
 package me.hydos.J64.gfx;
 
 import me.hydos.J64.gfx.rsp.Gsp;
-import net.minecraft.client.MinecraftClient;
+import me.hydos.J64.gingerlite.GingerLite;
 import org.lwjgl.opengl.GL40;
 
-import java.nio.FloatBuffer;
-
 public class OpenGl {
-
-    public static class GLVertex {
-        public FloatBuffer vtx; // 4
-        public FloatBuffer color; // 4
-        public FloatBuffer secondaryColor; // 4
-        public FloatBuffer tex0; // 2
-        public FloatBuffer tex1; // 2
-        public FloatBuffer fog; // 1
-
-        public GLVertex(float x, float y, float z, float w,
-                float r1, float g1, float b1, float a1,
-                float r2, float g2, float b2, float a2,
-                float s0, float t0, float s1, float t1, float f) {
-            vtx = FloatBuffer.allocate(4);
-            vtx.put(x);
-            vtx.put(y);
-            vtx.put(z);
-            vtx.put(w);
-            color = FloatBuffer.allocate(4);
-            color.put(r1);
-            color.put(g1);
-            color.put(b1);
-            color.put(a1);
-            secondaryColor = FloatBuffer.allocate(4);
-            secondaryColor.put(r2);
-            secondaryColor.put(g2);
-            secondaryColor.put(b2);
-            secondaryColor.put(a2);
-            tex0 = FloatBuffer.allocate(2);
-            tex0.put(s0);
-            tex0.put(t0);
-            tex1 = FloatBuffer.allocate(2);
-            tex1.put(s1);
-            tex1.put(t1);
-            fog = FloatBuffer.allocate(1);
-            fog.put(f);
-        }
-    };
     
-    public static class OGL_EventListener{// implements GLEventListener {
+    public static class OGL_EventListener{
 
-        public void init() {//public void init(GLAutoDrawable gLDrawable) {
-//            gl = gLDrawable.getGL();
+        public void init() {
             OpenGlGdp.init();
-            
             Rsp.gsp.changed = Rsp.gdp.changed = 0xFFFFFFFF;
         }
         
@@ -84,77 +42,39 @@ public class OpenGl {
                 e.printStackTrace();
             }
         }
-//
-//        public void reshape(GLAutoDrawable gLDrawable, int i, int i0, int i1, int i2) {
-//        }
-//
-//        public void displayChanged(GLAutoDrawable gLDrawable, boolean b, boolean b0) {
-//        }
         
     };
 
     public static int uc_start;
     public static int uc_dstart;
 
-    private static boolean fog;
-
     public static void config() {
-        fog = true; //TODO: add this if fog is on program?
         OpenGlGdp.config();
-    }
-    
-    public static void OGL_Stop() {
-    }
-    
-    public static void OGL_Start() {
-        int displayWidth = 640;
-        int displayHeight = 480;
-//        JFrame window = GLN64jPlugin.hWnd;
-//        GLCanvas canvas = new GLCanvas();
-//        canvas.setIgnoreRepaint(true);
-//        canvas.setAutoSwapBufferMode(false);
-//        canvas.addGLEventListener(new OGL_EventListener());
-//        window.getContentPane().removeAll();
-//        window.getContentPane().add(canvas);
-//        canvas.setSize(displayWidth, displayHeight);
-//            window.pack();
-//        while (!canvas.isDisplayable()) {
-//            try {
-//                Thread.sleep(50);
-//            } catch (InterruptedException ignored) {}
-//        }
-//        gl = canvas.getGL();
-//        OpenGlGdp.hDC = canvas;
-//        OpenGlGdp.hDC.swapBuffers(); //TMP
     }
 
     private static void OGL_UpdateCullFace() {
-        MinecraftClient.getInstance().execute(() -> {
-
-        });
-
         if ((Rsp.gsp.geometryMode & Gbi.G_CULL_BOTH)!=0) {
-            GL40.glEnable(GL40.GL_CULL_FACE);
+            GingerLite.enable(GL40.GL_CULL_FACE);
 
             if ((Rsp.gsp.geometryMode & Gbi.G_CULL_BACK)!=0)
                 GL40.glCullFace(GL40.GL_BACK);
             else
                 GL40.glCullFace(GL40.GL_FRONT);
         } else
-            GL40.glDisable(GL40.GL_CULL_FACE);
+            GingerLite.disable(GL40.GL_CULL_FACE);
     }
     
     public static void OGL_GspUpdateStates() {
         if ((Rsp.gsp.changed & Gsp.CHANGED_GEOMETRYMODE) != 0) {
             OGL_UpdateCullFace();
-            GL40.glDisable(GL40.GL_FOG);
+            GingerLite.disable(GL40.GL_FOG);
             Rsp.gsp.changed &= ~Gsp.CHANGED_GEOMETRYMODE;
         }
 
         if ((Rsp.gsp.geometryMode & Gbi.G_ZBUFFER) != 0)
-            GL40.glEnable(GL40.GL_DEPTH_TEST);
+            GingerLite.enable(GL40.GL_DEPTH_TEST);
         else
-            GL40.glDisable(GL40.GL_DEPTH_TEST);
+            GingerLite.disable(GL40.GL_DEPTH_TEST);
 
         Rsp.gsp.changed &= Gsp.CHANGED_MATRIX;
     }

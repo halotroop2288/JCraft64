@@ -66,53 +66,39 @@ public class ImageFormat {
         }
     };
 
-    public static final GetTexelFunc GetCI4RGBA_RGBA8888 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetCI4RGBA_RGBA8888");
-            return 0xFF00FFFF;
-        }
+    public static final GetTexelFunc GetCI4RGBA_RGBA8888 = (src, x, i, palette) -> {
+        System.out.println("GetCI4RGBA_RGBA8888");
+        return 0xFF00FFFF;
     };
 
-    public static final GetTexelFunc GetIA31_RGBA8888 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetIA31_RGBA8888");
-            return 0xFF00FFFF;
-        }
+    public static final GetTexelFunc GetIA31_RGBA8888 = (src, x, i, palette) -> {
+        System.out.println("GetIA31_RGBA8888");
+        return 0xFF00FFFF;
     };
 
-    public static final GetTexelFunc GetIA31_RGBA4444 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            int color4B = src.get((x >> 1) ^ (i << 1)) & 0xFF;
-            return IA31_RGBA4444(((x & 1) != 0) ? (byte) (color4B & 0x0F) : (byte) (color4B >> 4)) & 0xFFFF;
-        }
+    public static final GetTexelFunc GetIA31_RGBA4444 = (src, x, i, palette) -> {
+        int color4B = src.get((x >> 1) ^ (i << 1)) & 0xFF;
+        return IA31_RGBA4444(((x & 1) != 0) ? (byte) (color4B & 0x0F) : (byte) (color4B >> 4)) & 0xFFFF;
     };
 
-    public static final GetTexelFunc GetI4_RGBA8888 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetI4_RGBA8888");
-            return 0xFF00FFFF;
-        }
+    public static final GetTexelFunc GetI4_RGBA8888 = (src, x, i, palette) -> {
+        System.out.println("GetI4_RGBA8888");
+        return 0xFF00FFFF;
     };
 
-    public static final GetTexelFunc GetI4_RGBA4444 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            int color4B = src.get((x >> 1) ^ (i << 1)) & 0xFF;
-            return I4_RGBA4444(((x & 1) != 0) ? (byte) (color4B & 0x0F) : (byte) (color4B >> 4)) & 0xFFFF;
-        }
+    public static final GetTexelFunc GetI4_RGBA4444 = (src, x, i, palette) -> {
+        int color4B = src.get((x >> 1) ^ (i << 1)) & 0xFF;
+        return I4_RGBA4444(((x & 1) != 0) ? (byte) (color4B & 0x0F) : (byte) (color4B >> 4)) & 0xFFFF;
     };
 
-    public static final GetTexelFunc GetCI8IA_RGBA4444 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetCI8IA_RGBA4444");
-            return 0x0000F0FF;
-        }
+    public static final GetTexelFunc GetCI8IA_RGBA4444 = (src, x, i, palette) -> {
+        System.out.println("GetCI8IA_RGBA4444");
+        return 0x0000F0FF;
     };
 
-    public static final GetTexelFunc GetCI8IA_RGBA8888 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetCI8IA_RGBA8888");
-            return 0xFF00FFFF;
-        }
+    public static final GetTexelFunc GetCI8IA_RGBA8888 = (src, x, i, palette) -> {
+        System.out.println("GetCI8IA_RGBA8888");
+        return 0xFF00FFFF;
     };
 
     public static final GetTexelFunc GetCI8RGBA_RGBA5551 = new GetTexelFunc() {
@@ -121,77 +107,47 @@ public class ImageFormat {
         }
     };
 
-    public static final GetTexelFunc GetCI8RGBA_RGBA8888 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetCI8RGBA_RGBA8888");
-            return 0xFF00FFFF;
-        }
+    public static final GetTexelFunc GetCI8RGBA_RGBA8888 = (src, x, i, palette) -> {
+        System.out.println("GetCI8RGBA_RGBA8888");
+        return 0xFF00FFFF;
     };
 
-    public static final GetTexelFunc GetIA44_RGBA8888 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetIA44_RGBA8888");
-            return 0xFF00FFFF;
-        }
+    public static final GetTexelFunc GetIA44_RGBA8888 = (src, x, i, palette) -> {
+        System.out.println("GetIA44_RGBA8888");
+        return 0xFF00FFFF;
     };
 
-    public static final GetTexelFunc GetIA44_RGBA4444 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            return IA44_RGBA4444(src.get(x ^ (i << 1))) & 0xFFFF;
-        }
+    public static final GetTexelFunc GetIA44_RGBA4444 = (src, x, i, palette) -> IA44_RGBA4444(src.get(x ^ (i << 1))) & 0xFFFF;
+
+    public static final GetTexelFunc GetI8_RGBA8888 = (src, x, i, palette) -> I8_RGBA8888(src.get(x ^ (i << 1)));
+
+    public static final GetTexelFunc GetI8_RGBA4444 = (src, x, i, palette) -> {
+        System.out.println("GetI8_RGBA4444");
+        return 0x0000F0FF;
     };
 
-    public static final GetTexelFunc GetI8_RGBA8888 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            return I8_RGBA8888(src.get(x ^ (i << 1)));
-        }
+    public static final GetTexelFunc GetRGBA5551_RGBA8888 = (src, x, i, palette) -> {
+        System.out.println("GetRGBA5551_RGBA8888 ");
+        return 0xFF00FFFF;
     };
 
-    public static final GetTexelFunc GetI8_RGBA4444 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetI8_RGBA4444");
-            return 0x0000F0FF;
-        }
+    public static final GetTexelFunc GetRGBA5551_RGBA5551 = (src, x, i, palette) -> RGBA5551_RGBA5551(src.asShortBuffer().get(x ^ i)) & 0xFFFF;
+
+    public static final GetTexelFunc GetIA88_RGBA8888 = (src, x, i, palette) -> IA88_RGBA8888(src.asShortBuffer().get(x ^ i));
+
+    public static final GetTexelFunc GetIA88_RGBA4444 = (src, x, i, palette) -> {
+        System.out.println("GetIA88_RGBA4444");
+        return 0x0000F0FF;
     };
 
-    public static final GetTexelFunc GetRGBA5551_RGBA8888 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetRGBA5551_RGBA8888 ");
-            return 0xFF00FFFF;
-        }
+    public static final GetTexelFunc GetRGBA8888_RGBA8888 = (src, x, i, palette) -> {
+        src.order(ByteOrder.LITTLE_ENDIAN);
+        return src.asIntBuffer().get(x ^ i);
     };
 
-    public static final GetTexelFunc GetRGBA5551_RGBA5551 = new GetTexelFunc() {
-        public final int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            return RGBA5551_RGBA5551(src.asShortBuffer().get(x ^ i)) & 0xFFFF;
-        }
-    };
-
-    public static final GetTexelFunc GetIA88_RGBA8888 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            return IA88_RGBA8888(src.asShortBuffer().get(x ^ i));
-        }
-    };
-
-    public static final GetTexelFunc GetIA88_RGBA4444 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetIA88_RGBA4444");
-            return 0x0000F0FF;
-        }
-    };
-
-    public static final GetTexelFunc GetRGBA8888_RGBA8888 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            src.order(ByteOrder.LITTLE_ENDIAN);
-            return src.asIntBuffer().get(x ^ i);
-        }
-    };
-
-    public static final GetTexelFunc GetRGBA8888_RGBA4444 = new GetTexelFunc() {
-        public int GetTexel(ByteBuffer src, int x, int i, int palette) {
-            System.out.println("GetRGBA8888_RGBA4444");
-            return 0x0000F0FF;
-        }
+    public static final GetTexelFunc GetRGBA8888_RGBA4444 = (src, x, i, palette) -> {
+        System.out.println("GetRGBA8888_RGBA4444");
+        return 0x0000F0FF;
     };
 
     public static ImageFormat[][] imageFormat =
@@ -244,17 +200,17 @@ public class ImageFormat {
     };
 
     // Just swaps the word
-    private static final short RGBA5551_RGBA5551(short color) {
+    private static short RGBA5551_RGBA5551(short color) {
         return color;
     }
 
-    private static final int IA88_RGBA8888(short color) {
+    private static int IA88_RGBA8888(short color) {
         int al = color & 0xFF;
         int ah = (color >> 8) & 0xFF;
         return (al << 24) | (ah << 16) | (ah << 8) | ah;
     }
 
-    private static final short IA44_RGBA4444(byte color) {
+    private static short IA44_RGBA4444(byte color) {
         int cl = color & 0xFF;
         int al = cl;
         cl = (cl >> 4) & 0xFF;
@@ -264,7 +220,7 @@ public class ImageFormat {
         return (short) ((ah << 8) | al);
     }
 
-    private static final short IA31_RGBA4444(byte color) {
+    private static short IA31_RGBA4444(byte color) {
         int cl = color & 0xFF;
         int bl = cl;
         bl = (bl >> 1) & 0xFF;
@@ -280,12 +236,12 @@ public class ImageFormat {
         return (short) ((ah << 8) | al);
     }
 
-    private static final int I8_RGBA8888(byte color) {
+    private static int I8_RGBA8888(byte color) {
         int cl = color & 0xFF;
         return (cl << 24) | (cl << 16) | (cl << 8) | (cl);
     }
 
-    private static final short I4_RGBA4444(byte color) {
+    private static short I4_RGBA4444(byte color) {
         int cl = color & 0xFF;
         int al = cl;
         cl = (cl << 4) & 0xFF;

@@ -126,11 +126,6 @@ public class GLN64jPlugin implements GfxPlugin {
     }
 
     public void romClosed() {
-        MinecraftClient.getInstance().execute(() -> {
-            if (DEBUG) System.out.println("GFX Plugin (" + name + ") romClosed.");
-            OpenGl.OGL_Stop();
-            if (DEBUG) Debug.CloseDebugDlg();
-        });
     }
 
     public void romOpen() {
@@ -140,15 +135,10 @@ public class GLN64jPlugin implements GfxPlugin {
             RDRAMSize = RDRAM.capacity();
             Rsp.gsp = new Gsp(RDRAM, DMEM);
             Rsp.gdp = new Gdp(CheckInterrupts, REG);
-            OpenGl.OGL_Start();
             OpenGlGdp.init();
             OpenGlGdp.OGL_ResizeWindow();
             if (DEBUG) Debug.OpenDebugDlg();
         });
-    }
-
-    public void showCFB() {
-        if (DEBUG) System.out.println("GFX Plugin (" + name + ") showCFB.");
     }
 
     public void updateScreen() {
