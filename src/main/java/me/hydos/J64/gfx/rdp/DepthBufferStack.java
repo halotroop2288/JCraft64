@@ -17,6 +17,7 @@ public class DepthBufferStack {
         top = null;
         bottom = null;
         numBuffers = 0;
+        System.out.println("Number of buffers: " + numBuffers); // TODO: Actually do something with numBuffers
     }
 
     public void addTop(DepthBuffer newtop) {

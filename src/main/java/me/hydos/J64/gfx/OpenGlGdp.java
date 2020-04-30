@@ -19,8 +19,59 @@ public class OpenGlGdp {
 
     private static final int SIZEOF_FLOAT = 4;
     private static final int SIZEOF_GLVERTEX = 17 * SIZEOF_FLOAT;
+
     private static final GLSimpleVertex rect0 = new GLSimpleVertex();
     private static final GLSimpleVertex rect1 = new GLSimpleVertex();
+    
+    private static class GLSimpleVertex {
+        public float x, y, z, w;
+
+        public float[] color = new float[4]; // r,g,b,a
+        public float[] secondaryColor = new float[4]; // r,g,b,a
+
+        public float s0, t0, s1, t1;
+
+        public float fog;
+    }
+
+    private static class GLVertex {
+        public FloatBuffer vtx; // 4
+        public FloatBuffer color; // 4
+        public FloatBuffer secondaryColor; // 4
+        public FloatBuffer tex0; // 2
+        public FloatBuffer tex1; // 2
+        public FloatBuffer fog; // 1
+
+        public GLVertex() {
+        }
+
+        public GLVertex(float x, float y, float z, float w, float r1, float g1, float b1, float a1, float r2, float g2, float b2, float a2, float s0, float t0, float s1, float t1, float f) {
+            vtx = FloatBuffer.allocate(4);
+            vtx.put(x);
+            vtx.put(y);
+            vtx.put(z);
+            vtx.put(w);
+            color = FloatBuffer.allocate(4);
+            color.put(r1);
+            color.put(g1);
+            color.put(b1);
+            color.put(a1);
+            secondaryColor = FloatBuffer.allocate(4);
+            secondaryColor.put(r2);
+            secondaryColor.put(g2);
+            secondaryColor.put(b2);
+            secondaryColor.put(a2);
+            tex0 = FloatBuffer.allocate(2);
+            tex0.put(s0);
+            tex0.put(t0);
+            tex1 = FloatBuffer.allocate(2);
+            tex1.put(s1);
+            tex1.put(t1);
+            fog = FloatBuffer.allocate(1);
+            fog.put(f);
+        }
+    }
+
     public static TextureCache cache = new TextureCache();
     public static Combiners combiners = new Combiners();
     public static int screenWidth;
@@ -259,7 +310,7 @@ public class OpenGlGdp {
 
         OGL_GdpUpdateStates();
 
-        rect0.x = ulx;
+		rect0.x = ulx;
         rect0.y = uly;
         rect0.z = depthSource == Gbi.G_ZS_PRIM ? zDepth : nearZ;
         rect0.w = 1.0f;
@@ -661,24 +712,23 @@ public class OpenGlGdp {
         OpenGlGdp.heightOffset = heightOffset;
     }
 
-    private static class GLSimpleVertex {
-        public float x, y, z, w;
+//    private static class GLSimpleVertex {
+//        public float x, y, z, w;
+//
+//        public float[] color = new float[4]; // r,g,b,a
+//        public float[] secondaryColor = new float[4]; // r,g,b,a
+//
+//        public float s0, t0, s1, t1;
+//
+//        public float fog;
+//    }
 
-        public float[] color = new float[4]; // r,g,b,a
-        public float[] secondaryColor = new float[4]; // r,g,b,a
-
-        public float s0, t0, s1, t1;
-
-        public float fog;
-    }
-
-    private static class GLVertex {
-        public FloatBuffer vtx; // 4
-        public FloatBuffer color; // 4
-        public FloatBuffer secondaryColor; // 4
-        public FloatBuffer tex0; // 2
-        public FloatBuffer tex1; // 2
-        public FloatBuffer fog; // 1
-    }
-
+//    private static class GLVertex {
+//        public FloatBuffer vtx; // 4
+//        public FloatBuffer color; // 4
+//        public FloatBuffer secondaryColor; // 4
+//        public FloatBuffer tex0; // 2
+//        public FloatBuffer tex1; // 2
+//        public FloatBuffer fog; // 1
+//    }
 }

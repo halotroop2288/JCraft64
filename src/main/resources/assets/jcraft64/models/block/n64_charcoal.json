@@ -3,8 +3,6 @@
 	"textures": {
 		"particle": "jcraft64:block/charcoal_n64_base",
 		"base": "jcraft64:block/charcoal_n64_base",
-		"cartridge": "jcraft64:block/n64_cartridge",
-		"gameart": "jcraft64:block/games/gameart",
 		"bottom": "jcraft64:block/charcoal_n64_bottom"
 	},
 	"elements": [
@@ -149,32 +147,6 @@
 				"north": {"uv": [8, 0, 10.5, 1.75], "texture": "#base"},
 				"south": {"uv": [0, 0, 2.5, 1.75], "texture": "#missing"}
 			}
-		},
-		{
-			"name": "Art",
-			"from": [6, 2.75, 7.9],
-			"to": [10, 6.75, 8.15],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4.75, 8.025]},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#gameart"},
-				"east": {"uv": [1, 0, 1.25, 4], "texture": "#cartridge"},
-				"west": {"uv": [1, 0, 1.25, 4], "texture": "#cartridge"},
-				"up": {"uv": [1, 0, 1.25, 4], "rotation": 90, "texture": "#cartridge"}
-			}
-		},
-		{
-			"name": "Cartridge",
-			"from": [3.5, 2.25, 8],
-			"to": [12.5, 7.25, 10],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4.75, 9]},
-			"faces": {
-				"north": {"uv": [0, 0, 9, 5], "texture": "#cartridge"},
-				"east": {"uv": [14, 0, 16, 5], "texture": "#cartridge"},
-				"south": {"uv": [0, 11, 9, 16], "texture": "#cartridge"},
-				"west": {"uv": [14, 11, 16, 16], "texture": "#cartridge"},
-				"up": {"uv": [0, 7, 9, 9], "texture": "#cartridge"},
-				"down": {"uv": [0, 5, 9, 7], "texture": "#cartridge"}
-			}
 		}
 	],
 	"display": {
@@ -226,11 +198,6 @@
 					"origin": [19.75, 10, 8],
 					"children": [4, 5, 6, 7]
 				}, 8, 9, 10]
-		},
-		{
-			"name": "Game",
-			"origin": [14, 14, 16],
-			"children": [11, 12]
 		}
 	]
 }

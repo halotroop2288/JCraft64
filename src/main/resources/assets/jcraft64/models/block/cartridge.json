@@ -1,0 +1,44 @@
+{
+	"credit": "Made by halotroop2288 with Blockbench",
+	"textures": {
+		"particle": "jcraft64:block/n64_cartridge",
+		"catridge": "jcraft64:block/n64_cartridge",
+		"gameart": "jcraft64:block/games/gameart"
+	},
+	"elements": [
+		{
+			"name": "Art",
+			"from": [6, 2.75, 7.9],
+			"to": [10, 6.75, 8.15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4.75, 8.025]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#gameart"},
+				"east": {"uv": [6.5, 0.5, 6.75, 4.5], "texture": "#catridge"},
+				"west": {"uv": [2.25, 0.5, 2.5, 4.5], "texture": "#catridge"},
+				"up": {"uv": [2.5, 0.25, 6.5, 0.5], "texture": "#catridge"},
+				"down": {"uv": [2.5, 4.5, 6.5, 4.75], "texture": "#catridge"}
+			}
+		},
+		{
+			"name": "Cartridge",
+			"from": [3.5, 2.25, 8],
+			"to": [12.5, 7.25, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4.75, 9]},
+			"faces": {
+				"north": {"uv": [0, 0, 9, 5], "texture": "#catridge"},
+				"east": {"uv": [14, 0, 16, 5], "texture": "#catridge"},
+				"south": {"uv": [0, 11, 9, 16], "texture": "#catridge"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#catridge"},
+				"up": {"uv": [0, 7, 9, 9], "texture": "#catridge"},
+				"down": {"uv": [0, 5, 9, 7], "texture": "#catridge"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "Game",
+			"origin": [14, 14, 16],
+			"children": [0, 1]
+		}
+	]
+}

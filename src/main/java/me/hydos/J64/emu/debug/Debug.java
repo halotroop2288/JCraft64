@@ -1,10 +1,8 @@
 package me.hydos.J64.emu.debug;
 
 import java.io.BufferedReader;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 
-import javax.swing.JOptionPane;
 
 public class Debug {
 
@@ -36,32 +34,14 @@ public class Debug {
 
 	// ** DEBUG OPTIONS ********************************************************
 
-	private static String logMsg = "";
 	private static PrintWriter out;
 	private static BufferedReader in;
-	private static PrintStream systemOut;
 
 	/** Creates a new instance of Debug */
 	private Debug() {
 	}
 
 	public static void init() {
-		System.setErr(new PrintStream(System.err) {
-			public PrintStream printf(String format, Object... args) {
-				String msg = String.format(format, args);
-				JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
-				return this;
-			}
-		});
-
-		systemOut = System.out;
-		System.setOut(new PrintStream(System.out) {
-			public PrintStream printf(String format, Object... args) {
-				Log(format, args);
-				return this;
-			}
-		});
-
 	}
 
 	public static void close() {
@@ -74,13 +54,4 @@ public class Debug {
 			ex.printStackTrace();
 		}
 	}
-
-	private static void Log(String Message, Object... args) {
-		logMsg += String.format(Message, args);
-		if (logMsg.endsWith("\n")) {
-			systemOut.printf(logMsg, args);
-			logMsg = "";
-		}
-	}
-
 }
