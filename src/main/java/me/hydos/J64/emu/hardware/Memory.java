@@ -701,7 +701,7 @@ public class Memory {
 					}
 				default: throw new MemoryException("Illegal SP Register SW: " + Integer.toHexString(pAddr));
 			}
-//			break; // FIXME: Unreachable
+			break;
 		case 0x04100000: // DP Command Registers (RDP)
 			switch (pAddr) {
 			case 0x04100000:
