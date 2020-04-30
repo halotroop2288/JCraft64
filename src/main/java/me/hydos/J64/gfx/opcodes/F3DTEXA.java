@@ -13,7 +13,7 @@ public class F3DTEXA extends F3dex {
 		System.err.println("ERROR: F3DTTEXA_LoadTex not imlemented!");
 //		Rdpfuncs.RDP_SetTImg(0x3d100000, w1);
 //		Rdpfuncs.RDP_SetTile(0x35100000, 0x07000000);
-//		Rdpfuncs.RDP_LoadBlock(0x33000000, 0x27000000 | ((w0>>>0)&SR_MASK_24));
+//		Rdpfuncs.RDP_LoadBlock(0x33000000, 0x27000000 | ((w0>>0)&SR_MASK_24));
 	};
 	
 	GBIFunc F3DTTEXA_SetTileSize = (int w0, int w1) -> { // FIXME RDP needs to be rewritten entirely.

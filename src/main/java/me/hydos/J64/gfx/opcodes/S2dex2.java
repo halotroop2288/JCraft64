@@ -1,27 +1,7 @@
 package me.hydos.J64.gfx.opcodes;
 
 import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MICROCODE;
-import static me.hydos.J64.gfx.Gbi.G_BG_1CYC;
-import static me.hydos.J64.gfx.Gbi.G_BG_COPY;
-import static me.hydos.J64.gfx.Gbi.G_DL;
-import static me.hydos.J64.gfx.Gbi.G_ENDDL;
-import static me.hydos.J64.gfx.Gbi.G_LOAD_UCODE;
-import static me.hydos.J64.gfx.Gbi.G_MOVEWORD;
-import static me.hydos.J64.gfx.Gbi.G_OBJ_LDTX_RECT;
-import static me.hydos.J64.gfx.Gbi.G_OBJ_LDTX_RECT_R;
-import static me.hydos.J64.gfx.Gbi.G_OBJ_LDTX_SPRITE;
-import static me.hydos.J64.gfx.Gbi.G_OBJ_LOADTXTR;
-import static me.hydos.J64.gfx.Gbi.G_OBJ_MOVEMEM;
-import static me.hydos.J64.gfx.Gbi.G_OBJ_RECTANGLE;
-import static me.hydos.J64.gfx.Gbi.G_OBJ_RECTANGLE_R;
-import static me.hydos.J64.gfx.Gbi.G_OBJ_RENDERMODE;
-import static me.hydos.J64.gfx.Gbi.G_OBJ_SPRITE;
-import static me.hydos.J64.gfx.Gbi.G_RDPHALF_1;
-import static me.hydos.J64.gfx.Gbi.G_RDPHALF_2;
-import static me.hydos.J64.gfx.Gbi.G_SELECT_DL;
-import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_H;
-import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_L;
-import static me.hydos.J64.gfx.Gbi.G_SPNOOP;
+import static me.hydos.J64.gfx.Gbi.*;
 
 import me.hydos.J64.gfx.rdp.Gdp;
 import me.hydos.J64.gfx.rsp.GBIFunc;

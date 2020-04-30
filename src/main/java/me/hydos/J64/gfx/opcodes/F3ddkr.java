@@ -1,39 +1,7 @@
 package me.hydos.J64.gfx.opcodes;
 
-import static me.hydos.J64.emu.util.debug.Debug.DEBUG_ERROR;
-import static me.hydos.J64.emu.util.debug.Debug.DEBUG_HIGH;
-import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MEDIUM;
-import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MICROCODE;
-import static me.hydos.J64.emu.util.debug.Debug.DebugMsg;
-import static me.hydos.J64.gfx.Gbi.G_CLEARGEOMETRYMODE;
-import static me.hydos.J64.gfx.Gbi.G_CULLDL;
-import static me.hydos.J64.gfx.Gbi.G_DL;
-import static me.hydos.J64.gfx.Gbi.G_DMA_DL;
-import static me.hydos.J64.gfx.Gbi.G_DMA_MTX;
-import static me.hydos.J64.gfx.Gbi.G_DMA_OFFSETS;
-import static me.hydos.J64.gfx.Gbi.G_DMA_TRI;
-import static me.hydos.J64.gfx.Gbi.G_DMA_VTX;
-import static me.hydos.J64.gfx.Gbi.G_ENDDL;
-import static me.hydos.J64.gfx.Gbi.G_MOVEMEM;
-import static me.hydos.J64.gfx.Gbi.G_MOVEWORD;
-import static me.hydos.J64.gfx.Gbi.G_QUAD;
-import static me.hydos.J64.gfx.Gbi.G_RDPHALF_1;
-import static me.hydos.J64.gfx.Gbi.G_RDPHALF_2;
-import static me.hydos.J64.gfx.Gbi.G_RDPHALF_CONT;
-import static me.hydos.J64.gfx.Gbi.G_SETGEOMETRYMODE;
-import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_H;
-import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_L;
-import static me.hydos.J64.gfx.Gbi.G_SPNOOP;
-import static me.hydos.J64.gfx.Gbi.G_TEXTURE;
-import static me.hydos.J64.gfx.Gbi.G_TRI4;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_1;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_12;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_16;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_2;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_24;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_4;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_5;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_8;
+import static me.hydos.J64.emu.util.debug.Debug.*;
+import static me.hydos.J64.gfx.Gbi.*;
 
 import me.hydos.J64.gfx.rdp.Gdp;
 import me.hydos.J64.gfx.rsp.GBIFunc;
@@ -41,13 +9,13 @@ import me.hydos.J64.gfx.rsp.Gsp;
 
 public class F3ddkr extends F3d {
     
-    public static final int F3DDKR_VTX_APPEND=		0x00010000;
+    public static final int F3DDKR_VTX_APPEND	=	0x00010000;
     
-    public static final int F3DDKR_DMA_MTX=		0x01;
-    public static final int F3DDKR_DMA_VTX=		0x04;
-    public static final int F3DDKR_DMA_TRI=		0x05;
-    public static final int F3DDKR_DMA_DL=		0x07;
-    public static final int F3DDKR_DMA_OFFSETS=		0xBF;
+    public static final int F3DDKR_DMA_MTX		=	0x01;
+    public static final int F3DDKR_DMA_VTX		=	0x04;
+    public static final int F3DDKR_DMA_TRI		=	0x05;
+    public static final int F3DDKR_DMA_DL		=	0x07;
+    public static final int F3DDKR_DMA_OFFSETS	=	0xBF;
     
     public static GBIFunc F3DDKR_DMA_Mtx = new GBIFunc() {
         @Override

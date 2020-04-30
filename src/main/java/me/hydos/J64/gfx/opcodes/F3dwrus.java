@@ -1,31 +1,7 @@
 package me.hydos.J64.gfx.opcodes;
 
 import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MICROCODE;
-import static me.hydos.J64.gfx.Gbi.G_CLEARGEOMETRYMODE;
-import static me.hydos.J64.gfx.Gbi.G_CULLDL;
-import static me.hydos.J64.gfx.Gbi.G_DL;
-import static me.hydos.J64.gfx.Gbi.G_ENDDL;
-import static me.hydos.J64.gfx.Gbi.G_MOVEMEM;
-import static me.hydos.J64.gfx.Gbi.G_MOVEWORD;
-import static me.hydos.J64.gfx.Gbi.G_MTX;
-import static me.hydos.J64.gfx.Gbi.G_POPMTX;
-import static me.hydos.J64.gfx.Gbi.G_QUAD;
-import static me.hydos.J64.gfx.Gbi.G_RDPHALF_1;
-import static me.hydos.J64.gfx.Gbi.G_RDPHALF_2;
-import static me.hydos.J64.gfx.Gbi.G_RDPHALF_CONT;
-import static me.hydos.J64.gfx.Gbi.G_RESERVED0;
-import static me.hydos.J64.gfx.Gbi.G_RESERVED1;
-import static me.hydos.J64.gfx.Gbi.G_RESERVED2;
-import static me.hydos.J64.gfx.Gbi.G_RESERVED3;
-import static me.hydos.J64.gfx.Gbi.G_SETGEOMETRYMODE;
-import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_H;
-import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_L;
-import static me.hydos.J64.gfx.Gbi.G_SPNOOP;
-import static me.hydos.J64.gfx.Gbi.G_SPRITE2D_BASE;
-import static me.hydos.J64.gfx.Gbi.G_TEXTURE;
-import static me.hydos.J64.gfx.Gbi.G_TRI1;
-import static me.hydos.J64.gfx.Gbi.G_TRI2;
-import static me.hydos.J64.gfx.Gbi.G_VTX;
+import static me.hydos.J64.gfx.Gbi.*;
 
 import me.hydos.J64.gfx.rdp.Gdp;
 import me.hydos.J64.gfx.rsp.GBIFunc;

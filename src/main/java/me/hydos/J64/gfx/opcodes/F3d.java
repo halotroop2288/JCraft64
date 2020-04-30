@@ -1,12 +1,6 @@
 package me.hydos.J64.gfx.opcodes;
 
-import static me.hydos.J64.emu.util.debug.Debug.DEBUG_ERROR;
-import static me.hydos.J64.emu.util.debug.Debug.DEBUG_HIGH;
-import static me.hydos.J64.emu.util.debug.Debug.DEBUG_IGNORED;
-import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MEDIUM;
-import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MICROCODE;
-import static me.hydos.J64.emu.util.debug.Debug.DEBUG_UNKNOWN;
-import static me.hydos.J64.emu.util.debug.Debug.DebugMsg;
+import static me.hydos.J64.emu.util.debug.Debug.*;
 import static me.hydos.J64.gfx.Gbi.*;
 
 import me.hydos.J64.gfx.rdp.Gdp;
@@ -328,8 +322,8 @@ public class F3d {
 
 //                    gdp.otherMode.setH(gdp.otherMode.getH() & ~mask);
 //                    gdp.otherMode.setH(gdp.otherMode.getH() | (w1 & mask));
-                    gdp.otherMode.w0 = (gdp.otherMode.w0 & ~mask);
-                    gdp.otherMode.w0 = (gdp.otherMode.w0 | (w1 & mask));
+                    gdp.otherMode.h = (gdp.otherMode.h & ~mask);
+                    gdp.otherMode.h = (gdp.otherMode.h | (w1 & mask));
 
                     gdp.changed |= Gdp.CHANGED_CYCLETYPE;
                     break;
@@ -354,8 +348,8 @@ public class F3d {
                     int shift = (w0 >> 8) & SR_MASK_8;
                     int length = w0 & SR_MASK_8;
                     int mask = ((1 << length) - 1) << shift;
-                    gdp.otherMode.w1 = (gdp.otherMode.w1 & ~mask);
-                    gdp.otherMode.w1 = (gdp.otherMode.w1 | (w1 & mask));
+                    gdp.otherMode.l = (gdp.otherMode.l & ~mask);
+                    gdp.otherMode.l = (gdp.otherMode.l | (w1 & mask));
 
                     gdp.changed |= Gdp.CHANGED_RENDERMODE | Gdp.CHANGED_ALPHACOMPARE;
                     break;

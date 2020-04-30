@@ -1109,6 +1109,11 @@ public class Gsp {
 
 	static boolean g_ConkerUcode;
 	
+	public static class texture {
+		public static float scales, scalet;
+		public static int level, on, tile;
+	};
+	
 	public void setupFunctions() {
 //		g_ConkerUcode = GBI.getMicrocodeType() == F3DEX2CBFD;
 	}

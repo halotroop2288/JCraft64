@@ -673,7 +673,7 @@ public class OpenGlGdp {
                     (Gdp.RDP_GETOM_ALPHA_CVG_SELECT(Rsp.gdp.otherMode) == 0)) {
                 GL40.glEnable(GL40.GL_BLEND);
 
-                switch (Rsp.gdp.otherMode.w1 >> 16) {
+                switch (Rsp.gdp.otherMode.l >> 16) {
                     case 0x0448:
                     case 0x055A:
                         GL40.glBlendFunc(GL40.GL_ONE, GL40.GL_ONE);

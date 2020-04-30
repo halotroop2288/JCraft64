@@ -20,8 +20,8 @@ public class Gdp {
     public static final int CHANGED_VIEWPORT = 0x400;
 
     public static class OtherMode {
-        public int w0;
-        public int w1;
+        public int h;
+        public int l;
     }
 
     public static final int PIPELINE_MODE = 0x800000;
@@ -39,47 +39,47 @@ public class Gdp {
     public static final int ALPHA_COMPARE = 0x3;
 
     public static final int RDP_GETOM_CYCLE_TYPE(OtherMode om) {
-        return (((om).w0 >> 20) & 0x3);
+        return (((om).h >> 20) & 0x3);
     }
 
     public static final int RDP_GETOM_TLUT_TYPE(OtherMode om) {
-        return (((om).w0 >> 14) & 0x3);
+        return (((om).h >> 14) & 0x3);
     }
 
     public static final int RDP_GETOM_SAMPLE_TYPE(OtherMode om) {
-        return (((om).w0 >> 12) & 0x3);
+        return (((om).h >> 12) & 0x3);
     }
 
     public static final int RDP_GETOM_FORCE_BLEND(OtherMode om) {
-        return (((om).w1 & 0x4000) != 0 ? 1 : 0);
+        return (((om).l & 0x4000) != 0 ? 1 : 0);
     }
 
     public static final int RDP_GETOM_ALPHA_CVG_SELECT(OtherMode om) {
-        return (((om).w1 & 0x2000) != 0 ? 1 : 0);
+        return (((om).l & 0x2000) != 0 ? 1 : 0);
     }
 
     public static final int RDP_GETOM_CVG_TIMES_ALPHA(OtherMode om) {
-        return (((om).w1 & 0x1000) != 0 ? 1 : 0);
+        return (((om).l & 0x1000) != 0 ? 1 : 0);
     }
 
     public static final int RDP_GETOM_Z_MODE(OtherMode om) {
-        return (((om).w1 >> 10) & 0x3);
+        return (((om).l >> 10) & 0x3);
     }
 
     public static final int RDP_GETOM_Z_UPDATE_EN(OtherMode om) {
-        return (((om).w1 & 0x20) != 0 ? 1 : 0);
+        return (((om).l & 0x20) != 0 ? 1 : 0);
     }
 
     public static final int RDP_GETOM_Z_COMPARE_EN(OtherMode om) {
-        return (((om).w1 & 0x10) != 0 ? 1 : 0);
+        return (((om).l & 0x10) != 0 ? 1 : 0);
     }
 
     public static final int RDP_GETOM_Z_SOURCE_SEL(OtherMode om) {
-        return (((om).w1 & 0x04) != 0 ? 1 : 0);
+        return (((om).l & 0x04) != 0 ? 1 : 0);
     }
 
     public static final int RDP_GETOM_ALPHA_COMPARE_EN(OtherMode om) {
-        return (((om).w1 >> 0) & 0x3);
+        return (((om).l >> 0) & 0x3);
     }
 
 
@@ -148,82 +148,82 @@ public class Gdp {
     }
 
     public void gDPPipelineMode(int mode) {
-        otherMode.w0 &= ~PIPELINE_MODE;
-        otherMode.w0 |= ((mode & 0x1) << 23);
+        otherMode.h &= ~PIPELINE_MODE;
+        otherMode.h |= ((mode & 0x1) << 23);
 
     }
 
     public void gDPSetCycleType(int type) {
-        otherMode.w0 &= ~CYCLE_TYPE;
-        otherMode.w0 |= ((type & 0x3) << 20);
+        otherMode.h &= ~CYCLE_TYPE;
+        otherMode.h |= ((type & 0x3) << 20);
         changed |= CHANGED_CYCLETYPE;
     }
 
     public void gDPSetTexturePersp(int enable) {
-        otherMode.w0 &= ~TEX_PERSP;
-        otherMode.w0 |= ((enable & 0x1) << 19);
+        otherMode.h &= ~TEX_PERSP;
+        otherMode.h |= ((enable & 0x1) << 19);
     }
 
     public void gDPSetTextureDetail(int type) {
-        otherMode.w0 &= ~TEX_DETAIL;
-        otherMode.w0 |= ((type & 0x3) << 17);
+        otherMode.h &= ~TEX_DETAIL;
+        otherMode.h |= ((type & 0x3) << 17);
     }
 
     public void gDPSetTextureLOD(int mode) {
-        otherMode.w0 &= ~TEX_LOD;
-        otherMode.w0 |= ((mode & 0x1) << 16);
+        otherMode.h &= ~TEX_LOD;
+        otherMode.h |= ((mode & 0x1) << 16);
     }
 
     public void gDPSetTextureLUT(int mode) {
-        otherMode.w0 &= ~TEX_LUT;
-        otherMode.w0 |= ((mode & 0x3) << 14);
+        otherMode.h &= ~TEX_LUT;
+        otherMode.h |= ((mode & 0x3) << 14);
     }
 
     public void gDPSetTextureFilter(int type) {
-        otherMode.w0 &= ~TEX_FILTER;
-        otherMode.w0 |= ((type & 0x3) << 12);
+        otherMode.h &= ~TEX_FILTER;
+        otherMode.h |= ((type & 0x3) << 12);
     }
 
     public void gDPSetTextureConvert(int type) {
-        otherMode.w0 &= ~TEX_CONVERT;
-        otherMode.w0 |= ((type & 0x7) << 9);
+        otherMode.h &= ~TEX_CONVERT;
+        otherMode.h |= ((type & 0x7) << 9);
     }
 
     public void gDPSetCombineKey(int type) {
-        otherMode.w0 &= ~COMBINE_KEY;
-        otherMode.w0 |= ((type & 0x1) << 8);
+        otherMode.h &= ~COMBINE_KEY;
+        otherMode.h |= ((type & 0x1) << 8);
     }
 
     public void gDPSetColorDither(int type) {
-        otherMode.w0 &= ~COLOR_DITHER;
-        otherMode.w0 |= ((type & 0x3) << 6);
+        otherMode.h &= ~COLOR_DITHER;
+        otherMode.h |= ((type & 0x3) << 6);
     }
 
     public void gDPSetAlphaDither(int type) {
-        otherMode.w0 &= ~ALPHA_DITHER;
-        otherMode.w0 |= ((type & 0x3) << 4);
+        otherMode.h &= ~ALPHA_DITHER;
+        otherMode.h |= ((type & 0x3) << 4);
     }
 
     public void gDPSetAlphaCompare(int mode) {
-        otherMode.w1 &= ~ALPHA_COMPARE;
-        otherMode.w1 |= ((mode & 0x3));
+        otherMode.l &= ~ALPHA_COMPARE;
+        otherMode.l |= ((mode & 0x3));
         changed |= CHANGED_ALPHACOMPARE;
     }
 
     public void gDPSetDepthSource(int source) {
-        otherMode.w1 &= ~DEPTH_SOURCE;
-        otherMode.w1 |= ((source & 0x1) << 2);
+        otherMode.l &= ~DEPTH_SOURCE;
+        otherMode.l |= ((source & 0x1) << 2);
     }
 
     public void gDPSetRenderMode(int mode1, int mode2) {
-        otherMode.w1 = (otherMode.w1 & 0x00000007);
-        otherMode.w1 = (otherMode.w1 | mode1 | mode2);
+        otherMode.l = (otherMode.l & 0x00000007);
+        otherMode.l = (otherMode.l | mode1 | mode2);
         changed |= CHANGED_RENDERMODE;
     }
 
     public void gDPSetOtherMode(int mode0, int mode1) {
-        otherMode.w0 = mode0;
-        otherMode.w1 = mode1;
+        otherMode.h = mode0;
+        otherMode.l = mode1;
         changed |= CHANGED_RENDERMODE | CHANGED_CYCLETYPE | CHANGED_ALPHACOMPARE;
     }
 

@@ -3,47 +3,7 @@ package me.hydos.J64.gfx.opcodes;
 import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MICROCODE;
 import static me.hydos.J64.emu.util.debug.Debug.DEBUG_UNKNOWN;
 import static me.hydos.J64.emu.util.debug.Debug.DebugMsg;
-import static me.hydos.J64.gfx.Gbi.FIXED2FLOATRECIP10;
-import static me.hydos.J64.gfx.Gbi.FIXED2FLOATRECIP2;
-import static me.hydos.J64.gfx.Gbi.FIXED2FLOATRECIP5;
-import static me.hydos.J64.gfx.Gbi.G_FILLRECT;
-import static me.hydos.J64.gfx.Gbi.G_LOADBLOCK;
-import static me.hydos.J64.gfx.Gbi.G_LOADTILE;
-import static me.hydos.J64.gfx.Gbi.G_LOADTLUT;
-import static me.hydos.J64.gfx.Gbi.G_NOOP;
-import static me.hydos.J64.gfx.Gbi.G_RDPFULLSYNC;
-import static me.hydos.J64.gfx.Gbi.G_RDPLOADSYNC;
-import static me.hydos.J64.gfx.Gbi.G_RDPPIPESYNC;
-import static me.hydos.J64.gfx.Gbi.G_RDPSETOTHERMODE;
-import static me.hydos.J64.gfx.Gbi.G_RDPTILESYNC;
-import static me.hydos.J64.gfx.Gbi.G_SETBLENDCOLOR;
-import static me.hydos.J64.gfx.Gbi.G_SETCIMG;
-import static me.hydos.J64.gfx.Gbi.G_SETCOMBINE;
-import static me.hydos.J64.gfx.Gbi.G_SETCONVERT;
-import static me.hydos.J64.gfx.Gbi.G_SETENVCOLOR;
-import static me.hydos.J64.gfx.Gbi.G_SETFILLCOLOR;
-import static me.hydos.J64.gfx.Gbi.G_SETFOGCOLOR;
-import static me.hydos.J64.gfx.Gbi.G_SETKEYGB;
-import static me.hydos.J64.gfx.Gbi.G_SETKEYR;
-import static me.hydos.J64.gfx.Gbi.G_SETPRIMCOLOR;
-import static me.hydos.J64.gfx.Gbi.G_SETPRIMDEPTH;
-import static me.hydos.J64.gfx.Gbi.G_SETSCISSOR;
-import static me.hydos.J64.gfx.Gbi.G_SETTILE;
-import static me.hydos.J64.gfx.Gbi.G_SETTILESIZE;
-import static me.hydos.J64.gfx.Gbi.G_SETTIMG;
-import static me.hydos.J64.gfx.Gbi.G_SETZIMG;
-import static me.hydos.J64.gfx.Gbi.G_TEXRECT;
-import static me.hydos.J64.gfx.Gbi.G_TEXRECTFLIP;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_10;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_12;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_16;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_2;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_24;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_3;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_4;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_5;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_8;
-import static me.hydos.J64.gfx.Gbi.SR_MASK_9;
+import static me.hydos.J64.gfx.Gbi.*;
 
 import me.hydos.J64.gfx.rdp.Gdp;
 import me.hydos.J64.gfx.rsp.GBIFunc;
@@ -89,9 +49,9 @@ public class Rdpfuncs {
     };
 
     public static GBIFunc RDP_SetTImg = (w0, w1) -> {
-    	gdp.gDPSetTextureImage(( w0>>>21)&SR_MASK_3,	// fmt
-    						( w0>>>19)&SR_MASK_2,		// siz
-    						( w0>>>0)&SR_MASK_12 + 1,	// width
+    	gdp.gDPSetTextureImage(( w0>>21)&SR_MASK_3,	// fmt
+    						( w0>>19)&SR_MASK_2,		// siz
+    						( w0>>0)&SR_MASK_12 + 1,	// width
     						w1 );						// img
     };
     
