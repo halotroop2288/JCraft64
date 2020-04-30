@@ -4,6 +4,8 @@ import me.hydos.J64.gfx.Gbi;
 import me.hydos.J64.gfx.OpenGlGdp;
 import me.hydos.J64.gfx.Rsp;
 import me.hydos.J64.gfx.rdp.Gdp;
+import me.hydos.J64.gln64.rsp.Microcodes;
+
 import org.lwjgl.opengl.GL40;
 
 import java.nio.ByteBuffer;
@@ -11,9 +13,18 @@ import java.util.Arrays;
 
 public class Gsp {
 
-    public static final int CHANGED_MATRIX = 0x02;
+    public static class Cbfd {
+		public static int vertexNormalBase;
+		public static float[] vertexCoordMod = new float[16];
+		public static boolean advancedLighting;
+	}
+
+	public static final int CHANGED_MATRIX = 0x02;
     public static final int CHANGED_GEOMETRYMODE = 0x08;
     public static final int CHANGED_FOGPOSITION = 0x10;
+	private static final int INDEXMAP_SIZE = 80;
+	
+	public static int clipRatio;
 
     public static class SPVertex {
         public float[] vtx = new float[4];
@@ -230,7 +241,7 @@ public class Gsp {
         return w2;
     }
 
-    public void setUcode(int cmd, GBIFunc uCode) {
+    public void setGBI(int cmd, GBIFunc uCode) {
         gbi.cmds[cmd] = uCode;
     }
 
@@ -399,9 +410,11 @@ public class Gsp {
             }
         }
     }
+    
+    
 
     public void gSP1Triangle(int v0, int v1, int v2, int flag) {
-        gSPTriangle(v0, v1, v2, flag);
+        gSPTriangle(v0, v1, v2);
         gSPFlushTriangles();
     }
 
@@ -410,16 +423,16 @@ public class Gsp {
             int v10, int v11, int v12,
             int v20, int v21, int v22,
             int v30, int v31, int v32) {
-        gSPTriangle(v00, v01, v02, 0);
-        gSPTriangle(v10, v11, v12, 0);
-        gSPTriangle(v20, v21, v22, 0);
-        gSPTriangle(v30, v31, v32, 0);
+        gSPTriangle(v00, v01, v02);
+        gSPTriangle(v10, v11, v12);
+        gSPTriangle(v20, v21, v22);
+        gSPTriangle(v30, v31, v32);
         gSPFlushTriangles();
     }
 
     public void gSP1Quadrangle(int v0, int v1, int v2, int v3) {
-        gSPTriangle(v0, v1, v2, 0);
-        gSPTriangle(v0, v2, v3, 0);
+        gSPTriangle(v0, v1, v2);
+        gSPTriangle(v0, v2, v3);
         gSPFlushTriangles();
     }
 
@@ -532,7 +545,7 @@ public class Gsp {
     public void gSPFogFactor(short fm, short fo) {}
 
     public void gSPPerspNormalize(short scale) {
-
+    	System.out.println("gSPPerspNormalize(" + scale + ");");
     }
 
     public void gSPLoadUcodeEx(int uc_start, int uc_dstart, short uc_dsize) {
@@ -558,8 +571,8 @@ public class Gsp {
     }
 
     public void gSP2Triangles(int v00, int v01, int v02, int flag0, int v10, int v11, int v12, int flag1) {
-        gSPTriangle(v00, v01, v02, flag0);
-        gSPTriangle(v10, v11, v12, flag1);
+        gSPTriangle(v00, v01, v02);
+        gSPTriangle(v10, v11, v12);
         gSPFlushTriangles();
     }
 
@@ -827,7 +840,7 @@ public class Gsp {
             vertices[v2].tex[0] = rdram.getShort(address + 12) * Gbi.FIXED2FLOATRECIP5;
             vertices[v2].tex[1] = rdram.getShort(address + 14) * Gbi.FIXED2FLOATRECIP5;
 
-            gSPTriangle(v0, v1, v2, 0);
+            gSPTriangle(v0, v1, v2);
             address += 16;
         }
 
@@ -980,7 +993,7 @@ public class Gsp {
         return true;
     }
 
-    private void gSPFlushTriangles() {
+    public void gSPFlushTriangles() {
         if ((nextCmd != Gbi.G_TRI1) &&
                 (nextCmd != Gbi.G_TRI2) &&
                 (nextCmd != Gbi.G_TRI4) &&
@@ -989,7 +1002,7 @@ public class Gsp {
             OpenGlGdp.OGL_DrawTriangles();
     }
 
-    private void gSPTriangle(int v0, int v1, int v2, int flag) {
+    public void gSPTriangle(int v0, int v1, int v2) {
         if ((v0 < 80) && (v1 < 80) && (v2 < 80)) {
             if (((vertices[v0].clip[0] < 0.0f) &&
                     (vertices[v1].clip[0] < 0.0f) &&
@@ -1085,4 +1098,18 @@ public class Gsp {
         Rsp.gdp.update();
     }
 
+	public void gspCBFDVertex(int a, int n, int v0) {
+		System.out.println("gSPCBFDVertex n = " + n + ", v0 =" + v0 + ", from " + a);
+		
+		if ((n + v0) > INDEXMAP_SIZE) {
+			System.err.println("Using Vertex outside buffer v0=" + v0 + ", n=" + n);
+			return;
+		}
+	}
+
+	static boolean g_ConkerUcode;
+	
+	public void setupFunctions() {
+//		g_ConkerUcode = GBI.getMicrocodeType() == F3DEX2CBFD;
+	}
 }

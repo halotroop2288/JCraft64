@@ -1,24 +1,48 @@
 package me.hydos.J64.gfx.opcodes;
 
+import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MICROCODE;
+import static me.hydos.J64.gfx.Gbi.G_BRANCH_Z;
+import static me.hydos.J64.gfx.Gbi.G_CULLDL;
+import static me.hydos.J64.gfx.Gbi.G_DL;
+import static me.hydos.J64.gfx.Gbi.G_DMA_IO;
+import static me.hydos.J64.gfx.Gbi.G_ENDDL;
+import static me.hydos.J64.gfx.Gbi.G_GEOMETRYMODE;
+import static me.hydos.J64.gfx.Gbi.G_LOAD_UCODE;
+import static me.hydos.J64.gfx.Gbi.G_MODIFYVTX;
+import static me.hydos.J64.gfx.Gbi.G_MOVEMEM;
+import static me.hydos.J64.gfx.Gbi.G_MOVEWORD;
+import static me.hydos.J64.gfx.Gbi.G_MTX;
+import static me.hydos.J64.gfx.Gbi.G_POPMTX;
+import static me.hydos.J64.gfx.Gbi.G_QUAD;
+import static me.hydos.J64.gfx.Gbi.G_RDPHALF_1;
+import static me.hydos.J64.gfx.Gbi.G_RDPHALF_2;
+import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_H;
+import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_L;
+import static me.hydos.J64.gfx.Gbi.G_SPECIAL_1;
+import static me.hydos.J64.gfx.Gbi.G_SPECIAL_2;
+import static me.hydos.J64.gfx.Gbi.G_SPECIAL_3;
+import static me.hydos.J64.gfx.Gbi.G_SPNOOP;
+import static me.hydos.J64.gfx.Gbi.G_TEXTURE;
+import static me.hydos.J64.gfx.Gbi.G_TRI1;
+import static me.hydos.J64.gfx.Gbi.G_TRI2;
+import static me.hydos.J64.gfx.Gbi.G_VTX;
+
 import me.hydos.J64.gfx.rdp.Gdp;
-import me.hydos.J64.gfx.rsp.Gsp;
-
-import static me.hydos.J64.emu.util.debug.Debug.*;
-
 import me.hydos.J64.gfx.rsp.GBIFunc;
-
-import static me.hydos.J64.gfx.Gbi.*;
+import me.hydos.J64.gfx.rsp.Gsp;
 
 public class F3dexbg extends F3dex2 {
 
     public static GBIFunc F3DEXBG_Vtx = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSPVertexBg(gsp.RSP_SegmentToPhysical(w1), (w0 >> 12) & 0xFF, ((w0 >> 1) & 0x7F));
         }
     };
 
     public static GBIFunc F3DEXBG_MoveWord = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             int index = (w0 >> 16) & 0xFF;
             int offset = w0 & 0xFFFF;
             int data = w1;
@@ -56,7 +80,8 @@ public class F3dexbg extends F3dex2 {
     };
 
     public static GBIFunc F3DEXBG_MoveMem = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             int idx = w0 & 0xFF;
             switch (idx) {
                 case 8: //F3DEX2_MV_VIEWPORT:
@@ -106,7 +131,8 @@ public class F3dexbg extends F3dex2 {
     };
 
     public static GBIFunc F3DEXBG_Tri4 = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSP4Triangles(
                     (w0 >> 23) & 0x1F, (w0 >> 18) & 0x1F, ((((w0 >> 15) & 0x7) << 2) | ((w1 >> 30) & 0x3)),
                     (w0 >> 10) & 0x1F, (w0 >> 5) & 0x1F, (w0 >> 0) & 0x1F,
@@ -147,35 +173,35 @@ public class F3dexbg extends F3dex2 {
 
         gsp.pcStackSize = 18;
 
-        gsp.setUcode(G_RDPHALF_2, F3D_RDPHalf_2);
-        gsp.setUcode(G_SETOTHERMODE_H, F3dex2.F3DEX2_SetOtherMode_H);
-        gsp.setUcode(G_SETOTHERMODE_L, F3dex2.F3DEX2_SetOtherMode_L);
-        gsp.setUcode(G_RDPHALF_1, F3D_RDPHalf_1);
-        gsp.setUcode(G_SPNOOP, F3D_SPNoOp);
-        gsp.setUcode(G_ENDDL, F3D_EndDL);
-        gsp.setUcode(G_DL, F3D_DList);
-        gsp.setUcode(G_LOAD_UCODE, F3DEX_Load_uCode);
-        gsp.setUcode(G_MOVEMEM, F3DEXBG_MoveMem);
-        gsp.setUcode(G_MOVEWORD, F3DEXBG_MoveWord);
-        gsp.setUcode(G_MTX, F3dex2.F3DEX2_Mtx);
-        gsp.setUcode(G_GEOMETRYMODE, F3dex2.F3DEX2_GeometryMode);
-        gsp.setUcode(G_POPMTX, F3dex2.F3DEX2_PopMtx);
-        gsp.setUcode(G_TEXTURE, F3dex2.F3DEX2_Texture);
-        gsp.setUcode(G_DMA_IO, F3dex2.F3DEX2_DMAIO);
-        gsp.setUcode(G_SPECIAL_1, F3dex2.F3DEX2_Special_1);
-        gsp.setUcode(G_SPECIAL_2, F3dex2.F3DEX2_Special_2);
-        gsp.setUcode(G_SPECIAL_3, F3dex2.F3DEX2_Special_3);
+        gsp.setGBI(G_RDPHALF_2, F3D_RDPHalf_2);
+        gsp.setGBI(G_SETOTHERMODE_H, F3dex2.F3DEX2_SetOtherMode_H);
+        gsp.setGBI(G_SETOTHERMODE_L, F3dex2.F3DEX2_SetOtherMode_L);
+        gsp.setGBI(G_RDPHALF_1, F3D_RDPHalf_1);
+        gsp.setGBI(G_SPNOOP, F3D_SPNoOp);
+        gsp.setGBI(G_ENDDL, F3D_EndDL);
+        gsp.setGBI(G_DL, F3D_DList);
+        gsp.setGBI(G_LOAD_UCODE, F3DEX_Load_uCode);
+        gsp.setGBI(G_MOVEMEM, F3DEXBG_MoveMem);
+        gsp.setGBI(G_MOVEWORD, F3DEXBG_MoveWord);
+        gsp.setGBI(G_MTX, F3dex2.F3DEX2_Mtx);
+        gsp.setGBI(G_GEOMETRYMODE, F3dex2.F3DEX2_GeometryMode);
+        gsp.setGBI(G_POPMTX, F3dex2.F3DEX2_PopMtx);
+        gsp.setGBI(G_TEXTURE, F3dex2.F3DEX2_Texture);
+        gsp.setGBI(G_DMA_IO, F3dex2.F3DEX2_DMAIO);
+        gsp.setGBI(G_SPECIAL_1, F3dex2.F3DEX2_Special_1);
+        gsp.setGBI(G_SPECIAL_2, F3dex2.F3DEX2_Special_2);
+        gsp.setGBI(G_SPECIAL_3, F3dex2.F3DEX2_Special_3);
 
-        gsp.setUcode(G_VTX, F3DEXBG_Vtx);
-        gsp.setUcode(G_MODIFYVTX, F3DEX_ModifyVtx);
-        gsp.setUcode(G_CULLDL, F3DEX_CullDL);
-        gsp.setUcode(G_BRANCH_Z, F3DEX_Branch_Z);
-        gsp.setUcode(G_TRI1, F3dex2.F3DEX2_Tri1);
-        gsp.setUcode(G_TRI2, F3DEX_Tri2);
-        gsp.setUcode(G_QUAD, F3dex2.F3DEX2_Quad);
+        gsp.setGBI(G_VTX, F3DEXBG_Vtx);
+        gsp.setGBI(G_MODIFYVTX, F3DEX_ModifyVtx);
+        gsp.setGBI(G_CULLDL, F3DEX_CullDL);
+        gsp.setGBI(G_BRANCH_Z, F3DEX_Branch_Z);
+        gsp.setGBI(G_TRI1, F3dex2.F3DEX2_Tri1);
+        gsp.setGBI(G_TRI2, F3DEX_Tri2);
+        gsp.setGBI(G_QUAD, F3dex2.F3DEX2_Quad);
 
         for (int i = 0x10; i < 0x20; i++)
-            gsp.setUcode(i, F3DEXBG_Tri4);
+            gsp.setGBI(i, F3DEXBG_Tri4);
 
         if (DEBUG_MICROCODE) System.out.println("Initialized F3DEXBG opcodes");
     }

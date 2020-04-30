@@ -5,8 +5,6 @@ import me.hydos.J64.emu.util.debug.Debug;
 import me.hydos.J64.gfx.rdp.Gdp;
 import me.hydos.J64.gfx.rdp.combiners.Combiners;
 import me.hydos.J64.gfx.rdp.textures.TextureCache;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40;

@@ -117,14 +117,15 @@ public class Gbi {
     public static final int G_MV_MATRIX_4=	0x9C;
     
     public static final int G_MW_MATRIX=			0x00;
-    public static final int G_MW_NUMLIGHT=		0x02;
-    public static final int G_MW_CLIP=			0x04;
-    public static final int G_MW_SEGMENT=		0x06;
-    public static final int G_MW_FOG=			0x08;
-    public static final int G_MW_LIGHTCOL=		0x0A;
-    public static final int G_MW_FORCEMTX=		0x0C;
+    public static final int G_MW_NUMLIGHT=			0x02;
+    public static final int G_MW_CLIP=				0x04;
+    public static final int G_MW_SEGMENT=			0x06;
+    public static final int G_MW_FOG=				0x08;
+    public static final int G_MW_LIGHTCOL=			0x0A;
+    public static final int G_MW_FORCEMTX=			0x0C;
     public static final int G_MW_POINTS=			0x0C;
-    public static final int	G_MW_PERSPNORM=		0x0E;
+    public static final int	G_MW_PERSPNORM=			0x0E;
+    public static final int G_MW_COORD_MOD=			0x10;
     
     public static final int G_MWO_NUMLIGHT=		0x00;
     public static final int G_MWO_CLIP_RNX=		0x04;

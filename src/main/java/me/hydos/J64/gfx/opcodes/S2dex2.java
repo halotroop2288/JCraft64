@@ -1,11 +1,31 @@
 package me.hydos.J64.gfx.opcodes;
 
-import me.hydos.J64.gfx.rsp.Gsp;
+import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MICROCODE;
+import static me.hydos.J64.gfx.Gbi.G_BG_1CYC;
+import static me.hydos.J64.gfx.Gbi.G_BG_COPY;
+import static me.hydos.J64.gfx.Gbi.G_DL;
+import static me.hydos.J64.gfx.Gbi.G_ENDDL;
+import static me.hydos.J64.gfx.Gbi.G_LOAD_UCODE;
+import static me.hydos.J64.gfx.Gbi.G_MOVEWORD;
+import static me.hydos.J64.gfx.Gbi.G_OBJ_LDTX_RECT;
+import static me.hydos.J64.gfx.Gbi.G_OBJ_LDTX_RECT_R;
+import static me.hydos.J64.gfx.Gbi.G_OBJ_LDTX_SPRITE;
+import static me.hydos.J64.gfx.Gbi.G_OBJ_LOADTXTR;
+import static me.hydos.J64.gfx.Gbi.G_OBJ_MOVEMEM;
+import static me.hydos.J64.gfx.Gbi.G_OBJ_RECTANGLE;
+import static me.hydos.J64.gfx.Gbi.G_OBJ_RECTANGLE_R;
+import static me.hydos.J64.gfx.Gbi.G_OBJ_RENDERMODE;
+import static me.hydos.J64.gfx.Gbi.G_OBJ_SPRITE;
+import static me.hydos.J64.gfx.Gbi.G_RDPHALF_1;
+import static me.hydos.J64.gfx.Gbi.G_RDPHALF_2;
+import static me.hydos.J64.gfx.Gbi.G_SELECT_DL;
+import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_H;
+import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_L;
+import static me.hydos.J64.gfx.Gbi.G_SPNOOP;
+
 import me.hydos.J64.gfx.rdp.Gdp;
 import me.hydos.J64.gfx.rsp.GBIFunc;
-
-import static me.hydos.J64.emu.util.debug.Debug.*;
-import static me.hydos.J64.gfx.Gbi.*;
+import me.hydos.J64.gfx.rsp.Gsp;
 
 public class S2dex2 extends F3dex2 {
 
@@ -30,62 +50,74 @@ public class S2dex2 extends F3dex2 {
     }
 
     public static GBIFunc S2DEX2_BG_1Cyc = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_BG_Copy = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_Obj_Rectangle = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_Obj_Sprite = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_Obj_MoveMem = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_Select_DL = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_Obj_RenderMode = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_Obj_Rectangle_R = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_Obj_LoadTxtr = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_Obj_LdTx_Sprite = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_Obj_LdTx_Rect = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc S2DEX2_Obj_LdTx_Rect_R = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
@@ -119,27 +151,27 @@ public class S2dex2 extends F3dex2 {
 
         gsp.pcStackSize = 18;
 
-        gsp.setUcode(G_SPNOOP, F3D_SPNoOp);
-        gsp.setUcode(G_BG_1CYC, S2DEX2_BG_1Cyc);
-        gsp.setUcode(G_BG_COPY, S2DEX2_BG_Copy);
-        gsp.setUcode(G_OBJ_RECTANGLE, S2DEX2_Obj_Rectangle);
-        gsp.setUcode(G_OBJ_SPRITE, S2DEX2_Obj_Sprite);
-        gsp.setUcode(G_OBJ_MOVEMEM, S2DEX2_Obj_MoveMem);
-        gsp.setUcode(G_DL, F3D_DList);
-        gsp.setUcode(G_SELECT_DL, S2DEX2_Select_DL);
-        gsp.setUcode(G_OBJ_RENDERMODE, S2DEX2_Obj_RenderMode);
-        gsp.setUcode(G_OBJ_RECTANGLE_R, S2DEX2_Obj_Rectangle_R);
-        gsp.setUcode(G_OBJ_LOADTXTR, S2DEX2_Obj_LoadTxtr);
-        gsp.setUcode(G_OBJ_LDTX_SPRITE, S2DEX2_Obj_LdTx_Sprite);
-        gsp.setUcode(G_OBJ_LDTX_RECT, S2DEX2_Obj_LdTx_Rect);
-        gsp.setUcode(G_OBJ_LDTX_RECT_R, S2DEX2_Obj_LdTx_Rect_R);
-        gsp.setUcode(G_MOVEWORD, F3DEX2_MoveWord);
-        gsp.setUcode(G_SETOTHERMODE_H, F3DEX2_SetOtherMode_H);
-        gsp.setUcode(G_SETOTHERMODE_L, F3DEX2_SetOtherMode_L);
-        gsp.setUcode(G_ENDDL, F3D_EndDL);
-        gsp.setUcode(G_RDPHALF_1, F3D_RDPHalf_1);
-        gsp.setUcode(G_RDPHALF_2, F3D_RDPHalf_2);
-        gsp.setUcode(G_LOAD_UCODE, F3DEX_Load_uCode);
+        gsp.setGBI(G_SPNOOP, F3D_SPNoOp);
+        gsp.setGBI(G_BG_1CYC, S2DEX2_BG_1Cyc);
+        gsp.setGBI(G_BG_COPY, S2DEX2_BG_Copy);
+        gsp.setGBI(G_OBJ_RECTANGLE, S2DEX2_Obj_Rectangle);
+        gsp.setGBI(G_OBJ_SPRITE, S2DEX2_Obj_Sprite);
+        gsp.setGBI(G_OBJ_MOVEMEM, S2DEX2_Obj_MoveMem);
+        gsp.setGBI(G_DL, F3D_DList);
+        gsp.setGBI(G_SELECT_DL, S2DEX2_Select_DL);
+        gsp.setGBI(G_OBJ_RENDERMODE, S2DEX2_Obj_RenderMode);
+        gsp.setGBI(G_OBJ_RECTANGLE_R, S2DEX2_Obj_Rectangle_R);
+        gsp.setGBI(G_OBJ_LOADTXTR, S2DEX2_Obj_LoadTxtr);
+        gsp.setGBI(G_OBJ_LDTX_SPRITE, S2DEX2_Obj_LdTx_Sprite);
+        gsp.setGBI(G_OBJ_LDTX_RECT, S2DEX2_Obj_LdTx_Rect);
+        gsp.setGBI(G_OBJ_LDTX_RECT_R, S2DEX2_Obj_LdTx_Rect_R);
+        gsp.setGBI(G_MOVEWORD, F3DEX2_MoveWord);
+        gsp.setGBI(G_SETOTHERMODE_H, F3DEX2_SetOtherMode_H);
+        gsp.setGBI(G_SETOTHERMODE_L, F3DEX2_SetOtherMode_L);
+        gsp.setGBI(G_ENDDL, F3D_EndDL);
+        gsp.setGBI(G_RDPHALF_1, F3D_RDPHalf_1);
+        gsp.setGBI(G_RDPHALF_2, F3D_RDPHalf_2);
+        gsp.setGBI(G_LOAD_UCODE, F3DEX_Load_uCode);
 
         if (DEBUG_MICROCODE) System.out.println("Initialized S2DEX2 opcodes");
     }

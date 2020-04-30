@@ -1,13 +1,17 @@
 package me.hydos.J64.gfx.opcodes;
 
-import me.hydos.J64.gfx.rsp.Gsp;
-import me.hydos.J64.gfx.rdp.Gdp;
-
-import static me.hydos.J64.emu.util.debug.Debug.*;
-
-import me.hydos.J64.gfx.rsp.GBIFunc;
-
+import static me.hydos.J64.emu.util.debug.Debug.DEBUG_ERROR;
+import static me.hydos.J64.emu.util.debug.Debug.DEBUG_HIGH;
+import static me.hydos.J64.emu.util.debug.Debug.DEBUG_IGNORED;
+import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MEDIUM;
+import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MICROCODE;
+import static me.hydos.J64.emu.util.debug.Debug.DEBUG_UNKNOWN;
+import static me.hydos.J64.emu.util.debug.Debug.DebugMsg;
 import static me.hydos.J64.gfx.Gbi.*;
+
+import me.hydos.J64.gfx.rdp.Gdp;
+import me.hydos.J64.gfx.rsp.GBIFunc;
+import me.hydos.J64.gfx.rsp.Gsp;
 
 public class F3d {
     public static final int F3D_MTX_STACKSIZE = 10;
@@ -78,13 +82,15 @@ public class F3d {
     protected static Gdp gdp;
 
     public static GBIFunc F3D_SPNoOp = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSPNoOp();
         }
     };
 
     public static GBIFunc F3D_Mtx = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             if ((w0 & SR_MASK_16) != 64) {
                 if (DEBUG_MICROCODE) {
                     DebugMsg(DEBUG_MEDIUM | DEBUG_HIGH | DEBUG_ERROR, "G_MTX: address = 0x%08X    length = %d    params = 0x%02X\n", w1, w0 & SR_MASK_16, (w0 >> 16) & SR_MASK_8);
@@ -96,7 +102,8 @@ public class F3d {
     };
 
     public static GBIFunc F3D_Reserved0 = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             if (DEBUG_MICROCODE) {
                 DebugMsg(DEBUG_MEDIUM | DEBUG_IGNORED | DEBUG_UNKNOWN, "G_RESERVED0: w0=0x%08X w1=0x%08X\n", w0, w1);
             }
@@ -104,7 +111,8 @@ public class F3d {
     };
 
     public static GBIFunc F3D_MoveMem = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             w1 = gsp.RSP_SegmentToPhysical(w1);
             switch ((w0 >> 16) & SR_MASK_8) {
                 case F3D_MV_VIEWPORT:
@@ -149,18 +157,21 @@ public class F3d {
     };
 
     public static GBIFunc F3D_Vtx = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSPVertex(gsp.RSP_SegmentToPhysical(w1), ((w0 >>> 20) & SR_MASK_4) + 1, (w0 >>> 16) & SR_MASK_4);
         }
     };
 
     public static GBIFunc F3D_Reserved1 = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
         }
     };
 
     public static GBIFunc F3D_DList = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             switch ((w0 >> 16) & SR_MASK_8) {
                 case G_DL_PUSH: gsp.gSPDisplayList(gsp.RSP_SegmentToPhysical(w1));
                 case G_DL_NOPUSH: gsp.gSPBranchList(gsp.RSP_SegmentToPhysical(w1));
@@ -175,13 +186,15 @@ public class F3d {
     };
 
     public static GBIFunc F3D_Sprite2D_Base = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.getCmd();
         }
     };
 
     public static GBIFunc F3D_Tri1 = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSP1Triangle(((w1 >> 16) & SR_MASK_8) / 10,
                     ((w1 >> 8) & SR_MASK_8) / 10,
                     (w1 & SR_MASK_8) / 10,
@@ -190,19 +203,22 @@ public class F3d {
     };
 
     public static GBIFunc F3D_CullDL = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSPCullDisplayList((w0 & SR_MASK_24) / 40, (w1 / 40) - 1);
         }
     };
 
     public static GBIFunc F3D_PopMtx = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSPPopMatrix(w1);
         }
     };
 
     public static GBIFunc F3D_MoveWord = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             switch (w0 & SR_MASK_8) {
                 case G_MW_MATRIX: // 0x00
                     gsp.gSPInsertMatrix((w0 >> 8) & SR_MASK_16, w1);
@@ -258,7 +274,8 @@ public class F3d {
     };
 
     public static GBIFunc F3D_Texture = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gdp.gDPTexture(((w1 >> 16) & SR_MASK_16) * FIXED2FLOATRECIP16,
                     (w1 & SR_MASK_16) * FIXED2FLOATRECIP16,
                     (w0 >> 11) & SR_MASK_3,
@@ -268,7 +285,8 @@ public class F3d {
     };
 
     public static GBIFunc F3D_SetOtherMode_H = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             switch ((w0 >> 8) & SR_MASK_8) {
                 case G_MDSFT_PIPELINE:
                     gdp.gDPPipelineMode(w1 >>> G_MDSFT_PIPELINE);
@@ -320,7 +338,8 @@ public class F3d {
     };
 
     public static GBIFunc F3D_SetOtherMode_L = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             switch ((w0 >> 8) & SR_MASK_8) {
                 case G_MDSFT_ALPHACOMPARE:
                     gdp.gDPSetAlphaCompare(w1 >>> G_MDSFT_ALPHACOMPARE);
@@ -345,19 +364,22 @@ public class F3d {
     };
 
     public static GBIFunc F3D_EndDL = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSPEndDisplayList();
         }
     };
 
     public static GBIFunc F3D_SetGeometryMode = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSPSetGeometryMode(w1);
         }
     };
 
     public static GBIFunc F3D_ClearGeometryMode = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSPClearGeometryMode(w1);
         }
     };
@@ -366,19 +388,22 @@ public class F3d {
     };
 
     public static GBIFunc F3D_Quad = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSP1Quadrangle(((w1 >> 24) & SR_MASK_8) / 10, ((w1 >> 16) & SR_MASK_8) / 10, ((w1 >> 8) & SR_MASK_8) / 10, (w1 & SR_MASK_8) / 10);
         }
     };
 
     public static GBIFunc F3D_RDPHalf_1 = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             half_1 = w1;
         }
     };
 
     public static GBIFunc F3D_RDPHalf_2 = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             half_2 = w1;
         }
     };
@@ -387,7 +412,8 @@ public class F3d {
     };
 
     public static GBIFunc F3D_Tri4 = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             gsp.gSP4Triangles(w0 & SR_MASK_4, w1 & SR_MASK_4, (w1 >> 4) & SR_MASK_4,
                     (w0 >> 4) & SR_MASK_4, (w1 >> 8) & SR_MASK_4, (w1 >> 12) & SR_MASK_4,
                     (w0 >> 8) & SR_MASK_4, (w1 >> 16) & SR_MASK_4, (w1 >> 20) & SR_MASK_4,
@@ -428,7 +454,7 @@ public class F3d {
         G_MWO_bLIGHT_8 = F3D_MWO_bLIGHT_8;
     }
 
-    public static void F3D_Init(Gsp rsp, Gdp rdp) {
+    public static void init(Gsp rsp, Gdp rdp) {
         gsp = rsp;
         gdp = rdp;
         GBI_InitFlags();
@@ -461,32 +487,32 @@ public class F3d {
 
         gsp.pcStackSize = 10;
 
-        gsp.setUcode(G_SPNOOP, F3D_SPNoOp);
-        gsp.setUcode(G_MTX, F3D_Mtx);
-        gsp.setUcode(G_RESERVED0, F3D_Reserved0);
-        gsp.setUcode(G_MOVEMEM, F3D_MoveMem);
-        gsp.setUcode(G_VTX, F3D_Vtx);
-        gsp.setUcode(G_RESERVED1, F3D_Reserved1);
-        gsp.setUcode(G_DL, F3D_DList);
-        gsp.setUcode(G_RESERVED2, F3D_Reserved2);
-        gsp.setUcode(G_RESERVED3, F3D_Reserved3);
-        gsp.setUcode(G_SPRITE2D_BASE, F3D_Sprite2D_Base);
+        gsp.setGBI(G_SPNOOP, F3D_SPNoOp);
+        gsp.setGBI(G_MTX, F3D_Mtx);
+        gsp.setGBI(G_RESERVED0, F3D_Reserved0);
+        gsp.setGBI(G_MOVEMEM, F3D_MoveMem);
+        gsp.setGBI(G_VTX, F3D_Vtx);
+        gsp.setGBI(G_RESERVED1, F3D_Reserved1);
+        gsp.setGBI(G_DL, F3D_DList);
+        gsp.setGBI(G_RESERVED2, F3D_Reserved2);
+        gsp.setGBI(G_RESERVED3, F3D_Reserved3);
+        gsp.setGBI(G_SPRITE2D_BASE, F3D_Sprite2D_Base);
 
-        gsp.setUcode(G_TRI1, F3D_Tri1);
-        gsp.setUcode(G_CULLDL, F3D_CullDL);
-        gsp.setUcode(G_POPMTX, F3D_PopMtx);
-        gsp.setUcode(G_MOVEWORD, F3D_MoveWord);
-        gsp.setUcode(G_TEXTURE, F3D_Texture);
-        gsp.setUcode(G_SETOTHERMODE_H, F3D_SetOtherMode_H);
-        gsp.setUcode(G_SETOTHERMODE_L, F3D_SetOtherMode_L);
-        gsp.setUcode(G_ENDDL, F3D_EndDL);
-        gsp.setUcode(G_SETGEOMETRYMODE, F3D_SetGeometryMode);
-        gsp.setUcode(G_CLEARGEOMETRYMODE, F3D_ClearGeometryMode);
-        gsp.setUcode(G_QUAD, F3D_Quad);
-        gsp.setUcode(G_RDPHALF_1, F3D_RDPHalf_1);
-        gsp.setUcode(G_RDPHALF_2, F3D_RDPHalf_2);
-        gsp.setUcode(G_RDPHALF_CONT, F3D_RDPHalf_Cont);
-        gsp.setUcode(G_TRI4, F3D_Tri4);
+        gsp.setGBI(G_TRI1, F3D_Tri1);
+        gsp.setGBI(G_CULLDL, F3D_CullDL);
+        gsp.setGBI(G_POPMTX, F3D_PopMtx);
+        gsp.setGBI(G_MOVEWORD, F3D_MoveWord);
+        gsp.setGBI(G_TEXTURE, F3D_Texture);
+        gsp.setGBI(G_SETOTHERMODE_H, F3D_SetOtherMode_H);
+        gsp.setGBI(G_SETOTHERMODE_L, F3D_SetOtherMode_L);
+        gsp.setGBI(G_ENDDL, F3D_EndDL);
+        gsp.setGBI(G_SETGEOMETRYMODE, F3D_SetGeometryMode);
+        gsp.setGBI(G_CLEARGEOMETRYMODE, F3D_ClearGeometryMode);
+        gsp.setGBI(G_QUAD, F3D_Quad);
+        gsp.setGBI(G_RDPHALF_1, F3D_RDPHalf_1);
+        gsp.setGBI(G_RDPHALF_2, F3D_RDPHalf_2);
+        gsp.setGBI(G_RDPHALF_CONT, F3D_RDPHalf_Cont);
+        gsp.setGBI(G_TRI4, F3D_Tri4);
 
         if (DEBUG_MICROCODE) System.out.println("Initialized Fast 3D opcodes");
     }

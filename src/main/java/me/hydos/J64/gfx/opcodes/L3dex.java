@@ -1,11 +1,37 @@
 package me.hydos.J64.gfx.opcodes;
 
-import me.hydos.J64.gfx.rdp.Gdp;
-import me.hydos.J64.gfx.rsp.Gsp;
-import static me.hydos.J64.emu.util.debug.Debug.*;
-import me.hydos.J64.gfx.rsp.GBIFunc;
+import static me.hydos.J64.emu.util.debug.Debug.DEBUG_MICROCODE;
+import static me.hydos.J64.gfx.Gbi.G_BRANCH_Z;
+import static me.hydos.J64.gfx.Gbi.G_CLEARGEOMETRYMODE;
+import static me.hydos.J64.gfx.Gbi.G_CULLDL;
+import static me.hydos.J64.gfx.Gbi.G_DL;
+import static me.hydos.J64.gfx.Gbi.G_ENDDL;
+import static me.hydos.J64.gfx.Gbi.G_LINE3D;
+import static me.hydos.J64.gfx.Gbi.G_LOAD_UCODE;
+import static me.hydos.J64.gfx.Gbi.G_MODIFYVTX;
+import static me.hydos.J64.gfx.Gbi.G_MOVEMEM;
+import static me.hydos.J64.gfx.Gbi.G_MOVEWORD;
+import static me.hydos.J64.gfx.Gbi.G_MTX;
+import static me.hydos.J64.gfx.Gbi.G_POPMTX;
+import static me.hydos.J64.gfx.Gbi.G_RDPHALF_1;
+import static me.hydos.J64.gfx.Gbi.G_RDPHALF_2;
+import static me.hydos.J64.gfx.Gbi.G_RESERVED0;
+import static me.hydos.J64.gfx.Gbi.G_RESERVED1;
+import static me.hydos.J64.gfx.Gbi.G_RESERVED2;
+import static me.hydos.J64.gfx.Gbi.G_RESERVED3;
+import static me.hydos.J64.gfx.Gbi.G_SETGEOMETRYMODE;
+import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_H;
+import static me.hydos.J64.gfx.Gbi.G_SETOTHERMODE_L;
+import static me.hydos.J64.gfx.Gbi.G_SPNOOP;
+import static me.hydos.J64.gfx.Gbi.G_SPRITE2D_BASE;
+import static me.hydos.J64.gfx.Gbi.G_TEXTURE;
+import static me.hydos.J64.gfx.Gbi.G_VTX;
+import static me.hydos.J64.gfx.Gbi.SR_MASK_7;
+import static me.hydos.J64.gfx.Gbi.SR_MASK_8;
 
-import static me.hydos.J64.gfx.Gbi.*;
+import me.hydos.J64.gfx.rdp.Gdp;
+import me.hydos.J64.gfx.rsp.GBIFunc;
+import me.hydos.J64.gfx.rsp.Gsp;
 
 public class L3dex extends F3dex {
     
@@ -13,7 +39,8 @@ public class L3dex extends F3dex {
 
     
     public static GBIFunc L3DEX_Line3D = new GBIFunc() {
-        public void exec(int w0, int w1) {
+        @Override
+		public void exec(int w0, int w1) {
             int wd = w1&SR_MASK_8;
             if (wd == 0)
                 gsp.gSPLine3D((w1>>17)&SR_MASK_7, (w1>>9)&SR_MASK_7, 0);
@@ -54,32 +81,32 @@ public class L3dex extends F3dex {
         
         gsp.pcStackSize = 18;
         
-        gsp.setUcode(G_SPNOOP, F3d.F3D_SPNoOp);
-        gsp.setUcode(G_MTX, F3d.F3D_Mtx);
-        gsp.setUcode(G_RESERVED0, F3d.F3D_Reserved0);
-        gsp.setUcode(G_MOVEMEM, F3d.F3D_MoveMem);
-        gsp.setUcode(G_VTX, F3dex.F3DEX_Vtx);
-        gsp.setUcode(G_RESERVED1, F3d.F3D_Reserved1);
-        gsp.setUcode(G_DL, F3d.F3D_DList);
-        gsp.setUcode(G_RESERVED2, F3d.F3D_Reserved2);
-        gsp.setUcode(G_RESERVED3, F3d.F3D_Reserved3);
-        gsp.setUcode(G_SPRITE2D_BASE, F3d.F3D_Sprite2D_Base);
+        gsp.setGBI(G_SPNOOP, F3d.F3D_SPNoOp);
+        gsp.setGBI(G_MTX, F3d.F3D_Mtx);
+        gsp.setGBI(G_RESERVED0, F3d.F3D_Reserved0);
+        gsp.setGBI(G_MOVEMEM, F3d.F3D_MoveMem);
+        gsp.setGBI(G_VTX, F3dex.F3DEX_Vtx);
+        gsp.setGBI(G_RESERVED1, F3d.F3D_Reserved1);
+        gsp.setGBI(G_DL, F3d.F3D_DList);
+        gsp.setGBI(G_RESERVED2, F3d.F3D_Reserved2);
+        gsp.setGBI(G_RESERVED3, F3d.F3D_Reserved3);
+        gsp.setGBI(G_SPRITE2D_BASE, F3d.F3D_Sprite2D_Base);
         
-        gsp.setUcode(G_CULLDL, F3dex.F3DEX_CullDL);
-        gsp.setUcode(G_POPMTX, F3d.F3D_PopMtx);
-        gsp.setUcode(G_MOVEWORD, F3d.F3D_MoveWord);
-        gsp.setUcode(G_TEXTURE, F3d.F3D_Texture);
-        gsp.setUcode(G_SETOTHERMODE_H, F3d.F3D_SetOtherMode_H);
-        gsp.setUcode(G_SETOTHERMODE_L, F3d.F3D_SetOtherMode_L);
-        gsp.setUcode(G_ENDDL, F3d.F3D_EndDL);
-        gsp.setUcode(G_SETGEOMETRYMODE, F3d.F3D_SetGeometryMode);
-        gsp.setUcode(G_CLEARGEOMETRYMODE, F3d.F3D_ClearGeometryMode);
-        gsp.setUcode(G_LINE3D, L3DEX_Line3D);
-        gsp.setUcode(G_RDPHALF_1, F3d.F3D_RDPHalf_1);
-        gsp.setUcode(G_RDPHALF_2, F3d.F3D_RDPHalf_2);
-        gsp.setUcode(G_MODIFYVTX, F3dex.F3DEX_ModifyVtx);
-        gsp.setUcode(G_BRANCH_Z, F3dex.F3DEX_Branch_Z);
-        gsp.setUcode(G_LOAD_UCODE, F3dex.F3DEX_Load_uCode);
+        gsp.setGBI(G_CULLDL, F3dex.F3DEX_CullDL);
+        gsp.setGBI(G_POPMTX, F3d.F3D_PopMtx);
+        gsp.setGBI(G_MOVEWORD, F3d.F3D_MoveWord);
+        gsp.setGBI(G_TEXTURE, F3d.F3D_Texture);
+        gsp.setGBI(G_SETOTHERMODE_H, F3d.F3D_SetOtherMode_H);
+        gsp.setGBI(G_SETOTHERMODE_L, F3d.F3D_SetOtherMode_L);
+        gsp.setGBI(G_ENDDL, F3d.F3D_EndDL);
+        gsp.setGBI(G_SETGEOMETRYMODE, F3d.F3D_SetGeometryMode);
+        gsp.setGBI(G_CLEARGEOMETRYMODE, F3d.F3D_ClearGeometryMode);
+        gsp.setGBI(G_LINE3D, L3DEX_Line3D);
+        gsp.setGBI(G_RDPHALF_1, F3d.F3D_RDPHalf_1);
+        gsp.setGBI(G_RDPHALF_2, F3d.F3D_RDPHalf_2);
+        gsp.setGBI(G_MODIFYVTX, F3dex.F3DEX_ModifyVtx);
+        gsp.setGBI(G_BRANCH_Z, F3dex.F3DEX_Branch_Z);
+        gsp.setGBI(G_LOAD_UCODE, F3dex.F3DEX_Load_uCode);
         
         if (DEBUG_MICROCODE) System.out.println("Initialized L3DEX opcodes");
     }
